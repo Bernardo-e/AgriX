@@ -11,8 +11,12 @@ kotlin = "2.2.10"
 composeBom = "2026.02.01"
 room = "2.6.1"
 ksp = "2.2.10-2.0.2"
+playServicesLocation = "21.3.0"
+tensorflowLite = "2.16.1"
 
 [libraries]
+tensorflow-lite = { group = "org.tensorflow", name = "tensorflow-lite", version.ref = "tensorflowLite" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }

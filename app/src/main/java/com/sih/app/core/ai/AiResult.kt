@@ -8,4 +8,9 @@ data class AiResult(
     val recommendation: String? = null,
     val prevention: List<String> = emptyList(),
     val engineType: AiEngineType? = null,
+    val diagnosticResult: DiagnosticResult? = null,
+    val assessment: ImageAssessment = ImageAssessment.PLANT_RELEVANT,
+    val source: DiagnosisSource = DiagnosisSource.REAL_TFLITE,
+    val isHealthy: Boolean = false,
+    val isIrrelevant: Boolean = false,
 )

@@ -1,0 +1,1990 @@
+{
+  "advisories": [
+    {
+      "disease_id": 0,
+      "crop_id": "apple",
+      "disease_name": "apple black rot",
+      "overview": "Apple black rot (Botryosphaeria obtusa) affects fruit, leaves (frogeye leaf spot), and bark (cankers), causing dark expanding rots and premature defoliation.",
+      "symptoms": [
+        "Inspect tree branches during late winter for dark, sunken bark cankers.",
+        "Scout lower leaves after petal fall for purple spots with brown centers (frogeye symptom).",
+        "Check developing fruits regularly for firm brown lesions expanding with concentric rings."
+      ],
+      "immediate_actions": [
+        "Prune out dead wood, mummified fruits, and infected twigs during dry weather.",
+        "Dispose of pruned infected material away from the orchard to eliminate fungal reservoirs.",
+        "Avoid wounding fruit and bark during pruning and harvesting operations."
+      ],
+      "prevention": [
+        "Implement dormant orchard sanitation by removing all overwintering mummies and cankered branches.",
+        "Maintain open canopy architecture through annual pruning to maximize airflow and sunlight penetration.",
+        "Ensure proper balanced orchard nutrition to maintain tree vigor and prevent stress-induced infections."
+      ],
+      "monitoring": [
+        "Inspect tree branches during late winter for dark, sunken bark cankers.",
+        "Scout lower leaves after petal fall for purple spots with brown centers (frogeye symptom).",
+        "Check developing fruits regularly for firm brown lesions expanding with concentric rings."
+      ],
+      "expert_escalation": "Contact local pomology extension officers or university orchard specialists if limb cankers are girdling scaffold branches or widespread fruit rot occurs.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 1,
+      "crop_id": "apple",
+      "disease_name": "apple mosaic virus",
+      "overview": "Apple mosaic virus (ApMV) causes distinct pale yellow to cream mosaic patterns, chlorotic banding, or mottling on leaves, reducing photosynthetic efficiency.",
+      "symptoms": [
+        "Survey orchard in late spring and early summer when new foliage displays contrasting yellow mosaic markings.",
+        "Track symptom severity across warm summer months when symptoms may become bleached or necrotic."
+      ],
+      "immediate_actions": [
+        "Mark and tag symptomatic trees to prevent taking budwood or scions from them.",
+        "Maintain adequate watering and nutrition to minimize productivity loss on affected trees.",
+        "Avoid aggressive defoliation as the virus is systemic throughout tree tissues."
+      ],
+      "prevention": [
+        "Propagate only from certified virus-free rootstocks and scion budwood mother trees.",
+        "Disinfect grafting knives and pruning equipment with a 10% sanitizing solution between trees.",
+        "Source planting nursery stock from certified disease-free nurseries."
+      ],
+      "monitoring": [
+        "Survey orchard in late spring and early summer when new foliage displays contrasting yellow mosaic markings.",
+        "Track symptom severity across warm summer months when symptoms may become bleached or necrotic."
+      ],
+      "expert_escalation": "Consult horticultural extension or plant pathology diagnostic labs to confirm viral identity via serological (ELISA) or molecular testing before mass replanting.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 2,
+      "crop_id": "apple",
+      "disease_name": "apple rust",
+      "overview": "Apple rust (Cedar apple rust / Gymnosporangium) is a heteroecious fungal disease producing bright yellow-orange lesions with small black dots on upper leaf surfaces and tubular aecia below.",
+      "symptoms": [
+        "Monitor weather conditions for warm spring rains coinciding with apple bud break and bloom.",
+        "Scout upper leaf surfaces 1-2 weeks post-bloom for bright yellow-orange spots.",
+        "Check juniper trees nearby for gelatinous orange spore horns in early spring."
+      ],
+      "immediate_actions": [
+        "Inspect and remove nearby eastern red cedar or juniper galls within orchard vicinity where practical.",
+        "Avoid overhead sprinkler irrigation that prolongs leaf wetness during springtime spore releases.",
+        "Rake and remove heavily infected fallen foliage in early season."
+      ],
+      "prevention": [
+        "Plant rust-resistant apple cultivars (such as Enterprise, Liberty, or Freedom) in high-pressure regions.",
+        "Maintain a buffer distance from ornamental juniper and cedar hosts surrounding the orchard perimeter.",
+        "Prune canopies to accelerate drying of spring foliage after rain events."
+      ],
+      "monitoring": [
+        "Monitor weather conditions for warm spring rains coinciding with apple bud break and bloom.",
+        "Scout upper leaf surfaces 1-2 weeks post-bloom for bright yellow-orange spots.",
+        "Check juniper trees nearby for gelatinous orange spore horns in early spring."
+      ],
+      "expert_escalation": "Consult local agricultural extension specialists if rust defoliation exceeds 25% of canopy or fruit lesions appear in susceptible varieties.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 3,
+      "crop_id": "apple",
+      "disease_name": "apple scab",
+      "overview": "Apple scab (Venturia inaequalis) causes olive-green to dark velvety lesions on leaves and corky scabby blemishes on fruit, leading to premature leaf drop and deformed fruit.",
+      "symptoms": [
+        "Track Mills Infection Periods (temperature and leaf wetness duration) from green tip through bloom.",
+        "Scout both sides of young leaves for olive-brown velvety spots starting in early spring.",
+        "Inspect fruitlets after petal fall for dark scabby circular lesions."
+      ],
+      "immediate_actions": [
+        "Rake, chop, or compost fallen autumn leaves to disrupt overwintering fungal pseudothecia.",
+        "Avoid overhead irrigation and irrigate only in early morning if needed.",
+        "Remove severely blemished fruit clusters to conserve tree energy."
+      ],
+      "prevention": [
+        "Select scab-resistant apple varieties (such as Prima, Priscilla, Liberty, or GoldRush).",
+        "Prune trees to maintain open, vase-shaped canopies facilitating rapid leaf drying.",
+        "Apply nitrogen or shredded compost to orchard floor in late autumn to accelerate leaf litter decomposition."
+      ],
+      "monitoring": [
+        "Track Mills Infection Periods (temperature and leaf wetness duration) from green tip through bloom.",
+        "Scout both sides of young leaves for olive-brown velvety spots starting in early spring.",
+        "Inspect fruitlets after petal fall for dark scabby circular lesions."
+      ],
+      "expert_escalation": "Seek guidance from a certified crop advisor or local extension office for regional integrated pest management (IPM) bio-control and cultural spray timing.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 4,
+      "crop_id": "banana",
+      "disease_name": "banana anthracnose",
+      "overview": "Banana anthracnose (Colletotrichum musae) causes black sunken lesions on banana fingers, floral ends, and leaves, often developing salmon-colored spore masses during damp storage.",
+      "symptoms": [
+        "Scout bunches weekly starting at flower emergence for dark pinpoint spots on young peels.",
+        "Inspect packing and storage facilities for high humidity and hygiene standards.",
+        "Check transition zones between leaf sheaths and bunch stalks for necrotic lesions."
+      ],
+      "immediate_actions": [
+        "De-flower banana bunches promptly after fruit set to eliminate floral infection points.",
+        "Remove infected bracts and dead hanging leaves from the pseudo-stem.",
+        "Handle harvested banana bunches with care to prevent skin abrasions and mechanical injuries."
+      ],
+      "prevention": [
+        "Use polyethylene bunch covers (sleeves) during fruit development to protect fingers from spore splash.",
+        "Ensure proper plantation drainage to minimize ambient relative humidity around bunches.",
+        "Maintain recommended plantation spacing to promote wind movement and canopy aeration."
+      ],
+      "monitoring": [
+        "Scout bunches weekly starting at flower emergence for dark pinpoint spots on young peels.",
+        "Inspect packing and storage facilities for high humidity and hygiene standards.",
+        "Check transition zones between leaf sheaths and bunch stalks for necrotic lesions."
+      ],
+      "expert_escalation": "Consult tropical fruit extension agents if post-harvest anthracnose losses exceed marketable thresholds.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 5,
+      "crop_id": "banana",
+      "disease_name": "banana black leaf streak",
+      "overview": "Black Leaf Streak / Black Sigatoka (Pseudocercospora fijiensis) is a severe foliar disease producing dark reddish-brown to black streaks that coalesce into extensive leaf necrosis.",
+      "symptoms": [
+        "Implement the Youngest Leaf Spotted (YLS) surveillance system weekly on representative plants.",
+        "Examine the undersides of the 3rd and 4th youngest leaves for reddish-brown rusty streaks.",
+        "Monitor microclimate humidity and rainfall intensity to anticipate spore discharge peaks."
+      ],
+      "immediate_actions": [
+        "Perform regular de-leafing by cutting off severely infected leaf sections and placing them leaf-side down on soil.",
+        "Improve drainage ditches to rapidly evacuate standing water in the plantation.",
+        "Avoid overhead sprinkler irrigation; convert to under-canopy micro-sprinklers or drip systems."
+      ],
+      "prevention": [
+        "Plant Sigatoka-tolerant or resistant banana cultivars where agronomically suitable.",
+        "Maintain optimal plant density and timely desuckering to avoid overcrowding.",
+        "Ensure balanced soil potassium and nitrogen fertility to bolster leaf tissue resilience."
+      ],
+      "monitoring": [
+        "Implement the Youngest Leaf Spotted (YLS) surveillance system weekly on representative plants.",
+        "Examine the undersides of the 3rd and 4th youngest leaves for reddish-brown rusty streaks.",
+        "Monitor microclimate humidity and rainfall intensity to anticipate spore discharge peaks."
+      ],
+      "expert_escalation": "Immediately engage government agricultural officers or regional phytosanitary authorities if rapid necrosis causes loss of functional leaves before bunch harvest.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 6,
+      "crop_id": "banana",
+      "disease_name": "banana bunchy top",
+      "overview": "Banana bunchy top virus (BBTV), vectored by the banana aphid (Pentalonia nigronervosa), causes extreme stunting, upright crowded leaves with Morse-code dark green leaf streaks, and sterile plants.",
+      "symptoms": [
+        "Inspect new leaf flushes for characteristic dark-green 'Morse-code' dots and dashes along midrib and petiole.",
+        "Look for rosetted, narrowed, erect leaves with chlorotic margins forming a bunch at the crown.",
+        "Check leaf axils and petiole bases for colonies of dark banana aphids."
+      ],
+      "immediate_actions": [
+        "Quarantine and eradicate the entire infected mat (mother plant and all attached suckers/rhizome).",
+        "Control aphid vectors on symptomatic plants before uprooting to prevent vector dispersal.",
+        "Do NOT compost or move infected plant debris to other fields."
+      ],
+      "prevention": [
+        "Plant exclusively certified virus-indexed tissue-culture plantlets.",
+        "Establish strict quarantine barriers preventing unauthorized transfer of banana suckers.",
+        "Manage aphid populations through perimeter monitoring and conservation of natural insect predators."
+      ],
+      "monitoring": [
+        "Inspect new leaf flushes for characteristic dark-green 'Morse-code' dots and dashes along midrib and petiole.",
+        "Look for rosetted, narrowed, erect leaves with chlorotic margins forming a bunch at the crown.",
+        "Check leaf axils and petiole bases for colonies of dark banana aphids."
+      ],
+      "expert_escalation": "Report suspect BBTV occurrences immediately to your regional agricultural department or plant quarantine authority as it is a regulated quarantine pest.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 7,
+      "crop_id": "banana",
+      "disease_name": "banana panama disease",
+      "overview": "Panama disease / Fusarium wilt (Fusarium oxysporum f. sp. cubense) is a soil-borne vascular wilt causing yellowing of lower leaves, skirt-like collapse of foliage, and internal vascular browning.",
+      "symptoms": [
+        "Monitor for progressive yellowing starting from oldest lower leaf margins advancing inward.",
+        "Examine split pseudo-stem cross-sections for continuous brown, purple, or red vascular discoloration.",
+        "Track plant health across lower-lying, water-saturated zones of the plantation."
+      ],
+      "immediate_actions": [
+        "Isolate the affected area immediately; fence off infected mats to prevent human and animal traffic.",
+        "Sterilize boots, machetes, and machinery with appropriate disinfectants before leaving the field.",
+        "Do not dig up soil or allow runoff water to flow from infected zones into healthy blocks."
+      ],
+      "prevention": [
+        "Plant resistant banana somaclones or cultivars suitable for your target market.",
+        "Use only clean, certified tissue-culture planting material from accredited laboratories.",
+        "Maintain high soil organic matter and beneficial microbial diversity through compost application."
+      ],
+      "monitoring": [
+        "Monitor for progressive yellowing starting from oldest lower leaf margins advancing inward.",
+        "Examine split pseudo-stem cross-sections for continuous brown, purple, or red vascular discoloration.",
+        "Track plant health across lower-lying, water-saturated zones of the plantation."
+      ],
+      "expert_escalation": "Contact national plant protection organizations and agricultural universities immediately for diagnostic confirmation (e.g., distinguishing TR4 from race 1).",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 8,
+      "crop_id": "basil",
+      "disease_name": "basil downy mildew",
+      "overview": "Basil downy mildew (Peronospora belbahrii) causes yellowing of leaf upper surfaces bounded by veins and a characteristic greyish-purple felty sporulation on leaf undersides.",
+      "symptoms": [
+        "Inspect lower leaf surfaces early in the morning for dark grey-purple fuzzy spore growth.",
+        "Look for angular yellow patches on the upper surface of older lower leaves.",
+        "Check seedlings and incoming transplant flats thoroughly before planting out."
+      ],
+      "immediate_actions": [
+        "Harvest healthy unaffected upper shoots immediately before spores spread.",
+        "Water only at the soil level via drip irrigation; strictly avoid wetting basil foliage.",
+        "Remove and discard severely infected basil plants in plastic bags to avoid dispersing spores."
+      ],
+      "prevention": [
+        "Sow certified downy-mildew resistant sweet basil varieties (such as Prospera or Rutgers DMR).",
+        "Ensure generous plant spacing and use fans in greenhouses to keep relative humidity below 85%.",
+        "Keep basil plantings under full sunlight with good morning air movement."
+      ],
+      "monitoring": [
+        "Inspect lower leaf surfaces early in the morning for dark grey-purple fuzzy spore growth.",
+        "Look for angular yellow patches on the upper surface of older lower leaves.",
+        "Check seedlings and incoming transplant flats thoroughly before planting out."
+      ],
+      "expert_escalation": "Consult local vegetable extension specialists for integrated greenhouse humidity management protocols and approved organic protective treatments.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 9,
+      "crop_id": "bean",
+      "disease_name": "bean rust",
+      "overview": "Bean rust (Uromyces appendiculatus) produces small reddish-brown powdery pustules surrounded by yellow halos on leaves, stems, and pods, causing premature defoliation.",
+      "symptoms": [
+        "Scout undersides of lower and middle canopy leaves weekly after canopy closure.",
+        "Rub suspicious brown spots on a white paper; reddish-brown powdery spore residue confirms rust.",
+        "Monitor humid weather spells and prolonged dew periods."
+      ],
+      "immediate_actions": [
+        "Remove and destroy lower infected leaves during early disease onset.",
+        "Avoid working in or harvesting bean fields when foliage is wet with morning dew or rain.",
+        "Switch overhead watering to furrow or drip irrigation."
+      ],
+      "prevention": [
+        "Plant certified rust-resistant bean cultivars adapted to your local growing season.",
+        "Rotate crops away from legumes for at least two consecutive growing seasons.",
+        "Incorporate or deeply till crop residues immediately after final harvest."
+      ],
+      "monitoring": [
+        "Scout undersides of lower and middle canopy leaves weekly after canopy closure.",
+        "Rub suspicious brown spots on a white paper; reddish-brown powdery spore residue confirms rust.",
+        "Monitor humid weather spells and prolonged dew periods."
+      ],
+      "expert_escalation": "Contact legume extension specialists if rust pustules appear on green pods or if defoliation starts before pod-filling stage.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 10,
+      "crop_id": "bell pepper",
+      "disease_name": "bell pepper bacterial spot",
+      "overview": "Bacterial spot (Xanthomonas euvesicatoria) causes small water-soaked lesions that turn brown with yellow halos on pepper leaves and raised, scab-like warts on fruit.",
+      "symptoms": [
+        "Scout young transplants for dark angular greasy spots on leaf margins.",
+        "Examine green fruit after rainstorms for circular raised blisters with cracked centers.",
+        "Keep records of field hotspots, especially near irrigation lines or windy edges."
+      ],
+      "immediate_actions": [
+        "Cease overhead irrigation to eliminate water droplet splashing between plants.",
+        "Do not prune, tie, or harvest plants while leaves are wet.",
+        "Remove and destroy severely blighted plants located at initial infection hot spots."
+      ],
+      "prevention": [
+        "Use certified disease-free seed treated with hot water or sanitized nursery transplants.",
+        "Select bell pepper hybrids with multi-gene bacterial spot resistance (races 1-10).",
+        "Practice at least a 2-year crop rotation with non-solanaceous crops (avoid tomato/potato/eggplant)."
+      ],
+      "monitoring": [
+        "Scout young transplants for dark angular greasy spots on leaf margins.",
+        "Examine green fruit after rainstorms for circular raised blisters with cracked centers.",
+        "Keep records of field hotspots, especially near irrigation lines or windy edges."
+      ],
+      "expert_escalation": "Consult your agricultural extension office or university diagnostic clinic for race determination and regional copper-tolerant management advice.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 11,
+      "crop_id": "bell pepper",
+      "disease_name": "bell pepper blossom end rot",
+      "overview": "Blossom end rot is an abiotic/physiological disorder caused by calcium deficiency in developing fruit tissue, typically triggered by irregular soil moisture fluctuations.",
+      "symptoms": [
+        "Inspect the blossom end (bottom tip) of rapidly growing immature peppers for light tan or sunken water-soaked spots.",
+        "Monitor soil moisture tension daily using tensiometers or soil moisture probes.",
+        "Check developing fruits following hot, windy days that spike transpiration rates."
+      ],
+      "immediate_actions": [
+        "Establish a consistent, uniform irrigation schedule to prevent drought stress followed by flooding.",
+        "Apply organic mulch around pepper plant bases to stabilize soil moisture and root zone temperature.",
+        "Remove and discard affected fruits so the plant can direct energy into healthy new fruit development."
+      ],
+      "prevention": [
+        "Conduct soil testing prior to planting; maintain soil pH between 6.2 and 6.8 for optimal calcium uptake.",
+        "Avoid excessive applications of ammonium-based nitrogen or potassium fertilizers that compete with calcium.",
+        "Avoid deep cultivation near the root zone that can damage shallow feeder roots."
+      ],
+      "monitoring": [
+        "Inspect the blossom end (bottom tip) of rapidly growing immature peppers for light tan or sunken water-soaked spots.",
+        "Monitor soil moisture tension daily using tensiometers or soil moisture probes.",
+        "Check developing fruits following hot, windy days that spike transpiration rates."
+      ],
+      "expert_escalation": "Consult soil fertility specialists or extension educators for soil and petiole sap testing to balance calcium-to-magnesium-to-potassium ratios.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 12,
+      "crop_id": "broccoli",
+      "disease_name": "broccoli alternaria leaf spot",
+      "overview": "Alternaria leaf spot (Alternaria brassicicola / brassicae) causes dark brown to black circular lesions with concentric target-like rings on brassica leaves and heads.",
+      "symptoms": [
+        "Scout lower leaves for small dark specks expanding into concentric zonate spots.",
+        "Inspect broccoli heads and curds for dark brown decay before harvest.",
+        "Check brassica weed species around field borders for similar leaf spots."
+      ],
+      "immediate_actions": [
+        "Avoid overhead sprinkler irrigation to reduce foliage wetness periods.",
+        "Remove lower yellowing and infected leaves from the broccoli stand.",
+        "Ensure proper weed control of wild mustards and brassica weed hosts."
+      ],
+      "prevention": [
+        "Sow hot-water treated or fungicide-treated certified disease-free broccoli seeds.",
+        "Rotate out of Cruciferae (cabbage, cauliflower, mustard, kale) for 3 years.",
+        "Ensure wide plant spacing to facilitate rapid morning dew evaporation."
+      ],
+      "monitoring": [
+        "Scout lower leaves for small dark specks expanding into concentric zonate spots.",
+        "Inspect broccoli heads and curds for dark brown decay before harvest.",
+        "Check brassica weed species around field borders for similar leaf spots."
+      ],
+      "expert_escalation": "Consult local vegetable horticulture advisors if alternaria lesions threaten commercial broccoli head formation.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 13,
+      "crop_id": "cabbage",
+      "disease_name": "cabbage black rot",
+      "overview": "Black rot (Xanthomonas campestris pv. campestris) is a major bacterial disease causing characteristic V-shaped chlorotic-to-necrotic lesions from leaf margins and blackened veins.",
+      "symptoms": [
+        "Inspect leaf margins for yellow V-shaped lesions pointing toward the leaf base.",
+        "Cut symptomatic leaf petioles and check for distinct blackening of the vascular ring.",
+        "Examine seedlings in nursery trays for cotyledon yellowing and marginal wilting."
+      ],
+      "immediate_actions": [
+        "Rogue out and destroy infected seedlings and cabbage plants as soon as V-shaped lesions appear.",
+        "Avoid cultivating or handling cabbage plants when dew or rain is present.",
+        "Disinfect all cutting tools and harvesting knives frequently."
+      ],
+      "prevention": [
+        "Use certified black-rot tolerant cabbage hybrids and hot-water treated seed.",
+        "Implement a strict 3-year minimum rotation away from all cruciferous crops.",
+        "Control cruciferous weed hosts (such as wild mustard, shepherd's purse) around field perimeters."
+      ],
+      "monitoring": [
+        "Inspect leaf margins for yellow V-shaped lesions pointing toward the leaf base.",
+        "Cut symptomatic leaf petioles and check for distinct blackening of the vascular ring.",
+        "Examine seedlings in nursery trays for cotyledon yellowing and marginal wilting."
+      ],
+      "expert_escalation": "Engage extension vegetable pathologists to confirm Xanthomonas identification and review farm sanitation biosecurity protocols.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 14,
+      "crop_id": "cabbage",
+      "disease_name": "cabbage downy mildew",
+      "overview": "Cabbage downy mildew (Hyaloperonospora brassicae) causes irregular yellow patches on upper leaf surfaces and a white downy fungal-like growth on leaf undersides in cool, damp conditions.",
+      "symptoms": [
+        "Scout young transplants and lower leaves during cool (10-15°C), humid weather spells.",
+        "Check the undersides of leaves early in the morning for delicate white cottony growth.",
+        "Inspect outer head leaves before head closure."
+      ],
+      "immediate_actions": [
+        "Improve air circulation in nursery beds and field rows by increasing plant spacing.",
+        "Switch from overhead watering to furrow or drip irrigation systems.",
+        "Remove and discard severely affected lower leaves showing dense sporulation."
+      ],
+      "prevention": [
+        "Select downy-mildew tolerant cabbage cultivars adapted to autumn and spring seasons.",
+        "Avoid planting in low-lying, poorly drained fields prone to prolonged morning fogs.",
+        "Maintain rigorous seedling nursery hygiene and avoid over-dense seedling trays."
+      ],
+      "monitoring": [
+        "Scout young transplants and lower leaves during cool (10-15°C), humid weather spells.",
+        "Check the undersides of leaves early in the morning for delicate white cottony growth.",
+        "Inspect outer head leaves before head closure."
+      ],
+      "expert_escalation": "Consult local agricultural extension specialists for weather-based spray advisory warnings and approved protective treatments.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 15,
+      "crop_id": "carrot",
+      "disease_name": "carrot cavity spot",
+      "overview": "Carrot cavity spot (Pythium sulcatum / Pythium violae) produces small, sunken, elliptical horizontal lesions on the carrot taproot, degrading fresh market quality.",
+      "symptoms": [
+        "Pull sample roots across different field zones at pencil-thickness and pre-harvest stages.",
+        "Examine root surfaces for shallow, horizontal elliptical dark blemishes.",
+        "Track soil moisture and avoid overwatering in the final 6 weeks before harvest."
+      ],
+      "immediate_actions": [
+        "Improve field drainage and avoid excessive irrigation during root maturation stages.",
+        "Harvest mature carrot crops promptly without leaving roots in waterlogged soil.",
+        "Maintain careful root handling during washing and grading to prevent secondary soft rots."
+      ],
+      "prevention": [
+        "Plant carrots on raised beds or ridges to ensure rapid drainage of the root zone.",
+        "Apply agricultural lime if soil test shows pH below 6.5, as cavity spot thrives in acidic soils.",
+        "Rotate fields out of carrots, parsnips, and celery for at least 3-4 years."
+      ],
+      "monitoring": [
+        "Pull sample roots across different field zones at pencil-thickness and pre-harvest stages.",
+        "Examine root surfaces for shallow, horizontal elliptical dark blemishes.",
+        "Track soil moisture and avoid overwatering in the final 6 weeks before harvest."
+      ],
+      "expert_escalation": "Seek advice from root crop specialists or extension diagnostic services to evaluate soil drainage and liming strategies.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 16,
+      "crop_id": "cherry",
+      "disease_name": "cherry leaf spot",
+      "overview": "Cherry leaf spot (Blumeriella jaapii) causes small circular purple spots that turn brown and fall out (shot-hole effect), resulting in severe premature defoliation.",
+      "symptoms": [
+        "Monitor weather for warm spring rainfall events post-petal fall.",
+        "Scout lower canopy leaves for small circular purple spots turning brown.",
+        "Check leaf undersides in humid conditions for tiny whitish spore tendrils in spot centers."
+      ],
+      "immediate_actions": [
+        "Collect, mow, or incorporate fallen leaves under the orchard canopy to reduce overwintering apothecia.",
+        "Prune dense branches to open the tree canopy for improved sunlight and rapid wind drying.",
+        "Avoid overhead sprinkler irrigation that keeps leaves wet for prolonged hours."
+      ],
+      "prevention": [
+        "Plant tolerant cherry cultivars where available.",
+        "Maintain a wide tree spacing and clear under-canopy ground cover.",
+        "Apply supplemental nitrogen to the orchard floor in autumn to speed up leaf degradation."
+      ],
+      "monitoring": [
+        "Monitor weather for warm spring rainfall events post-petal fall.",
+        "Scout lower canopy leaves for small circular purple spots turning brown.",
+        "Check leaf undersides in humid conditions for tiny whitish spore tendrils in spot centers."
+      ],
+      "expert_escalation": "Consult tree fruit extension specialists if defoliation begins before harvest, which impairs fruit ripening and cold hardiness.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 17,
+      "crop_id": "citrus",
+      "disease_name": "citrus canker",
+      "overview": "Citrus canker (Xanthomonas citri) is a serious bacterial disease producing raised, corky, crater-like lesions surrounded by yellow halos on fruit, leaves, and twigs.",
+      "symptoms": [
+        "Inspect new flushes of leaves and young fruit for raised blister-like spots with oily margins.",
+        "Check twigs and branches for persistent rough brown corky lesions.",
+        "Scout perimeter rows closest to prevailing wind directions."
+      ],
+      "immediate_actions": [
+        "Prune out infected twigs and cankered branches during dry periods and burn/bury pruned wood.",
+        "Disinfect all pruning shears, equipment, and clothing before moving between grove blocks.",
+        "Avoid working in citrus groves during windy, rainy weather when bacteria readily spread."
+      ],
+      "prevention": [
+        "Plant certified canker-free citrus budwood and nursery rootstocks.",
+        "Establish dense windbreaks around the orchard perimeter to reduce wind-driven rain penetration.",
+        "Control Asian citrus leafminer whose feeding galleries create entry wounds for the canker bacterium."
+      ],
+      "monitoring": [
+        "Inspect new flushes of leaves and young fruit for raised blister-like spots with oily margins.",
+        "Check twigs and branches for persistent rough brown corky lesions.",
+        "Scout perimeter rows closest to prevailing wind directions."
+      ],
+      "expert_escalation": "Report suspect citrus canker to regional plant health authorities immediately, as quarantine regulations and mandatory eradication zones may apply.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 18,
+      "crop_id": "citrus",
+      "disease_name": "citrus greening disease",
+      "overview": "Citrus greening / Huanglongbing (Candidatus Liberibacter asiaticus) is a fatal bacterial disease vectored by the Asian citrus psyllid, causing blotchy mottle leaves, yellow shoots, and bitter lopsided fruit.",
+      "symptoms": [
+        "Scout for asymmetric 'blotchy mottle' leaf patterns (vein yellowing crosses leaf symmetry unlike zinc deficiency).",
+        "Look for yellow shoots standing out in an otherwise green canopy.",
+        "Inspect new feather-stage flushes for tiny psyllid nymphs producing waxy white secretions."
+      ],
+      "immediate_actions": [
+        "Rogue out and destroy confirmed HLB-infected trees to eliminate bacterial inoculum for psyllid vectors.",
+        "Monitor and manage Asian citrus psyllid populations using approved IPM vector control.",
+        "Avoid moving citrus budwood, cuttings, or uncertified trees between geographical zones."
+      ],
+      "prevention": [
+        "Plant only certified disease-free citrus trees produced inside insect-proof screenhouses.",
+        "Implement area-wide psyllid management programs collaboratively with neighboring citrus growers.",
+        "Maintain optimal tree nutrition (foliar micro-nutrients) to support root health in tolerant rootstocks."
+      ],
+      "monitoring": [
+        "Scout for asymmetric 'blotchy mottle' leaf patterns (vein yellowing crosses leaf symmetry unlike zinc deficiency).",
+        "Look for yellow shoots standing out in an otherwise green canopy.",
+        "Inspect new feather-stage flushes for tiny psyllid nymphs producing waxy white secretions."
+      ],
+      "expert_escalation": "Contact national or state citrus disease task forces immediately for PCR confirmation and area-wide vector quarantine protocols.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 19,
+      "crop_id": "coffee",
+      "disease_name": "coffee berry blotch",
+      "overview": "Coffee berry blotch / brown eye spot (Cercospora coffeicola) causes circular brown necrotic spots with grey centers on leaves and sunken dark blotches on developing coffee cherries.",
+      "symptoms": [
+        "Inspect exposed upper leaves for 'brown eye' spots with distinct light-grey centers and yellow halos.",
+        "Check developing green and ripening cherries for dark, sunken, leathery blotches.",
+        "Monitor nursery seedlings closely during the rainy season."
+      ],
+      "immediate_actions": [
+        "Regulate shade tree density to provide balanced 30-40% filtered canopy shade.",
+        "Collect and discard prematurely fallen or rotten berries from the ground.",
+        "Ensure proper balanced nitrogen and potassium fertilization to alleviate tree stress."
+      ],
+      "prevention": [
+        "Maintain well-aerated coffee spacing and prune excess suckers to improve light penetration.",
+        "Protect coffee nursery seedlings with adequate shade and avoid nitrogen starvation.",
+        "Mulch soil around coffee bushes to conserve moisture and suppress weed competition."
+      ],
+      "monitoring": [
+        "Inspect exposed upper leaves for 'brown eye' spots with distinct light-grey centers and yellow halos.",
+        "Check developing green and ripening cherries for dark, sunken, leathery blotches.",
+        "Monitor nursery seedlings closely during the rainy season."
+      ],
+      "expert_escalation": "Consult coffee research institutes or regional agricultural extension for integrated Cercospora management and nutritional diagnosis.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 20,
+      "crop_id": "coffee",
+      "disease_name": "coffee leaf rust",
+      "overview": "Coffee leaf rust (Hemileia vastatrix) produces powdery orange-yellow spore pustules on leaf undersides, triggering severe defoliation, dieback, and dramatic crop loss.",
+      "symptoms": [
+        "Scout lower and middle leaf undersides monthly for yellow-orange powdery spots.",
+        "Calculate disease incidence percentage (% of leaves infected) across representative transects.",
+        "Track onset of the rainy season when rust spore germination accelerates."
+      ],
+      "immediate_actions": [
+        "Prune affected branches to remove dead wood and open the coffee canopy.",
+        "Maintain balanced plant nutrition with emphasis on potassium to help trees withstand rust pressure.",
+        "Avoid planting susceptible varieties in high-altitude rust-favorable microclimates without protection."
+      ],
+      "prevention": [
+        "Renovate plantations with rust-resistant coffee cultivars (such as Catimor, Sarchimor, or Castle).",
+        "Prune shade trees to manage canopy humidity and allow adequate airflow through coffee rows.",
+        "Implement timely soil and foliar nutrition programs based on annual leaf nutrient analysis."
+      ],
+      "monitoring": [
+        "Scout lower and middle leaf undersides monthly for yellow-orange powdery spots.",
+        "Calculate disease incidence percentage (% of leaves infected) across representative transects.",
+        "Track onset of the rainy season when rust spore germination accelerates."
+      ],
+      "expert_escalation": "Engage national coffee board agronomists or extension agents when rust incidence crosses 5-10% threshold in susceptible blocks.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 21,
+      "crop_id": "corn",
+      "disease_name": "corn gray leaf spot",
+      "overview": "Gray leaf spot (Cercospora zeae-maydis) causes distinct long, narrow, rectangular tan-to-gray lesions restricted by leaf veins on corn foliage.",
+      "symptoms": [
+        "Scout lower canopy leaves starting at the V12 vegetative stage through tasseling (VT/R1).",
+        "Look for rectangular lesions with sharp, parallel edges running strictly between veins.",
+        "Assess lesion progression upward toward the critical ear leaf."
+      ],
+      "immediate_actions": [
+        "Avoid overhead sprinkler irrigation where leaf wetness can be reduced.",
+        "Chop or incorporate corn stubble post-harvest to speed up residue decomposition.",
+        "Ensure balanced soil potassium levels relative to nitrogen."
+      ],
+      "prevention": [
+        "Select corn hybrids with high resistance ratings to gray leaf spot.",
+        "Rotate out of corn to non-host crops (soybean, alfalfa, or small grains) for at least 1-2 years.",
+        "Avoid continuous corn planting under minimum-tillage or no-till systems in high-risk areas."
+      ],
+      "monitoring": [
+        "Scout lower canopy leaves starting at the V12 vegetative stage through tasseling (VT/R1).",
+        "Look for rectangular lesions with sharp, parallel edges running strictly between veins.",
+        "Assess lesion progression upward toward the critical ear leaf."
+      ],
+      "expert_escalation": "Consult field crop agronomists if lesions reach the ear leaf or higher prior to the R3 (milk) growth stage.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 22,
+      "crop_id": "corn",
+      "disease_name": "corn northern leaf blight",
+      "overview": "Northern corn leaf blight (Setosphaeria turcica / Exserohilum turcicum) produces large, long, cigar-shaped grayish-green to tan lesions that can coalesce and blight entire leaves.",
+      "symptoms": [
+        "Scout lower leaves before tasseling for 2.5 to 15 cm long cigar-shaped tan lesions.",
+        "Inspect upper canopy and ear leaves after pollination during humid, moderate temperature (18-27°C) weather.",
+        "Check for dark olive-gray fungal sporulation within lesions on humid mornings."
+      ],
+      "immediate_actions": [
+        "Chop and incorporate crop residues after harvest to accelerate fungal pathogen decay.",
+        "Avoid working in wet fields during early morning dew.",
+        "Ensure proper plant density to prevent excessive canopy crowding."
+      ],
+      "prevention": [
+        "Plant hybrid corn varieties with multi-gene (Ht) or polygenic resistance.",
+        "Practice a 2-year crop rotation with non-grass crops such as soybeans or legumes.",
+        "Ensure balanced soil fertilization and avoid excessive vegetative nitrogen."
+      ],
+      "monitoring": [
+        "Scout lower leaves before tasseling for 2.5 to 15 cm long cigar-shaped tan lesions.",
+        "Inspect upper canopy and ear leaves after pollination during humid, moderate temperature (18-27°C) weather.",
+        "Check for dark olive-gray fungal sporulation within lesions on humid mornings."
+      ],
+      "expert_escalation": "Consult certified crop advisors if large lesions appear on or above the ear leaf before or during silking.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 23,
+      "crop_id": "corn",
+      "disease_name": "corn rust",
+      "overview": "Common corn rust (Puccinia sorghi) produces small, oval-to-elongate cinnamon-brown powdery pustules scattered across both upper and lower leaf surfaces.",
+      "symptoms": [
+        "Scout both surfaces of leaves across the middle canopy starting at early vegetative stages.",
+        "Rub questionable pustules with a tissue; brownish-red powder indicates rust urediniospores.",
+        "Differentiate from southern corn rust (which features smaller, densely clustered golden pustules primarily on upper surface)."
+      ],
+      "immediate_actions": [
+        "Maintain adequate soil moisture and balanced plant nutrition to minimize physiological stress.",
+        "Avoid late planting dates that expose young crops to peak mid-season airborne rust spore showers.",
+        "Ensure proper field drainage."
+      ],
+      "prevention": [
+        "Plant corn hybrids with specific (Rp) resistance genes or high general field tolerance.",
+        "Time planting early in the season to allow crops to mature before high rust spore loads arrive.",
+        "Rotate crops and avoid staggered consecutive maize plantings in the same locality."
+      ],
+      "monitoring": [
+        "Scout both surfaces of leaves across the middle canopy starting at early vegetative stages.",
+        "Rub questionable pustules with a tissue; brownish-red powder indicates rust urediniospores.",
+        "Differentiate from southern corn rust (which features smaller, densely clustered golden pustules primarily on upper surface)."
+      ],
+      "expert_escalation": "Consult university or extension field crop specialists if rust pustules cover more than 10% of ear leaf area before grain dent stage.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 24,
+      "crop_id": "corn",
+      "disease_name": "corn smut",
+      "overview": "Corn smut / Common smut (Ustilago maydis) induces prominent fleshy, silver-white galls on ears, tassels, stalks, and leaves that rupture to release powdery black teliospores.",
+      "symptoms": [
+        "Scout corn stands following hail, windstorms, or aggressive mechanical cultivation.",
+        "Check developing ears and tassels for swelling, whitish-gray fleshy galls.",
+        "Examine seedling leaves for small bump-like galls after early season insect feeding."
+      ],
+      "immediate_actions": [
+        "Remove and destroy young galls before they rupture and disperse black spores.",
+        "Avoid mechanical injury to stalks and roots during field cultivation and pesticide spraying.",
+        "Control insect pests (corn borers, earworms) that create entry wounds for smut spores."
+      ],
+      "prevention": [
+        "Select corn hybrids with recognized resistance to common smut.",
+        "Avoid excessive nitrogen fertilization, which promotes lush, easily injured tissue.",
+        "Maintain balanced soil fertility, ensuring adequate phosphorus and potassium."
+      ],
+      "monitoring": [
+        "Scout corn stands following hail, windstorms, or aggressive mechanical cultivation.",
+        "Check developing ears and tassels for swelling, whitish-gray fleshy galls.",
+        "Examine seedling leaves for small bump-like galls after early season insect feeding."
+      ],
+      "expert_escalation": "Contact local extension educators if smut galls affect a large percentage of ear shoots in seed corn or sweet corn production.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 25,
+      "crop_id": "cucumber",
+      "disease_name": "cucumber angular leaf spot",
+      "overview": "Angular leaf spot (Pseudomonas syringae pv. lachrymans) causes small water-soaked lesions that turn tan and become sharply angular as they are restricted by leaf veins.",
+      "symptoms": [
+        "Inspect leaf undersides in the morning for shiny, white, dried bacterial exudate crusts.",
+        "Look for angular straw-colored spots whose dead centers fall out leaving ragged 'shot holes'.",
+        "Check cucumber fruit for small circular water-soaked spots that turn white and crack."
+      ],
+      "immediate_actions": [
+        "Avoid overhead sprinkler irrigation and switch to drip tape under plastic mulch.",
+        "Do not enter, cultivate, or harvest cucumber fields while foliage is wet.",
+        "Remove and destroy initial infected plants in greenhouse or small plot setups."
+      ],
+      "prevention": [
+        "Use certified disease-free, tested cucumber seed from reliable suppliers.",
+        "Rotate out of cucurbit crops (melon, squash, pumpkin) for at least 2 years.",
+        "Sterilize trellising posts, stakes, and greenhouse structures between crop cycles."
+      ],
+      "monitoring": [
+        "Inspect leaf undersides in the morning for shiny, white, dried bacterial exudate crusts.",
+        "Look for angular straw-colored spots whose dead centers fall out leaving ragged 'shot holes'.",
+        "Check cucumber fruit for small circular water-soaked spots that turn white and crack."
+      ],
+      "expert_escalation": "Consult vegetable extension agents for bacteriological confirmation and guidance on copper-based protective sprays if permitted.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 26,
+      "crop_id": "cucumber",
+      "disease_name": "cucumber bacterial wilt",
+      "overview": "Bacterial wilt (Erwinia tracheiphila), transmitted by striped and spotted cucumber beetles, causes rapid irreversible wilting of individual runners and entire cucumber vines.",
+      "symptoms": [
+        "Inspect seedling emergence daily for early cucumber beetle colonization.",
+        "Check for sudden daytime wilting of single leaves or runners that fail to recover overnight.",
+        "Monitor field edges closest to overwintering brush and grassy borders."
+      ],
+      "immediate_actions": [
+        "Rogue out and immediately destroy wilted plants to prevent beetles from feeding on infected sap.",
+        "Deploy yellow sticky traps or row covers to monitor and exclude cucumber beetle vectors.",
+        "Perform a field sticky strand test: cut a wilted stem, press cut ends together, and slowly pull apart to observe viscous bacterial slime threads."
+      ],
+      "prevention": [
+        "Install floating row covers over young cucumber seedlings until flowering begins.",
+        "Manage early-season cucumber beetle populations proactively with IPM trapping.",
+        "Select wilt-tolerant or less-attractive cucurbit varieties where available."
+      ],
+      "monitoring": [
+        "Inspect seedling emergence daily for early cucumber beetle colonization.",
+        "Check for sudden daytime wilting of single leaves or runners that fail to recover overnight.",
+        "Monitor field edges closest to overwintering brush and grassy borders."
+      ],
+      "expert_escalation": "Consult horticultural extension specialists for integrated beetle vector management strategies and resistance management.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 27,
+      "crop_id": "cucumber",
+      "disease_name": "cucumber powdery mildew",
+      "overview": "Cucumber powdery mildew (Podosphaera xanthii / Golovinomyces cichoracearum) produces talcum-like white powdery fungal patches on leaf surfaces, petioles, and stems, causing premature senescence.",
+      "symptoms": [
+        "Inspect lower, older leaves and dense inner canopy foliage weekly.",
+        "Look for faint, round, white powdery spots on both upper and lower leaf surfaces.",
+        "Scout more frequently during warm (20-28°C), dry weather with high relative humidity."
+      ],
+      "immediate_actions": [
+        "Prune heavily shaded, older bottom leaves to improve canopy airflow and light penetration.",
+        "Ensure plants are well-watered at the roots, as water-stressed cucurbits are more vulnerable.",
+        "Remove severely colonized senescing leaves from greenhouse facilities."
+      ],
+      "prevention": [
+        "Grow cucumber varieties with high genetic resistance to powdery mildew (PMR).",
+        "Maintain adequate plant spacing in greenhouse and high-tunnel environments.",
+        "Avoid excessive applications of high-nitrogen fertilizer that promote dense, succulent foliage."
+      ],
+      "monitoring": [
+        "Inspect lower, older leaves and dense inner canopy foliage weekly.",
+        "Look for faint, round, white powdery spots on both upper and lower leaf surfaces.",
+        "Scout more frequently during warm (20-28°C), dry weather with high relative humidity."
+      ],
+      "expert_escalation": "Consult agricultural extension advisors for approved bio-fungicides (e.g., potassium bicarbonate, horticultural oils) and preventative spray schedules.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 28,
+      "crop_id": "garlic",
+      "disease_name": "garlic leaf blight",
+      "overview": "Garlic leaf blight (Stemphylium vesicarium / Alternaria) produces small yellow-to-tan water-soaked lesions that elongate into elliptical blighted patches with dark olive-brown centers.",
+      "symptoms": [
+        "Scout garlic leaves starting from mid-vegetative growth for oval tan spots with dark spore centers.",
+        "Examine leaf tips for progressive tip dieback after warm, wet weather periods.",
+        "Inspect allium weed species surrounding the garlic field."
+      ],
+      "immediate_actions": [
+        "Avoid overhead irrigation, especially in late afternoon and evening.",
+        "Ensure proper field drainage to prevent water stagnation in garlic beds.",
+        "Remove severely blighted garlic leaf debris from the field perimeter."
+      ],
+      "prevention": [
+        "Plant clean, certified disease-free garlic seed cloves from reputable growers.",
+        "Practice a 3-year crop rotation away from all allium crops (onion, leek, chive, shallot).",
+        "Maintain optimal plant spacing to promote quick canopy drying after rain or dew."
+      ],
+      "monitoring": [
+        "Scout garlic leaves starting from mid-vegetative growth for oval tan spots with dark spore centers.",
+        "Examine leaf tips for progressive tip dieback after warm, wet weather periods.",
+        "Inspect allium weed species surrounding the garlic field."
+      ],
+      "expert_escalation": "Consult allium extension agronomists if leaf blight threatens more than 20% of the active photosynthetic foliage before bulb enlargement.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 29,
+      "crop_id": "garlic",
+      "disease_name": "garlic rust",
+      "overview": "Garlic rust (Puccinia allii) causes small circular to elongated bright orange-to-yellow pustules on leaves that burst to release powdery spores, reducing bulb size.",
+      "symptoms": [
+        "Scout leaves weekly in early spring for tiny white-to-yellow flecks developing into orange pustules.",
+        "Inspect both upper and lower leaf surfaces during cool (12-20°C), humid weather.",
+        "Check for black teliospores appearing in pustules late in the season."
+      ],
+      "immediate_actions": [
+        "Do not apply excessive nitrogen fertilizer, which produces succulent rust-susceptible growth.",
+        "Avoid overhead irrigation to minimize the duration of free moisture on garlic leaves.",
+        "Keep the garlic stand weed-free to maximize wind movement and sunshine exposure."
+      ],
+      "prevention": [
+        "Source healthy, inspected garlic cloves; do not plant cloves from rust-infected crops.",
+        "Maintain a 3-year rotation away from all alliums (garlic, onion, shallot, leek).",
+        "Space rows generously to allow maximum air circulation."
+      ],
+      "monitoring": [
+        "Scout leaves weekly in early spring for tiny white-to-yellow flecks developing into orange pustules.",
+        "Inspect both upper and lower leaf surfaces during cool (12-20°C), humid weather.",
+        "Check for black teliospores appearing in pustules late in the season."
+      ],
+      "expert_escalation": "Consult local vegetable extension specialists for regional rust forecasts and preventative management options.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 30,
+      "crop_id": "ginger",
+      "disease_name": "ginger sheath blight",
+      "overview": "Ginger sheath blight (Rhizoctonia solani) causes water-soaked, oval-to-irregular lesions on basal leaf sheaths and pseudo-stems, leading to sheath decay, lodging, and rhizome rot.",
+      "symptoms": [
+        "Scout the base of ginger pseudo-stems just above the soil line for water-soaked grayish-green spots.",
+        "Check for yellowing and drying of lower leaves advancing upward.",
+        "Inspect fields closely during peak monsoon or rainy seasons with high soil moisture."
+      ],
+      "immediate_actions": [
+        "Improve drainage channels immediately to prevent waterlogging around ginger rhizome beds.",
+        "Rogue out severely affected pseudo-stems and destroy them outside the field.",
+        "Avoid walking through wet ginger rows to reduce mechanical damage to succulent stems."
+      ],
+      "prevention": [
+        "Select clean, healthy seed rhizomes from disease-free mother plants.",
+        "Plant on high raised beds (25-30 cm) with good organic mulch to prevent soil splashing.",
+        "Rotate ginger with non-host crops like maize, pulses, or green manure crops."
+      ],
+      "monitoring": [
+        "Scout the base of ginger pseudo-stems just above the soil line for water-soaked grayish-green spots.",
+        "Check for yellowing and drying of lower leaves advancing upward.",
+        "Inspect fields closely during peak monsoon or rainy seasons with high soil moisture."
+      ],
+      "expert_escalation": "Consult spice crop research stations or extension officers for soil solarization and biocontrol (Trichoderma) application protocols.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 31,
+      "crop_id": "grape",
+      "disease_name": "grape black rot",
+      "overview": "Grape black rot (Guignardia bidwellii) causes reddish-brown circular leaf spots with tiny black dots (pycnidia) and transforms green berries into shriveled, hard, black mummies.",
+      "symptoms": [
+        "Scout leaves starting 2-3 weeks after bud break for tan circular spots with dark borders.",
+        "Inspect berries from bloom through veraison for small light-brown spots that rapidly rot the entire berry.",
+        "Check for black pimple-like pycnidia forming ring patterns on leaf spots and shriveled fruit."
+      ],
+      "immediate_actions": [
+        "Remove and destroy all mummified fruit clusters hanging on vines or on the vineyard floor.",
+        "Prune out infected cane lesions during dormant pruning season.",
+        "Tuck and position shoots into trellis wires to maximize fruit zone sun exposure and airflow."
+      ],
+      "prevention": [
+        "Implement comprehensive vineyard floor sanitation and bury mummies with light cultivation before bud break.",
+        "Maintain open canopy architecture using canopy management practices (shoot thinning, leaf pulling).",
+        "Select less-susceptible grape cultivars where feasible."
+      ],
+      "monitoring": [
+        "Scout leaves starting 2-3 weeks after bud break for tan circular spots with dark borders.",
+        "Inspect berries from bloom through veraison for small light-brown spots that rapidly rot the entire berry.",
+        "Check for black pimple-like pycnidia forming ring patterns on leaf spots and shriveled fruit."
+      ],
+      "expert_escalation": "Consult viticultural extension specialists for early-season protective spray timing from pre-bloom through 4 weeks post-bloom.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 32,
+      "crop_id": "grape",
+      "disease_name": "grape downy mildew",
+      "overview": "Grape downy mildew (Plasmopara viticola) produces yellowish 'oil-spot' lesions on upper leaf surfaces and dense white cottony sporulation on the underside, blighting clusters and foliage.",
+      "symptoms": [
+        "Follow the '10-10-10 rule' (10 cm shoot growth, 10 mm rainfall, 10°C minimum temperature) for primary infection.",
+        "Look for translucent yellowish 'oil spots' on the upper surface of young leaves.",
+        "Check leaf undersides and young flower clusters at dawn for fresh white downy fungal growth."
+      ],
+      "immediate_actions": [
+        "Perform shoot thinning and leaf removal around fruit clusters to speed up canopy drying.",
+        "Avoid overhead sprinkler irrigation; maintain grass cover between rows to prevent soil splash.",
+        "Ensure rapid vineyard drainage after major rain storms."
+      ],
+      "prevention": [
+        "Plant downy mildew resistant or tolerant grape hybrid varieties.",
+        "Maintain strict canopy aeration via summer shoot hedging and wire tucking.",
+        "Till or mulch fallen leaves to limit overwintering oospore inoculum."
+      ],
+      "monitoring": [
+        "Follow the '10-10-10 rule' (10 cm shoot growth, 10 mm rainfall, 10°C minimum temperature) for primary infection.",
+        "Look for translucent yellowish 'oil spots' on the upper surface of young leaves.",
+        "Check leaf undersides and young flower clusters at dawn for fresh white downy fungal growth."
+      ],
+      "expert_escalation": "Contact viticulture extension agents immediately if downy mildew infects young floral clusters before fruit set.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 33,
+      "crop_id": "grape",
+      "disease_name": "grape leaf spot",
+      "overview": "Grape leaf spot / Isariopsis spot (Pseudocercospora vitis / Phomopsis) causes small, angular to irregular dark brown-to-black necrotic spots on mature leaves and cane blotches.",
+      "symptoms": [
+        "Scout older, lower leaves in mid-to-late summer for angular reddish-brown necrotic spots.",
+        "Examine dormant canes for bleached patches with tiny black embedded speckles.",
+        "Check for premature defoliation on sensitive table or wine grape cultivars."
+      ],
+      "immediate_actions": [
+        "Prune out infected canes and spur wood during winter pruning.",
+        "Remove lower leaves obstructing airflow around the fruit zone.",
+        "Shred or incorporate vineyard prunings to reduce fungal spore carryover."
+      ],
+      "prevention": [
+        "Train vines on open trellis systems that ensure good ventilation and rapid foliage drying.",
+        "Apply balanced vine nutrition, avoiding excess nitrogen that produces dense foliage.",
+        "Maintain vineyard floor sanitation and weed control under the trellis."
+      ],
+      "monitoring": [
+        "Scout older, lower leaves in mid-to-late summer for angular reddish-brown necrotic spots.",
+        "Examine dormant canes for bleached patches with tiny black embedded speckles.",
+        "Check for premature defoliation on sensitive table or wine grape cultivars."
+      ],
+      "expert_escalation": "Consult regional viticulture advisors if foliar spotting leads to premature leaf drop before grape harvest.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 34,
+      "crop_id": "grapevine",
+      "disease_name": "grapevine leafroll disease",
+      "overview": "Grapevine leafroll-associated viruses (GLRaV), vectored by mealybugs and soft scales, cause downward rolling of leaf margins, interveinal reddening (red cultivars) or chlorosis (white cultivars), and delayed fruit ripening.",
+      "symptoms": [
+        "Survey the vineyard in late summer and autumn prior to leaf senescence.",
+        "Look for downward curling of leaves with dark red/purple interveinal tissue and contrasting green veins (red varieties).",
+        "Check under bark and on cordons for white waxy mealybug colonies."
+      ],
+      "immediate_actions": [
+        "Tag and map symptomatic vines in autumn for targeted removal or virus testing.",
+        "Manage mealybug and scale insect vector populations using biological or IPM controls.",
+        "Do NOT use cuttings from symptomatic vines for grafting or propagation."
+      ],
+      "prevention": [
+        "Plant exclusively certified virus-tested, foundation-grade nursery planting stock.",
+        "Sanitize pruning shears between blocks when working in known infected vineyards.",
+        "Implement ant control programs, as ants protect and spread virus-carrying mealybugs."
+      ],
+      "monitoring": [
+        "Survey the vineyard in late summer and autumn prior to leaf senescence.",
+        "Look for downward curling of leaves with dark red/purple interveinal tissue and contrasting green veins (red varieties).",
+        "Check under bark and on cordons for white waxy mealybug colonies."
+      ],
+      "expert_escalation": "Consult viticulture diagnostic laboratories to submit petiole samples for ELISA or PCR testing to confirm specific GLRaV strains.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 35,
+      "crop_id": "lettuce",
+      "disease_name": "lettuce downy mildew",
+      "overview": "Lettuce downy mildew (Bremia lactucae) causes light green to yellow angular patches on upper leaf surfaces and a white powdery/fluffy fungal sporulation on leaf undersides.",
+      "symptoms": [
+        "Scout outer, older leaves during cool (10-18°C), damp, foggy morning conditions.",
+        "Look for pale angular yellow spots bounded distinctly by the main leaf veins.",
+        "Check undersides of yellow spots early in the morning for white fluffy spore growth."
+      ],
+      "immediate_actions": [
+        "Harvest marketable unaffected heads promptly before secondary rot sets in.",
+        "Switch from overhead sprinkler to drip irrigation to keep lettuce heads completely dry.",
+        "Remove and destroy severely infected outer wrapper leaves."
+      ],
+      "prevention": [
+        "Plant lettuce varieties possessing genetic resistance genes (Dm genes) against local races.",
+        "Space lettuce plants adequately to prevent dense overlapping canopies.",
+        "Incorporate or plow down crop residues immediately after harvest to stop spore production."
+      ],
+      "monitoring": [
+        "Scout outer, older leaves during cool (10-18°C), damp, foggy morning conditions.",
+        "Look for pale angular yellow spots bounded distinctly by the main leaf veins.",
+        "Check undersides of yellow spots early in the morning for white fluffy spore growth."
+      ],
+      "expert_escalation": "Consult vegetable extension specialists for current Bremia race monitoring updates and approved organic or conventional control recommendations.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 36,
+      "crop_id": "maple",
+      "disease_name": "maple tar spot",
+      "overview": "Maple tar spot (Rhytisma acerinum) is a mostly cosmetic fungal leaf disease producing prominent, raised, shiny black spots resembling tar droplets on maple leaves.",
+      "symptoms": [
+        "Observe maple leaves in early summer for light green-to-yellow chlorotic spots.",
+        "Watch for the development of raised, shiny black 'tar' lesions within these spots by late summer.",
+        "Assess whether premature leaf drop is occurring on young nursery saplings."
+      ],
+      "immediate_actions": [
+        "Rake up and destroy or thoroughly compost fallen maple leaves in autumn.",
+        "Maintain tree vigor through proper mulching and deep watering during summer droughts.",
+        "Avoid unnecessary chemical sprays as tar spot rarely harms mature tree health."
+      ],
+      "prevention": [
+        "Ensure thorough neighborhood or landscape-scale collection of autumn leaf litter where practical.",
+        "Prune adjacent vegetation to promote light penetration and good air movement around lower branches.",
+        "Plant diverse non-host shade tree species in landscape plantings."
+      ],
+      "monitoring": [
+        "Observe maple leaves in early summer for light green-to-yellow chlorotic spots.",
+        "Watch for the development of raised, shiny black 'tar' lesions within these spots by late summer.",
+        "Assess whether premature leaf drop is occurring on young nursery saplings."
+      ],
+      "expert_escalation": "Consult certified arborists or urban forestry extension for young tree health assessments if defoliation occurs repeatedly over consecutive years.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 37,
+      "crop_id": "peach",
+      "disease_name": "peach brown rot",
+      "overview": "Brown rot (Monilinia fructicola) causes blossom blight, twig cankers, and rapid soft brown rot of peach fruits covered with powdery tan-gray spore tufts, turning fruit into hard mummies.",
+      "symptoms": [
+        "Scout blossoms in spring for wilting, browning, and gumming at the base of flower clusters.",
+        "Inspect green and ripening fruit for circular brown spots expanding rapidly within 24-48 hours.",
+        "Monitor weather forecasts for warm, rainy spells coinciding with bloom and pre-harvest ripening."
+      ],
+      "immediate_actions": [
+        "Remove and destroy all rotted fruit from trees and the orchard floor immediately.",
+        "Prune out blighted twigs and gum-exuding cankers back to healthy wood during dry weather.",
+        "Handle ripening peaches gently during picking to prevent micro-punctures and skin tears."
+      ],
+      "prevention": [
+        "Thoroughly clean the orchard of overwintering mummies during winter dormant pruning.",
+        "Thin peach fruitlets early to prevent fruits from touching each other in clusters.",
+        "Prune peach canopies to an open-center vase shape for rapid wind drying and light penetration."
+      ],
+      "monitoring": [
+        "Scout blossoms in spring for wilting, browning, and gumming at the base of flower clusters.",
+        "Inspect green and ripening fruit for circular brown spots expanding rapidly within 24-48 hours.",
+        "Monitor weather forecasts for warm, rainy spells coinciding with bloom and pre-harvest ripening."
+      ],
+      "expert_escalation": "Consult tree fruit extension specialists for critical bloom-period and pre-harvest fungicide timing programs.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 38,
+      "crop_id": "peach",
+      "disease_name": "peach leaf curl",
+      "overview": "Peach leaf curl (Taphrina deformans) causes newly emerging spring leaves to become severely thickened, puckered, curled, and distorted with reddish-yellow pigmentation.",
+      "symptoms": [
+        "Inspect newly expanding leaf buds in early spring for thickening and reddish blistered curls.",
+        "Look for white powdery fungal velvet appearing on distorted leaves before they turn brown and drop.",
+        "Record severity to determine dormant management necessity for the following winter."
+      ],
+      "immediate_actions": [
+        "Maintain tree vigor through supplemental irrigation and balanced fertilizer after infected leaves drop.",
+        "Thin heavy fruit loads on defoliated trees to reduce tree stress.",
+        "Note that in-season foliar spraying is ineffective once leaf distortion is visible; plan dormant treatment."
+      ],
+      "prevention": [
+        "Apply a single thorough dormant spray (copper or lime sulfur) after leaf drop in autumn or before bud swell in late winter.",
+        "Plant leaf curl resistant peach cultivars (such as Frost, Avalon Pride, or Redhaven).",
+        "Ensure all buds and bark crevices are thoroughly wetted during dormant applications."
+      ],
+      "monitoring": [
+        "Inspect newly expanding leaf buds in early spring for thickening and reddish blistered curls.",
+        "Look for white powdery fungal velvet appearing on distorted leaves before they turn brown and drop.",
+        "Record severity to determine dormant management necessity for the following winter."
+      ],
+      "expert_escalation": "Consult orchard extension advisors to determine precise regional dormant spray timing before bud scale separation.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 39,
+      "crop_id": "peach",
+      "disease_name": "peach scab",
+      "overview": "Peach scab (Cladosporium carpophilum) produces small, circular, olive-green to black freckle-like spots on fruit skin, green twigs, and leaves, occasionally causing fruit cracking.",
+      "symptoms": [
+        "Examine one-year-old twigs in winter for small, oval, brown lesions with raised margins.",
+        "Scout developing peaches starting 4-6 weeks after petal fall for tiny olive-green freckles.",
+        "Check the stem end of fruit where moisture lingers longest."
+      ],
+      "immediate_actions": [
+        "Prune out infected twig lesions during regular winter dormant pruning.",
+        "Open up the canopy center to maximize sunlight and airflow around fruit.",
+        "Avoid overhead sprinkler irrigation."
+      ],
+      "prevention": [
+        "Ensure good orchard site selection with adequate air drainage and morning sunlight.",
+        "Maintain open canopy architecture through selective summer shoot pruning.",
+        "Follow regional stone fruit disease management calendars starting at shuck split."
+      ],
+      "monitoring": [
+        "Examine one-year-old twigs in winter for small, oval, brown lesions with raised margins.",
+        "Scout developing peaches starting 4-6 weeks after petal fall for tiny olive-green freckles.",
+        "Check the stem end of fruit where moisture lingers longest."
+      ],
+      "expert_escalation": "Consult local fruit extension specialists if fruit scab blemishes cause significant commercial packing downgrade.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 40,
+      "crop_id": "plum",
+      "disease_name": "plum brown rot",
+      "overview": "Plum brown rot (Monilinia fructicola / laxa) causes blossom blight, branch dieback, and rapid rotting of plums with characteristic concentric rings of grayish-tan fungal spore tufts.",
+      "symptoms": [
+        "Scout plum blossoms during spring for sudden browning and collapse.",
+        "Check ripening plums closely for rapidly expanding soft brown decay spots.",
+        "Track rainy weather periods during the 3 weeks prior to fruit harvest."
+      ],
+      "immediate_actions": [
+        "Collect and dispose of all rotted plums from the canopy and ground immediately.",
+        "Cut out cankered twigs and blighted spurs several inches below visible symptoms.",
+        "Ensure clean, sanitized fruit harvesting bins and gentle fruit handling."
+      ],
+      "prevention": [
+        "Remove all dried mummified fruit from trees during winter pruning operations.",
+        "Thin heavy plum clusters early so fruits do not touch one another.",
+        "Prune plum trees to maintain an open canopy promoting rapid drying after rain."
+      ],
+      "monitoring": [
+        "Scout plum blossoms during spring for sudden browning and collapse.",
+        "Check ripening plums closely for rapidly expanding soft brown decay spots.",
+        "Track rainy weather periods during the 3 weeks prior to fruit harvest."
+      ],
+      "expert_escalation": "Consult stone fruit extension specialists for integrated blossom blight and pre-harvest brown rot management programs.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 41,
+      "crop_id": "potato",
+      "disease_name": "potato early blight",
+      "overview": "Potato early blight (Alternaria solani) causes dark brown to black circular lesions with distinct concentric rings ('target board' pattern) on older lower leaves.",
+      "symptoms": [
+        "Scout lower, older leaves weekly starting after tuber initiation and flowering.",
+        "Look for brown spots with concentric ridges surrounded by narrow chlorotic halos.",
+        "Monitor lesion spread upward through the potato canopy during warm, alternating wet/dry weather."
+      ],
+      "immediate_actions": [
+        "Avoid overhead sprinkler irrigation, or irrigate early in the morning so foliage dries quickly.",
+        "Maintain adequate plant nutrition, especially nitrogen and potassium, to prevent premature plant aging.",
+        "Remove and destroy heavily blighted lower foliage where practical."
+      ],
+      "prevention": [
+        "Plant certified disease-free seed tubers of early-blight tolerant potato cultivars.",
+        "Practice at least a 3-year crop rotation with non-solanaceous crops (cereals, legumes, corn).",
+        "Avoid crop stress from drought, nutrient deficiency, or insect damage."
+      ],
+      "monitoring": [
+        "Scout lower, older leaves weekly starting after tuber initiation and flowering.",
+        "Look for brown spots with concentric ridges surrounded by narrow chlorotic halos.",
+        "Monitor lesion spread upward through the potato canopy during warm, alternating wet/dry weather."
+      ],
+      "expert_escalation": "Consult potato extension agronomists for IPM scouting thresholds and weather-based disease forecasting model guidance.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 42,
+      "crop_id": "potato",
+      "disease_name": "potato late blight",
+      "overview": "Late blight (Phytophthora infestans) is a devastating water mold causing rapidly expanding water-soaked dark lesions on leaves and stems with white mold on leaf undersides, collapsing entire fields.",
+      "symptoms": [
+        "Check daily during cool (10-20°C), wet, foggy conditions with high relative humidity (>90%).",
+        "Examine leaf undersides at the border of lesions for delicate white fungal-like sporulation.",
+        "Inspect stems for dark brown to black greasy water-soaked lesions."
+      ],
+      "immediate_actions": [
+        "Rogue out and destroy infected potato plants immediately; seal them in bags or bury deeply.",
+        "Cease all overhead irrigation immediately.",
+        "Kill potato vines (haulm destruction) at least 2-3 weeks before harvest to prevent tuber infection during digging."
+      ],
+      "prevention": [
+        "Plant exclusively certified disease-free seed tubers; never plant cull pile tubers.",
+        "Eliminate all cull piles and volunteer potato plants around the farm perimeter.",
+        "Select late blight resistant potato cultivars adapted to your region."
+      ],
+      "monitoring": [
+        "Check daily during cool (10-20°C), wet, foggy conditions with high relative humidity (>90%).",
+        "Examine leaf undersides at the border of lesions for delicate white fungal-like sporulation.",
+        "Inspect stems for dark brown to black greasy water-soaked lesions."
+      ],
+      "expert_escalation": "Report suspect late blight immediately to regional agricultural extension authorities or university diagnostic clinics for strain tracking and emergency community alert.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 43,
+      "crop_id": "rice",
+      "disease_name": "rice blast",
+      "overview": "Rice blast (Magnaporthe oryzae / Pyricularia oryzae) causes diamond/spindle-shaped lesions with gray centers on leaves and rots panicle nodes/necks (neck blast), causing severe yield loss.",
+      "symptoms": [
+        "Scout seedling nurseries and tillering rice fields for spindle-shaped spots with pointed ends and gray centers.",
+        "Inspect the collar region where leaf blade meets sheath (collar rot).",
+        "Examine panicle necks at heading stage for blackish-brown lesion girdling (neck blast)."
+      ],
+      "immediate_actions": [
+        "Maintain continuous shallow flooding in the paddy, as water stress strongly predisposes rice to blast.",
+        "Avoid applying excessive top-dress nitrogen fertilizer during active blast outbreaks.",
+        "Ensure proper weed management along field levees to maximize sunlight and airflow."
+      ],
+      "prevention": [
+        "Plant blast-resistant rice varieties recommended by regional rice research stations.",
+        "Treat seeds with hot water or recommended biological agents before sowing nursery beds.",
+        "Apply split nitrogen applications based on leaf color charts (LCC) to avoid lush, succulent growth."
+      ],
+      "monitoring": [
+        "Scout seedling nurseries and tillering rice fields for spindle-shaped spots with pointed ends and gray centers.",
+        "Inspect the collar region where leaf blade meets sheath (collar rot).",
+        "Examine panicle necks at heading stage for blackish-brown lesion girdling (neck blast)."
+      ],
+      "expert_escalation": "Contact rice extension officers or Krishi Vigyan Kendra (KVK) immediately if neck blast symptoms appear at heading stage.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 44,
+      "crop_id": "rice",
+      "disease_name": "rice sheath blight",
+      "overview": "Rice sheath blight (Rhizoctonia solani) produces greenish-gray, oval to irregular water-soaked spots with dark brown margins on lower leaf sheaths, advancing upward into the canopy.",
+      "symptoms": [
+        "Scout lower leaf sheaths at the water line starting from maximum tillering through panicle initiation.",
+        "Look for snake-skin like or 'banded' grayish-green lesions with dark brown borders.",
+        "Check for tiny white-to-brown mustard-seed-like sclerotia forming on infected sheaths."
+      ],
+      "immediate_actions": [
+        "Drain excess standing water temporarily and practice alternate wetting and drying if manageable.",
+        "Avoid excessive nitrogen fertilization that creates dense, humid canopy microclimates.",
+        "Remove grassy weeds from field bunds that act as alternate hosts."
+      ],
+      "prevention": [
+        "Maintain recommended plant spacing and avoid excessive seedling hill density.",
+        "Ensure balanced soil potassium fertilization alongside nitrogen to strengthen cell walls.",
+        "Deep plow fields after harvest to bury sclerotia resting structures into the soil."
+      ],
+      "monitoring": [
+        "Scout lower leaf sheaths at the water line starting from maximum tillering through panicle initiation.",
+        "Look for snake-skin like or 'banded' grayish-green lesions with dark brown borders.",
+        "Check for tiny white-to-brown mustard-seed-like sclerotia forming on infected sheaths."
+      ],
+      "expert_escalation": "Consult local rice agronomists if sheath blight lesions reach the top two leaves (flag leaf) before grain filling.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 45,
+      "crop_id": "soybean",
+      "disease_name": "soybean bacterial blight",
+      "overview": "Soybean bacterial blight (Pseudomonas savastanoi pv. glycinea) produces small, angular, water-soaked spots that turn dark brown to black with yellow halos, tearing away to create ragged leaves.",
+      "symptoms": [
+        "Scout upper canopy leaves following cool, wet, windy weather or hail events.",
+        "Look for small angular brown spots whose centers drop out, leaving a shredded leaf appearance.",
+        "Differentiate from fungal brown spot (Septoria) which primarily affects lower canopy leaves."
+      ],
+      "immediate_actions": [
+        "Avoid field operations (cultivation, spraying) when soybean foliage is wet with rain or dew.",
+        "Do not save seed from severely infected fields for planting next season.",
+        "Ensure balanced crop nutrition to aid recovery of new vegetative flushes."
+      ],
+      "prevention": [
+        "Plant certified pathogen-free soybean seed of tolerant varieties.",
+        "Practice a 1-2 year crop rotation with non-host crops like corn, sorghum, or small grains.",
+        "Incorporate crop residues cleanly with conservation tillage to accelerate residue decomposition."
+      ],
+      "monitoring": [
+        "Scout upper canopy leaves following cool, wet, windy weather or hail events.",
+        "Look for small angular brown spots whose centers drop out, leaving a shredded leaf appearance.",
+        "Differentiate from fungal brown spot (Septoria) which primarily affects lower canopy leaves."
+      ],
+      "expert_escalation": "Consult agricultural extension educators if bacterial blight causes extensive defoliation during early pod-filling (R3-R4) stages.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 46,
+      "crop_id": "soybean",
+      "disease_name": "soybean brown spot",
+      "overview": "Soybean brown spot / Septoria leaf spot (Septoria glycines) causes small, irregular, dark brown spots on both leaf surfaces that coalesce, causing lower leaves to yellow and drop prematurely.",
+      "symptoms": [
+        "Scout lower leaves beginning early in the vegetative season (V2-V4).",
+        "Look for tiny, irregular dark brown lesions surrounded by yellowing leaf tissue.",
+        "Track whether lesions are advancing into the middle and upper canopy during warm, wet seasons."
+      ],
+      "immediate_actions": [
+        "Avoid working in soybean fields while the canopy is wet.",
+        "Maintain good soil drainage to minimize prolonged soil-canopy humidity.",
+        "Ensure proper crop spacing and weed control."
+      ],
+      "prevention": [
+        "Rotate out of soybeans to corn, wheat, or alfalfa for at least one full season.",
+        "Plant high-quality, certified disease-free soybean seed.",
+        "Use tillage to incorporate infected soybean residue where soil conservation practices permit."
+      ],
+      "monitoring": [
+        "Scout lower leaves beginning early in the vegetative season (V2-V4).",
+        "Look for tiny, irregular dark brown lesions surrounded by yellowing leaf tissue.",
+        "Track whether lesions are advancing into the middle and upper canopy during warm, wet seasons."
+      ],
+      "expert_escalation": "Consult field crop advisors if brown spot advances into the upper third of the canopy during pod development.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 47,
+      "crop_id": "soybean",
+      "disease_name": "soybean downy mildew",
+      "overview": "Soybean downy mildew (Peronospora manshurica) produces pale green to light yellow spots on upper leaf surfaces and a grayish-white fluffy mold on leaf undersides in cool, humid weather.",
+      "symptoms": [
+        "Scout young leaves during cool (20-22°C), humid weather periods.",
+        "Inspect the undersides of yellow-spotted leaves for delicate grayish tufts of sporulation.",
+        "Check harvested seed for encrusted whitish-gray fungal oospore crusts."
+      ],
+      "immediate_actions": [
+        "Avoid overhead irrigation during cool, cloudy periods.",
+        "Ensure proper field drainage and air circulation across the field.",
+        "Do not save grain from heavily infected fields for seed stock."
+      ],
+      "prevention": [
+        "Select soybean varieties with specific Rpm resistance genes.",
+        "Use certified, fungicide-treated disease-free seed.",
+        "Rotate crops away from soybeans for at least one year."
+      ],
+      "monitoring": [
+        "Scout young leaves during cool (20-22°C), humid weather periods.",
+        "Inspect the undersides of yellow-spotted leaves for delicate grayish tufts of sporulation.",
+        "Check harvested seed for encrusted whitish-gray fungal oospore crusts."
+      ],
+      "expert_escalation": "Consult crop extension specialists if foliar symptoms spread aggressively across commercial seed production fields.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 48,
+      "crop_id": "soybean",
+      "disease_name": "soybean frog eye leaf spot",
+      "overview": "Frogeye leaf spot (Cercospora sojina) produces circular to angular lesions with tan-to-gray centers and distinct dark reddish-brown borders on soybean leaves, stems, and pods.",
+      "symptoms": [
+        "Scout upper canopy leaves beginning at flowering (R1) through pod development (R5).",
+        "Look for distinctive 'frogeye' spots with silver-gray centers and thin dark-purple borders.",
+        "Inspect developing pods for circular, sunken reddish-brown lesions."
+      ],
+      "immediate_actions": [
+        "Avoid overhead irrigation that prolongs canopy leaf wetness.",
+        "Incorporate crop residues post-harvest to accelerate fungal decay.",
+        "Ensure soybean plants are free from concurrent drought or nutrient stress."
+      ],
+      "prevention": [
+        "Plant frogeye-resistant soybean varieties carrying the Rcs3 resistance gene.",
+        "Rotate out of soybeans to non-host crops (corn, sorghum, small grains) for at least 2 years.",
+        "Plant high-quality, fungicide-treated certified seed."
+      ],
+      "monitoring": [
+        "Scout upper canopy leaves beginning at flowering (R1) through pod development (R5).",
+        "Look for distinctive 'frogeye' spots with silver-gray centers and thin dark-purple borders.",
+        "Inspect developing pods for circular, sunken reddish-brown lesions."
+      ],
+      "expert_escalation": "Consult extension field crop agronomists for fungicide resistance management guidance (strobilurin-resistant strains exist widely).",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 49,
+      "crop_id": "soybean",
+      "disease_name": "soybean mosaic",
+      "overview": "Soybean mosaic virus (SMV), transmitted by aphids and infected seed, causes leaf puckering, distortion, blister-like dark green bubbling, stunting, and brown mottled seed coats.",
+      "symptoms": [
+        "Inspect youngest trifoliate leaves for crinkling, downward curled margins, and dark green vein banding.",
+        "Scout for soybean aphid colonies on leaf undersides and stem terminals.",
+        "Examine harvested seeds for brown or black pigment bleeding from the hilum."
+      ],
+      "immediate_actions": [
+        "Rogue out severely stunted, deformed plants in seed production plots.",
+        "Avoid mechanical damage and do not brush through plants when aphid vectors are active.",
+        "Do NOT use mottled seeds from infected crops for planting."
+      ],
+      "prevention": [
+        "Plant only certified virus-free soybean seed with low seed transmission rates.",
+        "Select soybean varieties possessing genetic resistance to prevalent SMV strains (Rsv genes).",
+        "Manage aphid populations and avoid planting adjacent to other legume virus reservoirs."
+      ],
+      "monitoring": [
+        "Inspect youngest trifoliate leaves for crinkling, downward curled margins, and dark green vein banding.",
+        "Scout for soybean aphid colonies on leaf undersides and stem terminals.",
+        "Examine harvested seeds for brown or black pigment bleeding from the hilum."
+      ],
+      "expert_escalation": "Consult university diagnostic labs for serological/molecular confirmation of SMV vs. Bean Pod Mottle Virus (BPMV).",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 50,
+      "crop_id": "soybean",
+      "disease_name": "soybean rust",
+      "overview": "Asian soybean rust (Phakopsora pachyrhizi) is an aggressive airborne fungal pathogen producing tiny volcano-shaped pustules on leaf undersides, causing rapid yellowing and devastating defoliation.",
+      "symptoms": [
+        "Scout the lower canopy (shaded leaves) starting at flowering (R1) with a 10x-20x hand lens.",
+        "Look for tiny, raised, tan-to-brown volcano-like pustules (uredinia) on the leaf underside.",
+        "Distinguish from bacterial pustule (which lacks the open central pore of rust)."
+      ],
+      "immediate_actions": [
+        "Scout fields intensively and report suspect pustules immediately to extension specialists.",
+        "Avoid late planting dates that align pod-filling stages with peak airborne spore arrival.",
+        "Eliminate kudzu and volunteer legume weeds around field borders."
+      ],
+      "prevention": [
+        "Plant early-maturing soybean varieties early in the planting window to escape late-season rust pressure.",
+        "Utilize soybean cultivars with multiple rust-tolerance genes where commercially available.",
+        "Monitor regional spore trapping and sentinel plot network alerts."
+      ],
+      "monitoring": [
+        "Scout the lower canopy (shaded leaves) starting at flowering (R1) with a 10x-20x hand lens.",
+        "Look for tiny, raised, tan-to-brown volcano-like pustules (uredinia) on the leaf underside.",
+        "Distinguish from bacterial pustule (which lacks the open central pore of rust)."
+      ],
+      "expert_escalation": "Immediately contact regional agricultural extension authorities or national rust monitoring networks upon first confirmed detection in your county/district.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 51,
+      "crop_id": "squash",
+      "disease_name": "squash powdery mildew",
+      "overview": "Squash powdery mildew (Podosphaera xanthii) produces prominent white talcum-powder-like fungal patches on leaf blades and petioles, leading to yellowing, browning, and reduced fruit yield.",
+      "symptoms": [
+        "Inspect lower, older leaves and dense inner canopy foliage weekly.",
+        "Look for faint, round, white powdery spots on both upper and lower leaf surfaces.",
+        "Scout more frequently during warm (20-28°C), dry weather with high relative humidity."
+      ],
+      "immediate_actions": [
+        "Prune heavily shaded, older bottom leaves to improve canopy airflow and light penetration.",
+        "Ensure plants are well-watered at the roots, as water-stressed cucurbits are more vulnerable.",
+        "Remove severely colonized senescing leaves from greenhouse facilities."
+      ],
+      "prevention": [
+        "Grow squash varieties with high genetic resistance to powdery mildew (PMR).",
+        "Maintain adequate plant spacing in open fields and high-tunnel environments.",
+        "Avoid excessive applications of high-nitrogen fertilizer that promote dense, succulent foliage."
+      ],
+      "monitoring": [
+        "Inspect lower, older leaves and dense inner canopy foliage weekly.",
+        "Look for faint, round, white powdery spots on both upper and lower leaf surfaces.",
+        "Scout more frequently during warm (20-28°C), dry weather with high relative humidity."
+      ],
+      "expert_escalation": "Consult agricultural extension advisors for approved bio-fungicides (e.g., potassium bicarbonate, horticultural oils) and preventative spray schedules.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 52,
+      "crop_id": "tobacco",
+      "disease_name": "tobacco brown spot",
+      "overview": "Tobacco brown spot (Alternaria alternata) produces circular brown spots with concentric rings surrounded by bright yellow halos on mature tobacco leaves, reducing cured leaf quality.",
+      "symptoms": [
+        "Scout lower leaves as they begin ripening for small circular brown spots with concentric rings.",
+        "Examine leaf spots for bright yellow chlorotic halos expanding in warm, humid weather.",
+        "Monitor upper leaves during extended rainy periods before topping."
+      ],
+      "immediate_actions": [
+        "Harvest ripe lower leaves promptly without delay.",
+        "Avoid overhead sprinkler irrigation; irrigate only at base if needed.",
+        "Destroy and plow under crop stalks immediately after the final harvest."
+      ],
+      "prevention": [
+        "Plant brown-spot tolerant tobacco cultivars.",
+        "Ensure balanced fertilization; avoid both nitrogen deficiency (premature aging) and excess nitrogen.",
+        "Maintain wide plant spacing to facilitate rapid drying of leaf surfaces."
+      ],
+      "monitoring": [
+        "Scout lower leaves as they begin ripening for small circular brown spots with concentric rings.",
+        "Examine leaf spots for bright yellow chlorotic halos expanding in warm, humid weather.",
+        "Monitor upper leaves during extended rainy periods before topping."
+      ],
+      "expert_escalation": "Consult tobacco research board agronomists or extension agents for harvest timing and post-harvest residue management.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 53,
+      "crop_id": "tomato",
+      "disease_name": "tomato bacterial leaf spot",
+      "overview": "Bacterial leaf spot (Xanthomonas spp.) causes small, water-soaked, dark brown-to-black angular spots on tomato foliage, stems, and raised scab-like spots on green fruits.",
+      "symptoms": [
+        "Scout transplants in nursery greenhouses before transplanting to open fields.",
+        "Inspect lower leaf surfaces for tiny, dark, angular water-soaked spots with yellow halos.",
+        "Check green fruits after rainstorms for raised, brown, scabby, blister-like spots."
+      ],
+      "immediate_actions": [
+        "Cease overhead irrigation immediately; use drip irrigation under plastic mulch.",
+        "Avoid handling, staking, pruning, or cultivating tomato plants while foliage is wet.",
+        "Remove and destroy severely infected seedling trays or isolated infected plants in fields."
+      ],
+      "prevention": [
+        "Plant certified disease-free, hot-water-treated tomato seed or inspected transplants.",
+        "Practice at least a 2-3 year crop rotation away from solanaceous crops (pepper, potato, eggplant).",
+        "Sterilize plant stakes, trellising clips, and pruning tools with a 10% sanitizing solution."
+      ],
+      "monitoring": [
+        "Scout transplants in nursery greenhouses before transplanting to open fields.",
+        "Inspect lower leaf surfaces for tiny, dark, angular water-soaked spots with yellow halos.",
+        "Check green fruits after rainstorms for raised, brown, scabby, blister-like spots."
+      ],
+      "expert_escalation": "Consult your local agricultural extension service or university diagnostic clinic for copper-tolerance testing and integrated bactericide recommendations.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 54,
+      "crop_id": "tomato",
+      "disease_name": "tomato early blight",
+      "overview": "Tomato early blight (Alternaria solani) causes dark brown circular spots with characteristic concentric rings ('target board' pattern) surrounded by yellow halos on older lower leaves.",
+      "symptoms": [
+        "Scout lower, older leaves weekly starting at fruit set.",
+        "Look for brown circular lesions displaying distinct concentric ridges and chlorotic borders.",
+        "Examine stems for dark, sunken collar rot lesions near the soil line."
+      ],
+      "immediate_actions": [
+        "Prune and remove infected lower leaves touching or close to the soil surface.",
+        "Apply organic or plastic mulch around plant bases to prevent soil-splash onto lower foliage.",
+        "Water exclusively at the base using drip irrigation; avoid wetting the canopy."
+      ],
+      "prevention": [
+        "Select early blight tolerant tomato varieties.",
+        "Implement a 3-year crop rotation with non-solanaceous crops (beans, corn, brassicas).",
+        "Stake and cage tomato plants to elevate foliage off the ground and enhance air circulation."
+      ],
+      "monitoring": [
+        "Scout lower, older leaves weekly starting at fruit set.",
+        "Look for brown circular lesions displaying distinct concentric ridges and chlorotic borders.",
+        "Examine stems for dark, sunken collar rot lesions near the soil line."
+      ],
+      "expert_escalation": "Consult local extension agronomists or Krishi Vigyan Kendra (KVK) for bio-fungicide options and weather-based spray scheduling.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 55,
+      "crop_id": "tomato",
+      "disease_name": "tomato late blight",
+      "overview": "Tomato late blight (Phytophthora infestans) is an aggressive water mold causing large, irregular, dark water-soaked greasy lesions on leaves, dark brown stem cankers, and firm rotting fruit.",
+      "symptoms": [
+        "Scout daily during cool (10-20°C), damp, cloudy, or foggy weather spells.",
+        "Inspect leaf undersides around dark lesions early in the morning for delicate white fuzzy mold.",
+        "Check stems and green fruit for greasy, bronze-to-brown firm lesions."
+      ],
+      "immediate_actions": [
+        "Remove and destroy infected plants immediately; bag them on-site to prevent dispersing sporangia.",
+        "Stop overhead irrigation and maintain dry foliage.",
+        "Do NOT compost late blight infected vines or fruit."
+      ],
+      "prevention": [
+        "Plant late-blight resistant tomato varieties (e.g., Mountain Magic, Defiant, Iron Lady).",
+        "Ensure wide plant spacing and plant on well-drained raised beds with good sunlight.",
+        "Eradicate volunteer tomato and potato plants around field edges."
+      ],
+      "monitoring": [
+        "Scout daily during cool (10-20°C), damp, cloudy, or foggy weather spells.",
+        "Inspect leaf undersides around dark lesions early in the morning for delicate white fuzzy mold.",
+        "Check stems and green fruit for greasy, bronze-to-brown firm lesions."
+      ],
+      "expert_escalation": "Report suspect tomato late blight immediately to your local agricultural extension service for community alert and pathogen tracking.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 56,
+      "crop_id": "tomato",
+      "disease_name": "tomato leaf mold",
+      "overview": "Tomato leaf mold (Passalora fulva / Cladosporium fulvum) causes pale green to yellowish spots on upper leaf surfaces and velvety olive-green to brown fungal growth on corresponding undersides.",
+      "symptoms": [
+        "Scout older, lower leaves inside high tunnels and greenhouses weekly.",
+        "Look for indistinct pale yellow spots on upper leaf surfaces with velvety brown mold beneath.",
+        "Check relative humidity monitors in protected cultivation structures."
+      ],
+      "immediate_actions": [
+        "Increase greenhouse ventilation and run circulation fans to reduce relative humidity below 85%.",
+        "Prune lower suckers and dense leaves to improve air movement through the tomato canopy.",
+        "Avoid overhead watering; irrigate strictly at the base."
+      ],
+      "prevention": [
+        "Select greenhouse tomato varieties with high resistance (Cf genes) to leaf mold.",
+        "Maintain adequate spacing between plants and rows in protected structures.",
+        "Heat and ventilate high tunnels in the evening to prevent dew formation on leaves."
+      ],
+      "monitoring": [
+        "Scout older, lower leaves inside high tunnels and greenhouses weekly.",
+        "Look for indistinct pale yellow spots on upper leaf surfaces with velvety brown mold beneath.",
+        "Check relative humidity monitors in protected cultivation structures."
+      ],
+      "expert_escalation": "Consult greenhouse vegetable specialists for environmental climate-control strategies and approved bio-fungicide treatments.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 57,
+      "crop_id": "tomato",
+      "disease_name": "tomato mosaic virus",
+      "overview": "Tomato mosaic virus (ToMV) is a highly stable, mechanically transmitted virus causing light-and-dark green mosaic mottling, leaf distortion ('shoestring' or 'fern-leaf'), and stunted growth.",
+      "symptoms": [
+        "Inspect young expanding leaves for mosaic patterns, blistering, and narrow distorted growth.",
+        "Check fruits for internal brown necrotic rings (browning of the vascular wall).",
+        "Scout nursery flats before transplanting into field or greenhouse."
+      ],
+      "immediate_actions": [
+        "Rogue out and destroy infected plants immediately; handle carefully without touching healthy plants.",
+        "Wash hands and tools thoroughly with soap and water or skim milk solution after touching plants.",
+        "Prohibit tobacco use (smoking/chewing) near tomato greenhouses and fields."
+      ],
+      "prevention": [
+        "Plant certified ToMV-resistant tomato hybrids (look for 'T' or 'ToMV' on seed packets).",
+        "Disinfect trellising stakes, pruning knives, and seedling trays with a 10% bleach solution.",
+        "Use certified virus-free seed treated with trisodium phosphate (TSP) or dry heat."
+      ],
+      "monitoring": [
+        "Inspect young expanding leaves for mosaic patterns, blistering, and narrow distorted growth.",
+        "Check fruits for internal brown necrotic rings (browning of the vascular wall).",
+        "Scout nursery flats before transplanting into field or greenhouse."
+      ],
+      "expert_escalation": "Consult plant pathology diagnostic labs for serological (ELISA) testing to differentiate ToMV from TMV and CMV.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 58,
+      "crop_id": "tomato",
+      "disease_name": "tomato septoria leaf spot",
+      "overview": "Septoria leaf spot (Septoria lycopersici) produces numerous small, circular spots with gray or tan centers, dark brown borders, and tiny black fruiting bodies (pycnidia) on lower leaves.",
+      "symptoms": [
+        "Scout lower, older leaves weekly starting after transplanting.",
+        "Examine spots with a magnifying hand lens for tiny black specks (pycnidia) in spot centers.",
+        "Track the upward movement of leaf yellowing and defoliation."
+      ],
+      "immediate_actions": [
+        "Prune and remove infected lower leaves to slow upward progression of the disease.",
+        "Apply mulch around plant bases to suppress fungal spore splashing from soil.",
+        "Water only at ground level with drip irrigation; keep tomato foliage completely dry."
+      ],
+      "prevention": [
+        "Implement a 3-year crop rotation with non-solanaceous crops.",
+        "Stake and trellis tomato plants to maximize canopy airflow and sun exposure.",
+        "Incorporate or remove tomato crop debris promptly after the final harvest."
+      ],
+      "monitoring": [
+        "Scout lower, older leaves weekly starting after transplanting.",
+        "Examine spots with a magnifying hand lens for tiny black specks (pycnidia) in spot centers.",
+        "Track the upward movement of leaf yellowing and defoliation."
+      ],
+      "expert_escalation": "Consult local vegetable extension educators for preventative protective spray schedules during extended wet periods.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 59,
+      "crop_id": "tomato",
+      "disease_name": "tomato yellow leaf curl virus",
+      "overview": "Tomato yellow leaf curl virus (TYLCV), vectored by the silverleaf whitefly (Bemisia tabaci), causes severe plant stunting, erect cupped leaves with yellow margins, and massive flower drop.",
+      "symptoms": [
+        "Inspect new shoot flushes for cupped, small, pale yellow leaves with prominent curled margins.",
+        "Check the undersides of young leaves for tiny whitefly adults and flat translucent nymphs.",
+        "Look for aborted flowers and drastic reduction in fruit setting."
+      ],
+      "immediate_actions": [
+        "Rogue out and bag infected plants immediately to prevent whiteflies from acquiring the virus.",
+        "Deploy yellow sticky cards across the field or greenhouse to monitor whitefly populations.",
+        "Eradicate weed hosts (such as nightshades and malvaceous weeds) surrounding the tomato field."
+      ],
+      "prevention": [
+        "Plant TYLCV-resistant tomato hybrids possessing Ty-1, Ty-2, or Ty-3 resistance genes.",
+        "Use insect-proof netting (50-mesh) on nursery greenhouses to produce virus-free transplants.",
+        "Establish reflective silver plastic mulches that repel incoming whitefly vectors."
+      ],
+      "monitoring": [
+        "Inspect new shoot flushes for cupped, small, pale yellow leaves with prominent curled margins.",
+        "Check the undersides of young leaves for tiny whitefly adults and flat translucent nymphs.",
+        "Look for aborted flowers and drastic reduction in fruit setting."
+      ],
+      "expert_escalation": "Engage regional agricultural extension officers or Krishi Vigyan Kendra (KVK) for integrated whitefly vector management and regional planting windows.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 60,
+      "crop_id": "wheat",
+      "disease_name": "wheat bacterial leaf streak (black chaff)",
+      "overview": "Bacterial leaf streak / black chaff (Xanthomonas translucens) causes narrow, water-soaked translucent streaks on leaves that turn brown, and dark purple-black stripes on glumes and awns.",
+      "symptoms": [
+        "Scout leaves after warm, wet, windy storms for water-soaked linear streaks.",
+        "Look for small droplets of milky-white bacterial exudate on leaves drying into shiny scales.",
+        "Inspect wheat heads for dark brown to black longitudinal streaks on glumes (black chaff)."
+      ],
+      "immediate_actions": [
+        "Avoid overhead irrigation or working in wheat fields when plants are wet.",
+        "Do NOT save seed from infected fields for next season's crop.",
+        "Ensure proper balanced fertilization without excess nitrogen."
+      ],
+      "prevention": [
+        "Plant certified, disease-free seed tested for Xanthomonas contamination.",
+        "Select wheat cultivars with known tolerance to bacterial leaf streak.",
+        "Rotate out of small grains for at least 1-2 years to non-host broadleaf crops."
+      ],
+      "monitoring": [
+        "Scout leaves after warm, wet, windy storms for water-soaked linear streaks.",
+        "Look for small droplets of milky-white bacterial exudate on leaves drying into shiny scales.",
+        "Inspect wheat heads for dark brown to black longitudinal streaks on glumes (black chaff)."
+      ],
+      "expert_escalation": "Consult university or extension cereal pathologists for seed-lot testing and regional cultivar resistance ratings.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 61,
+      "crop_id": "wheat",
+      "disease_name": "wheat head scab",
+      "overview": "Fusarium head blight / Head scab (Fusarium graminearum) causes premature bleaching of spikelets in the wheat head, salmon-pink spore masses, and produces harmful mycotoxins (DON/vomitoxin).",
+      "symptoms": [
+        "Track regional Fusarium Head Blight Risk Assessment forecasting tools during wheat flowering (anthesis / Feekes 10.5.1).",
+        "Scout wheat fields 2-3 weeks post-anthesis for bleached spikelets contrasting against green heads.",
+        "Check bleached spikelet bases for salmon-pink or orange spore masses."
+      ],
+      "immediate_actions": [
+        "Adjust combine harvester fan speed at harvest to blow out lightweight, shriveled, scab-damaged 'tombstone' kernels.",
+        "Test harvested grain for deoxynivalenol (DON) mycotoxin levels before feeding livestock or selling.",
+        "Store grain at moisture levels below 13% to halt further fungal growth."
+      ],
+      "prevention": [
+        "Plant moderately resistant wheat varieties recommended by local cereal breeding programs.",
+        "Avoid planting wheat directly into corn stubble without tillage or rotational breaks.",
+        "Stagger planting dates or select varieties with different flowering times to spread flowering risk."
+      ],
+      "monitoring": [
+        "Track regional Fusarium Head Blight Risk Assessment forecasting tools during wheat flowering (anthesis / Feekes 10.5.1).",
+        "Scout wheat fields 2-3 weeks post-anthesis for bleached spikelets contrasting against green heads.",
+        "Check bleached spikelet bases for salmon-pink or orange spore masses."
+      ],
+      "expert_escalation": "Consult certified agronomists or extension cereal specialists regarding targeted anthesis fungicide applications and grain mycotoxin testing.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 62,
+      "crop_id": "wheat",
+      "disease_name": "wheat leaf rust",
+      "overview": "Wheat leaf rust / Brown rust (Puccinia triticina) produces small, round-to-oval orange-brown powdery pustules scattered randomly on the upper surfaces of wheat leaves.",
+      "symptoms": [
+        "Scout upper canopy and flag leaves weekly starting at stem elongation through grain filling.",
+        "Look for circular-to-oval orange-brown pustules that rub off as rusty powder on fingers.",
+        "Assess rust severity on the critical flag leaf."
+      ],
+      "immediate_actions": [
+        "Destroy volunteer wheat plants ('green bridge') before planting the new season crop.",
+        "Ensure balanced soil fertilization and avoid excessive late-season nitrogen applications.",
+        "Maintain proper field drainage."
+      ],
+      "prevention": [
+        "Plant wheat cultivars with multi-gene adult plant resistance (APR) to leaf rust.",
+        "Time planting within recommended regional windows to avoid early-season airborne rust spore showers.",
+        "Rotate wheat with non-cereal broadleaf crops."
+      ],
+      "monitoring": [
+        "Scout upper canopy and flag leaves weekly starting at stem elongation through grain filling.",
+        "Look for circular-to-oval orange-brown pustules that rub off as rusty powder on fingers.",
+        "Assess rust severity on the critical flag leaf."
+      ],
+      "expert_escalation": "Consult cereal extension specialists if leaf rust pustules appear on the flag-2 leaf prior to heading.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 63,
+      "crop_id": "wheat",
+      "disease_name": "wheat loose smut",
+      "overview": "Wheat loose smut (Ustilago tritici) transforms all head floral parts into a powdery mass of olive-black teliospores, leaving only a bare rachis at harvest.",
+      "symptoms": [
+        "Scout wheat fields at head emergence (heading stage) for completely blackened, powdery heads.",
+        "Observe heads emerging slightly earlier than normal healthy heads.",
+        "Check for bare, naked central stems (rachises) remaining after wind blows spores away."
+      ],
+      "immediate_actions": [
+        "Do NOT save seed from loose smut affected fields for replanting.",
+        "Rogue out smutted heads in small seed-multiplication plots before spores disperse.",
+        "Ensure harvested grain is kept clean from smutted residues."
+      ],
+      "prevention": [
+        "Plant exclusively certified disease-free seed treated with systemic seed-treatment fungicides.",
+        "Select resistant wheat cultivars adapted to your region.",
+        "Perform seed germination and health testing prior to sowing."
+      ],
+      "monitoring": [
+        "Scout wheat fields at head emergence (heading stage) for completely blackened, powdery heads.",
+        "Observe heads emerging slightly earlier than normal healthy heads.",
+        "Check for bare, naked central stems (rachises) remaining after wind blows spores away."
+      ],
+      "expert_escalation": "Consult seed certification agencies and extension agronomists for certified seed sources and systemic seed dressing options.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 64,
+      "crop_id": "wheat",
+      "disease_name": "wheat powdery mildew",
+      "overview": "Wheat powdery mildew (Blumeria graminis f. sp. tritici) produces white-to-gray fluffy patches of fungal mycelium on lower leaves, stems, and heads, causing premature leaf yellowing.",
+      "symptoms": [
+        "Scout lower leaves and stems inside dense canopy zones during cool (15-20°C), humid weather.",
+        "Look for white powdery patches turning gray with tiny black speckles (cleistothecia) embedded later.",
+        "Monitor upward progress toward the upper two leaves."
+      ],
+      "immediate_actions": [
+        "Avoid applying excess nitrogen fertilizer that creates dense, lush, susceptible crop canopies.",
+        "Ensure proper weed control to maximize airflow through the wheat stand.",
+        "Maintain balanced soil potassium and phosphorus levels."
+      ],
+      "prevention": [
+        "Plant powdery-mildew resistant wheat cultivars (Pm genes).",
+        "Avoid over-dense seeding rates to prevent overcrowded, humid microclimates.",
+        "Rotate crops away from small grains for at least one season."
+      ],
+      "monitoring": [
+        "Scout lower leaves and stems inside dense canopy zones during cool (15-20°C), humid weather.",
+        "Look for white powdery patches turning gray with tiny black speckles (cleistothecia) embedded later.",
+        "Monitor upward progress toward the upper two leaves."
+      ],
+      "expert_escalation": "Consult cereal extension specialists if powdery mildew spreads to the flag-1 or flag leaf before flowering.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 65,
+      "crop_id": "wheat",
+      "disease_name": "wheat septoria blotch",
+      "overview": "Septoria tritici blotch (Zymoseptoria tritici) produces irregular, rectangular tan-to-brown lesions speckled with distinct tiny black fruiting bodies (pycnidia) on wheat leaves.",
+      "symptoms": [
+        "Scout lower leaves early in the spring for yellowish flecks expanding into tan rectangular blotches.",
+        "Use a 10x hand lens to confirm the presence of tiny black pimple-like pycnidia within lesions.",
+        "Track rain events during stem elongation that splash spores upward to upper leaves."
+      ],
+      "immediate_actions": [
+        "Incorporate or bury wheat crop residues post-harvest to reduce primary inoculum.",
+        "Avoid excessive nitrogen that produces thick, slow-drying crop canopies.",
+        "Ensure adequate field drainage."
+      ],
+      "prevention": [
+        "Plant septoria-resistant or tolerant wheat cultivars adapted to your region.",
+        "Practice at least a 1-year rotation to non-host crops (canola, pulses, corn).",
+        "Avoid very early autumn or spring sowing dates that expose young wheat to high spore levels."
+      ],
+      "monitoring": [
+        "Scout lower leaves early in the spring for yellowish flecks expanding into tan rectangular blotches.",
+        "Use a 10x hand lens to confirm the presence of tiny black pimple-like pycnidia within lesions.",
+        "Track rain events during stem elongation that splash spores upward to upper leaves."
+      ],
+      "expert_escalation": "Consult extension agronomists if septoria lesions advance to the flag-2 leaf during flag leaf emergence (Feekes 8-9).",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 66,
+      "crop_id": "wheat",
+      "disease_name": "wheat stem rust",
+      "overview": "Wheat stem rust / Black rust (Puccinia graminis f. sp. tritici) produces large, elongated reddish-brown powdery pustules on stems, leaf sheaths, and glumes, causing lodging and total crop collapse.",
+      "symptoms": [
+        "Scout true stems and leaf sheaths weekly from jointing through dough stages.",
+        "Look for large, rough, diamond-shaped reddish-brown pustules that rupture the epidermis with ragged edges.",
+        "Check for black teliospore stages developing late in the season."
+      ],
+      "immediate_actions": [
+        "Eradicate barberry (Berberis vulgaris) and mahonia alternate host bushes near wheat fields.",
+        "Destroy volunteer wheat and grassy weeds that provide a 'green bridge' for rust survival.",
+        "Report suspect stem rust occurrences immediately to cereal pathology authorities."
+      ],
+      "prevention": [
+        "Plant stem rust resistant wheat varieties (such as those carrying Sr2-complex or Ug99-effective resistance genes).",
+        "Sow early-maturing varieties to escape late-season epidemic peaks.",
+        "Support regional cereal rust surveillance and trap-plot monitoring networks."
+      ],
+      "monitoring": [
+        "Scout true stems and leaf sheaths weekly from jointing through dough stages.",
+        "Look for large, rough, diamond-shaped reddish-brown pustules that rupture the epidermis with ragged edges.",
+        "Check for black teliospore stages developing late in the season."
+      ],
+      "expert_escalation": "Immediately contact national cereal rust surveillance programs and extension specialists upon any suspected stem rust finding.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 67,
+      "crop_id": "wheat",
+      "disease_name": "wheat stripe rust",
+      "overview": "Stripe rust / Yellow rust (Puccinia striiformis) produces bright yellow-orange powdery pustules arranged in narrow, parallel stripes along the leaf veins of adult wheat plants.",
+      "symptoms": [
+        "Scout early in spring on lower leaves and south-facing slopes or sheltered field spots.",
+        "Look for distinctive long, narrow yellow stripes of powdery pustules running parallel along veins.",
+        "Check upper canopy and flag leaves closely as temperatures warm."
+      ],
+      "immediate_actions": [
+        "Eradicate volunteer wheat plants before the new planting season.",
+        "Avoid excessive nitrogen fertilization that extends vegetative vulnerability in cool weather.",
+        "Monitor weather forecasts for cool (10-15°C), moist, dewy conditions."
+      ],
+      "prevention": [
+        "Plant stripe-rust resistant wheat cultivars carrying durable adult plant resistance (Yr genes).",
+        "Adopt diversified wheat variety plantings across different field blocks to slow pathogen adaptation.",
+        "Follow regional disease forecasting and early alert warnings."
+      ],
+      "monitoring": [
+        "Scout early in spring on lower leaves and south-facing slopes or sheltered field spots.",
+        "Look for distinctive long, narrow yellow stripes of powdery pustules running parallel along veins.",
+        "Check upper canopy and flag leaves closely as temperatures warm."
+      ],
+      "expert_escalation": "Contact cereal extension agronomists or Krishi Vigyan Kendra (KVK) immediately if stripe rust is detected prior to heading.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 68,
+      "crop_id": "zucchini",
+      "disease_name": "zucchini bacterial wilt",
+      "overview": "Bacterial wilt (Erwinia tracheiphila), transmitted by cucumber beetles, causes rapid wilting and collapse of zucchini leaves and vines as bacteria block vascular xylem vessels.",
+      "symptoms": [
+        "Inspect seedling emergence daily for striped and spotted cucumber beetle feeding.",
+        "Check for sudden daytime wilting of individual leaves or entire runners that fails to recover overnight.",
+        "Scout perimeter rows closest to grassy or wooded field borders."
+      ],
+      "immediate_actions": [
+        "Rogue out and destroy wilted plants immediately to prevent beetle vectors from acquiring and spreading bacteria.",
+        "Deploy yellow sticky traps and monitor cucumber beetle populations closely.",
+        "Perform a field sap stringing test on cut stem ends to check for viscous bacterial strands."
+      ],
+      "prevention": [
+        "Install floating row covers over young zucchini transplants until flowering begins.",
+        "Manage early-season cucumber beetle populations with IPM exclusion and trapping.",
+        "Eliminate cucurbit weed hosts around field margins."
+      ],
+      "monitoring": [
+        "Inspect seedling emergence daily for striped and spotted cucumber beetle feeding.",
+        "Check for sudden daytime wilting of individual leaves or entire runners that fails to recover overnight.",
+        "Scout perimeter rows closest to grassy or wooded field borders."
+      ],
+      "expert_escalation": "Consult vegetable extension specialists for integrated beetle vector management and resistant squash/zucchini variety options.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 69,
+      "crop_id": "zucchini",
+      "disease_name": "zucchini powdery mildew",
+      "overview": "Powdery mildew (Podosphaera xanthii) produces white talcum-powder-like fungal patches on zucchini leaves and stems, causing premature leaf yellowing, browning, and reduced fruit yield.",
+      "symptoms": [
+        "Inspect lower, older leaves and dense inner canopy foliage weekly.",
+        "Look for faint, round, white powdery spots on both upper and lower leaf surfaces.",
+        "Scout more frequently during warm (20-28°C), dry weather with high relative humidity."
+      ],
+      "immediate_actions": [
+        "Prune heavily shaded, older bottom leaves to improve canopy airflow and light penetration.",
+        "Ensure plants are well-watered at the roots, as water-stressed cucurbits are more vulnerable.",
+        "Remove severely colonized senescing leaves from greenhouse facilities."
+      ],
+      "prevention": [
+        "Grow zucchini varieties with high genetic resistance to powdery mildew (PMR).",
+        "Maintain adequate plant spacing in open fields and high-tunnel environments.",
+        "Avoid excessive applications of high-nitrogen fertilizer that promote dense, succulent foliage."
+      ],
+      "monitoring": [
+        "Inspect lower, older leaves and dense inner canopy foliage weekly.",
+        "Look for faint, round, white powdery spots on both upper and lower leaf surfaces.",
+        "Scout more frequently during warm (20-28°C), dry weather with high relative humidity."
+      ],
+      "expert_escalation": "Consult agricultural extension advisors for approved bio-fungicides (e.g., potassium bicarbonate, horticultural oils) and preventative spray schedules.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    },
+    {
+      "disease_id": 70,
+      "crop_id": "zucchini",
+      "disease_name": "zucchini yellow mosaic virus",
+      "overview": "Zucchini yellow mosaic virus (ZYMV), transmitted by aphids, causes severe leaf mosaic, blistering, shoe-string leaf distortion, stunted growth, and severely knobby deformed fruit.",
+      "symptoms": [
+        "Inspect young expanding leaves for yellow mosaic mottling, bubbling, and strap-like distortion.",
+        "Examine developing zucchini fruits for extreme knobby, bumpy surface malformations.",
+        "Scout for aphid colonies on leaf undersides and growing tips."
+      ],
+      "immediate_actions": [
+        "Rogue out and destroy infected plants immediately upon first symptom detection.",
+        "Do NOT compost virus-infected plants near active cucurbit plantings.",
+        "Control aphid populations using reflective silver mulches and IPM practices."
+      ],
+      "prevention": [
+        "Plant ZYMV-resistant zucchini hybrids (carrying multi-virus resistance).",
+        "Apply reflective silver plastic mulch to deter winged aphid vectors from landing.",
+        "Eliminate perennial weed reservoirs (such as wild cucurbits) around field borders."
+      ],
+      "monitoring": [
+        "Inspect young expanding leaves for yellow mosaic mottling, bubbling, and strap-like distortion.",
+        "Examine developing zucchini fruits for extreme knobby, bumpy surface malformations.",
+        "Scout for aphid colonies on leaf undersides and growing tips."
+      ],
+      "expert_escalation": "Consult horticultural extension specialists for virus strain identification and regional cucurbit virus management guidelines.",
+      "safety_note": "Verify symptoms on the plant before taking cultural actions. For chemical treatments or severe outbreaks, consult local Krishi Vigyan Kendra (KVK) or agricultural extension officers."
+    }
+  ]
+}

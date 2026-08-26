@@ -14,6 +14,9 @@ data class FarmEntity(
     val farmAreaUnit: String,
     val soilType: String,
     val currentCrop: String,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val locationAccuracyMeters: Float? = null,
     val createdAt: Long = System.currentTimeMillis(),
     val updatedAt: Long = System.currentTimeMillis(),
 )

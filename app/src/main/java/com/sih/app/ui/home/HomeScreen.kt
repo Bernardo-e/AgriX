@@ -1,6 +1,7 @@
 package com.sih.app.ui.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -52,6 +53,7 @@ fun HomeScreen(
     viewModel: HomeViewModel,
     onConnectSensor: () -> Unit,
     onNavigateToAi: () -> Unit,
+    onEditFarm: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -60,6 +62,7 @@ fun HomeScreen(
         uiState = uiState,
         onConnectSensor = onConnectSensor,
         onNavigateToAi = onNavigateToAi,
+        onEditFarm = onEditFarm,
         modifier = modifier,
     )
 }
@@ -69,6 +72,7 @@ fun HomeScreenContent(
     uiState: HomeUiState,
     onConnectSensor: () -> Unit,
     onNavigateToAi: () -> Unit,
+    onEditFarm: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -96,6 +100,8 @@ fun HomeScreenContent(
                     isSensorConnected = uiState.isSensorConnected,
                     connectedDeviceName = uiState.connectedDeviceName,
                     onConnectSensor = onConnectSensor,
+                    onNavigateToAi = onNavigateToAi,
+                    onEditFarm = onEditFarm,
                     modifier = Modifier.padding(innerPadding),
                 )
             }
@@ -123,6 +129,8 @@ private fun HomeDashboardBody(
     isSensorConnected: Boolean,
     connectedDeviceName: String?,
     onConnectSensor: () -> Unit,
+    onNavigateToAi: () -> Unit,
+    onEditFarm: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
@@ -189,7 +197,9 @@ private fun HomeDashboardBody(
 
         // Your Farm Card
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onEditFarm() },
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -210,16 +220,32 @@ private fun HomeDashboardBody(
                         style = MaterialTheme.typography.titleMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
-                    Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                    ) {
-                        Text(
-                            text = soilDisplayName,
-                            style = MaterialTheme.typography.labelMedium,
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
+                            color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
+                        ) {
+                            Text(
+                                text = soilDisplayName,
+                                style = MaterialTheme.typography.labelMedium,
+                                color = MaterialTheme.colorScheme.primary,
+                                modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                            )
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Surface(
+                            shape = RoundedCornerShape(8.dp),
                             color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
-                        )
+                            modifier = Modifier.clickable { onEditFarm() },
+                        ) {
+                            Text(
+                                text = stringResource(R.string.edit_profile_btn),
+                                style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = androidx.compose.ui.graphics.Color.White,
+                                modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            )
+                        }
                     }
                 }
 
@@ -382,7 +408,9 @@ private fun HomeDashboardBody(
 
         // AgriX AI Section
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onNavigateToAi() },
             shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer,

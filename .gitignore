@@ -9,3 +9,40 @@
 .cxx
 local.properties
 
+# Environment Variables & Secrets
+.env
+*.env
+.env.*
+!.env.example
+
+# Python & Backend Artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+.pytest_cache/
+
+# ML Data & Model Binaries (Do not commit large datasets or heavy training weights)
+ml/data/raw/*
+!ml/data/raw/.gitkeep
+ml/data/processed/*
+!ml/data/processed/.gitkeep
+ml/models/*
+!ml/models/.gitkeep
+ml/reports/*
+!ml/reports/.gitkeep
+*.pt
+*.pth
+*.h5
+*.onnx
+*.tflite
+*.pb
+*.ckpt
+
+# Allow Android production asset models bundled with app
+!app/src/main/assets/*.tflite

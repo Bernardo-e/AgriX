@@ -1,0 +1,808 @@
+{
+  "version": "2.0",
+  "description": "AgriX SIH Demo/Prototype Crop-Aware Disease Catalog",
+  "prototype_crops": [
+    {
+      "crop_id": "tomato",
+      "crop_display": "Tomato",
+      "aliases": [
+        "tomato"
+      ],
+      "default_fallback_disease_id": 54,
+      "diseases": [
+        {
+          "disease_id": 54,
+          "crop_id": "tomato",
+          "crop_name": "Tomato",
+          "disease_name": "Tomato Early Blight",
+          "is_default_fallback": true,
+          "overview": "Early blight is a common fungal disease caused by Alternaria solani. It targets older foliage first and creates characteristic target-board lesions, eventually defoliating the lower plant canopy.",
+          "symptoms": [
+            "Dark brown to black spots on older lower leaves.",
+            "Concentric rings forming a 'target-board' or bullseye pattern within leaf spots.",
+            "Yellowing (chlorosis) of leaf tissue surrounding the necrotic spots.",
+            "Dark, sunken, leathery lesions on tomato stems and fruit near the stem end."
+          ],
+          "immediate_actions": [
+            "Prune off heavily infected lower leaves during dry afternoon hours.",
+            "Avoid overhead sprinkler irrigation to keep tomato foliage dry.",
+            "Mulch soil around the base of plants to prevent soil-borne fungal spores from splashing onto leaves.",
+            "Dispose of removed infected foliage away from the field; do not compost."
+          ],
+          "prevention": [
+            "Practice 2- to 3-year crop rotation avoiding other solanaceous crops (potato, pepper, eggplant).",
+            "Ensure adequate plant spacing (60 cm) and stake plants for maximum air circulation.",
+            "Plant certified disease-free transplants and resistant cultivars when available."
+          ],
+          "monitoring": [
+            "Scout lower leaves twice weekly during warm, humid weather (24-29°C).",
+            "Check for rapid upward progression of leaf spots after rain or irrigation."
+          ],
+          "expert_escalation": "Contact your local Krishi Vigyan Kendra (KVK) or extension office if concentric lesions spread past the lower third of the plant canopy.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 55,
+          "crop_id": "tomato",
+          "crop_name": "Tomato",
+          "disease_name": "Tomato Late Blight",
+          "is_default_fallback": false,
+          "overview": "Late blight, caused by the oomycete Phytophthora infestans, is a destructive, fast-spreading disease that causes rapid water-soaking of foliage, white fuzzy growth, and rotting fruit in cool, wet weather.",
+          "symptoms": [
+            "Irregular, water-soaked pale green or dark brown lesions on leaves.",
+            "White fuzzy fungal-like sporulation visible on the underside of leaves in moist morning conditions.",
+            "Dark brown, greasy-looking lesions on stems and petioles.",
+            "Firm, brown, leathery rot spreading over green and ripe tomato fruit."
+          ],
+          "immediate_actions": [
+            "Immediately pull and bag severely infected plants to halt rapid spore dispersal.",
+            "Cease all sprinkler or overhead irrigation immediately.",
+            "Ensure field drainage is clear so standing water does not linger."
+          ],
+          "prevention": [
+            "Plant certified late-blight resistant tomato varieties.",
+            "Space rows widely to promote rapid foliage drying after morning dew or rain.",
+            "Avoid planting tomatoes adjacent to potato fields."
+          ],
+          "monitoring": [
+            "Scout canopy daily during prolonged cool, cloudy, and wet periods (15-22°C).",
+            "Inspect leaf undersides in early morning for white sporulation."
+          ],
+          "expert_escalation": "Immediately alert local agricultural extension or KVK if late blight symptoms appear, as late blight can destroy whole fields within days.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 59,
+          "crop_id": "tomato",
+          "crop_name": "Tomato",
+          "disease_name": "Tomato Leaf Curl",
+          "is_default_fallback": false,
+          "overview": "Tomato leaf curl virus is a severe viral disease transmitted by whiteflies (Bemisia tabaci). It stunts plants, curls leaves upward and inward, and severely restricts fruit set.",
+          "symptoms": [
+            "Severe upward and inward curling, puckering, and reduction in leaf size.",
+            "Prominent interveinal chlorosis (yellowing) and thickening of leaf veins.",
+            "Marked stunting of plants with shortened internodes producing a bushy habit.",
+            "Excessive flower dropping with minimal to no harvestable fruit formation."
+          ],
+          "immediate_actions": [
+            "Rogue out and bury severely infected young plants immediately.",
+            "Install yellow sticky traps (15-20 per acre) across the field to monitor and trap vector whiteflies.",
+            "Remove alternate weed hosts (Parthenium, Datura) along field borders."
+          ],
+          "prevention": [
+            "Plant leaf-curl-resistant tomato hybrids recommended for your region.",
+            "Raise seedlings inside 40-50 mesh insect-proof nylon net nurseries.",
+            "Grow 2-3 border rows of tall barrier crops like maize or sorghum."
+          ],
+          "monitoring": [
+            "Scout leaf undersides in early morning for whitefly populations.",
+            "Inspect new vegetative flushes weekly for early vein clearing and curling."
+          ],
+          "expert_escalation": "Contact your local KVK for integrated vector management if whitefly counts exceed economic thresholds.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 53,
+          "crop_id": "tomato",
+          "crop_name": "Tomato",
+          "disease_name": "Tomato Bacterial Spot",
+          "is_default_fallback": false,
+          "overview": "Bacterial spot (Xanthomonas spp.) produces small, dark angular water-soaked specks on leaves and scabby raised pustules on tomato fruit, leading to severe defoliation during rainy periods.",
+          "symptoms": [
+            "Small (2-3 mm), dark brown, water-soaked angular spots on leaves.",
+            "Spots developing yellow halos, coalescing, and causing leaf browning and drop.",
+            "Small, raised, scab-like rough black lesions on green fruit surfaces."
+          ],
+          "immediate_actions": [
+            "Never work, prune, or harvest in tomato fields when foliage is wet.",
+            "Switch to drip or furrow irrigation to eliminate splash dispersal.",
+            "Remove and destroy severely spotted lower leaves during dry, sunny weather."
+          ],
+          "prevention": [
+            "Use certified pathogen-free seeds treated with hot water (50°C for 25 min).",
+            "Rotate fields away from solanaceous crops for at least two years.",
+            "Disinfect pruning tools and stakes with 70% alcohol."
+          ],
+          "monitoring": [
+            "Inspect transplants in nursery beds before planting in the field.",
+            "Scout lower leaf canopy following stormy, wind-driven rains."
+          ],
+          "expert_escalation": "Consult local KVK horticultural officers if bacterial spots spread to the top canopy.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 105,
+          "crop_id": "tomato",
+          "crop_name": "Tomato",
+          "disease_name": "Tomato Fusarium Wilt",
+          "is_default_fallback": false,
+          "overview": "Fusarium wilt (Fusarium oxysporum f. sp. lycopersici) is a persistent soil-borne fungal disease that blocks water-conducting xylem vessels, causing progressive one-sided yellowing and wilting.",
+          "symptoms": [
+            "Yellowing of lower leaves, often starting on one side of the plant or leaf ('yellow flag').",
+            "Wilting of foliage during warm daytime hours with night recovery in early stages.",
+            "Distinct dark brown vascular ring discoloration visible when stem is cut lengthwise.",
+            "Complete plant stunting, permanent wilting, and plant death."
+          ],
+          "immediate_actions": [
+            "Uproot and destroy infected plants with their root systems to reduce soil inoculum.",
+            "Do not irrigate through wilt-affected patches to prevent spreading spores.",
+            "Disinfect farm implements and footwear after working in affected areas."
+          ],
+          "prevention": [
+            "Plant Fusarium-resistant tomato cultivars (labeled 'F' or 'FF').",
+            "Practice long-term crop rotation (3-4 years) with non-host crops like maize or paddy.",
+            "Enrich soil with Trichoderma-amended well-decomposed organic manure."
+          ],
+          "monitoring": [
+            "Scout fields during warm afternoon hours when transpiration stress is highest (27-32°C).",
+            "Split stems of wilting plants longitudinally to inspect for brown vascular streaking."
+          ],
+          "expert_escalation": "Contact local extension specialists for soil health analysis and bio-control recommendations.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        }
+      ]
+    },
+    {
+      "crop_id": "chilli",
+      "crop_display": "Chilli",
+      "aliases": [
+        "chilli",
+        "chili",
+        "bell pepper",
+        "pepper"
+      ],
+      "default_fallback_disease_id": 111,
+      "diseases": [
+        {
+          "disease_id": 111,
+          "crop_id": "chilli",
+          "crop_name": "Chilli",
+          "disease_name": "Chilli Anthracnose / Fruit Rot",
+          "is_default_fallback": true,
+          "overview": "Anthracnose and fruit rot (Colletotrichum capsici) is a damaging fungal disease that produces sunken circular rot lesions with concentric rings on chilli pods and dieback of twigs.",
+          "symptoms": [
+            "Circular or oblong sunken necrotic spots on ripening red and green pods.",
+            "Concentric rings of tiny black fruiting specks (acervuli) inside the fruit lesions.",
+            "Dieback of tender branches from top downward with straw-colored dried twigs.",
+            "Premature shedding of diseased pods and flowers."
+          ],
+          "immediate_actions": [
+            "Collect and destroy all fallen and spotted pods from the field.",
+            "Prune dead twigs 2-3 cm below the discoloration line using sanitized shears.",
+            "Avoid overhead sprinkler irrigation; switch to drip or furrow."
+          ],
+          "prevention": [
+            "Use certified disease-free seeds treated with biocontrol or approved seed treatments.",
+            "Maintain adequate spacing (60 x 45 cm) for good canopy aeration.",
+            "Rotate crops with non-solanaceous species like pulses or cereals."
+          ],
+          "monitoring": [
+            "Scout pods closely during fruit development and ripening in humid weather.",
+            "Inspect upper shoot tips for early signs of twig drying."
+          ],
+          "expert_escalation": "Consult local KVK horticultural specialists if fruit rot affects more than 10% of harvestable pods.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 112,
+          "crop_id": "chilli",
+          "crop_name": "Chilli",
+          "disease_name": "Chilli Leaf Curl",
+          "is_default_fallback": false,
+          "overview": "Chilli leaf curl virus is transmitted by whiteflies and thrips, causing severe upward and downward leaf curling, puckering, vein thickening, and stunted bushy growth.",
+          "symptoms": [
+            "Upward and downward curling, puckering, and size reduction of young leaves.",
+            "Thickening of leaf veins with chlorotic yellow mottling.",
+            "Shortened internodes resulting in a stunted, bushy 'rosette' habit.",
+            "Malformed, small, wrinkled pods with poor seed development."
+          ],
+          "immediate_actions": [
+            "Rogue and bury severely curled young plants immediately.",
+            "Set up yellow sticky traps (15-20 per acre) to trap vectoring whiteflies and thrips.",
+            "Remove weed hosts (Solanum nigrum, Parthenium) around field borders."
+          ],
+          "prevention": [
+            "Grow chilli seedlings under insect-proof nursery mesh nets.",
+            "Plant border barrier rows of tall crops like maize, sorghum, or pearl millet.",
+            "Select leaf-curl tolerant chilli cultivars recommended by local research institutes."
+          ],
+          "monitoring": [
+            "Scout the underside of top young leaves for whiteflies and thrips with a hand lens.",
+            "Check weekly for early puckering on growing shoot tips."
+          ],
+          "expert_escalation": "Contact local KVK extension officers for integrated vector management protocols.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 113,
+          "crop_id": "chilli",
+          "crop_name": "Chilli Powdery Mildew",
+          "is_default_fallback": false,
+          "overview": "Powdery mildew (Leveillula taurica) causes white powdery fungal patches on the underside of leaves with corresponding yellow patches on the upper surface, causing severe defoliation.",
+          "symptoms": [
+            "White powdery fungal patches developing on lower leaf surfaces.",
+            "Corresponding bright yellow chlorotic patches on upper leaf surfaces.",
+            "Down-rolling of leaf margins followed by extensive premature leaf drop.",
+            "Sunscald on exposed fruits due to loss of protective canopy foliage."
+          ],
+          "immediate_actions": [
+            "Prune off severely affected lower leaves to improve airflow through the canopy.",
+            "Ensure field is not moisture-stressed, as dry soil accelerates mildew defoliation.",
+            "Avoid excessive nitrogen fertilization which produces dense, succulent foliage."
+          ],
+          "prevention": [
+            "Adopt wider row spacing to facilitate sunlight penetration into the inner canopy.",
+            "Practice crop sanitation by destroying post-harvest plant debris.",
+            "Plant tolerant chilli varieties in mildew-endemic regions."
+          ],
+          "monitoring": [
+            "Scout lower canopy leaves during cool, dry days with warm humid nights.",
+            "Inspect leaf undersides for initial faint white mycelial growth."
+          ],
+          "expert_escalation": "Contact extension staff if powdery mildew symptoms advance to the middle canopy.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 10,
+          "crop_id": "chilli",
+          "crop_name": "Chilli Bacterial Leaf Spot",
+          "is_default_fallback": false,
+          "overview": "Bacterial leaf spot (Xanthomonas campestris pv. vesicatoria) produces small water-soaked dark spots on leaves and fruit, causing heavy leaf shedding.",
+          "symptoms": [
+            "Small, circular to irregular water-soaked spots on leaves turning dark brown with pale centers.",
+            "Yellow halo encircling older leaf lesions.",
+            "Severe defoliation giving plants a bare, leggy appearance.",
+            "Small, rough, raised wart-like brown spots on chilli fruit surfaces."
+          ],
+          "immediate_actions": [
+            "Never enter or cultivate chilli fields while plants are wet with dew or rain.",
+            "Switch immediately to ground or drip irrigation.",
+            "Collect and destroy fallen diseased leaves from under the canopy."
+          ],
+          "prevention": [
+            "Use certified disease-free seed and soak seeds in warm water (50°C for 25 min) before sowing.",
+            "Rotate fields with non-host crops (maize, sorghum, rice) for at least two seasons.",
+            "Avoid field operations when rain is forecasted."
+          ],
+          "monitoring": [
+            "Check seedlings in the nursery bed for small angular dark specks.",
+            "Scout field after strong wind-driven rains."
+          ],
+          "expert_escalation": "Consult local KVK for verified bactericidal management if spots spread rapidly.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 115,
+          "crop_id": "chilli",
+          "crop_name": "Chilli Fusarium Wilt",
+          "is_default_fallback": false,
+          "overview": "Fusarium wilt (Fusarium oxysporum) is a destructive soil-borne fungus that invades vascular bundles, causing leaf yellowing, drooping, and plant death.",
+          "symptoms": [
+            "Gradual yellowing and upward curling of lower leaves progressing upward.",
+            "Wilting of foliage during daytime with temporary recovery in cool night hours.",
+            "Dark brown vascular ring discoloration visible when the base of the stem is cut open.",
+            "Decay of feeder roots and eventual complete drying of the plant."
+          ],
+          "immediate_actions": [
+            "Uproot and destroy infected plants with their root balls to restrict spread in the soil.",
+            "Avoid moving wet soil from affected patches to healthy parts of the field.",
+            "Regulate irrigation to prevent water stagnation around plant crowns."
+          ],
+          "prevention": [
+            "Practice crop rotation (3-4 years) with cereals or marigold to suppress Fusarium inoculum.",
+            "Incorporate organic bio-agents (Trichoderma viride) with well-rotted FYM at land preparation.",
+            "Plant chilli crops on raised beds with good subsoil drainage."
+          ],
+          "monitoring": [
+            "Scout fields during warm weather (28-32°C) following irrigation cycles.",
+            "Examine stem cross-sections of wilting plants for brown vascular rings."
+          ],
+          "expert_escalation": "Consult KVK specialists for soil treatment and bio-control recommendations in wilt-affected soils.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        }
+      ]
+    },
+    {
+      "crop_id": "rice",
+      "crop_display": "Rice",
+      "aliases": [
+        "rice",
+        "paddy"
+      ],
+      "default_fallback_disease_id": 43,
+      "diseases": [
+        {
+          "disease_id": 43,
+          "crop_id": "rice",
+          "crop_name": "Rice",
+          "disease_name": "Rice Blast",
+          "is_default_fallback": true,
+          "overview": "Rice blast (Magnaporthe oryzae) is a major fungal disease causing spindle- or diamond-shaped lesions on leaves, neck rot of panicles, and severe yield loss.",
+          "symptoms": [
+            "Spindle- or diamond-shaped lesions with grey or whitish centers and brown margins on leaves.",
+            "Lesions coalescing to dry up and kill entire leaf blades.",
+            "Blackened, shriveled panicle neck ('neck blast') causing panicles to break and fall over.",
+            "Blanked or partially filled grains with brown discoloration."
+          ],
+          "immediate_actions": [
+            "Avoid excessive top-dressing of nitrogen fertilizers; split nitrogen into smaller doses.",
+            "Maintain a steady 2-5 cm water layer in the paddy field to suppress blast development.",
+            "Remove weed hosts (Echinochloa, Leersia) on bunds that harbor blast spores."
+          ],
+          "prevention": [
+            "Sow blast-resistant certified paddy varieties suited for your agro-climatic zone.",
+            "Treat seeds before sowing with recommended bio-control or certified fungicide formulations.",
+            "Avoid late planting and staggered planting in adjacent plots."
+          ],
+          "monitoring": [
+            "Scout nursery and tillering stages during cloudy days with high relative humidity (>90%) and night dew.",
+            "Check top leaves and panicle neck node closely at heading stage."
+          ],
+          "expert_escalation": "Contact local KVK or agricultural officer immediately if neck blast symptoms appear during panicle emergence.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 132,
+          "crop_id": "rice",
+          "crop_name": "Rice",
+          "disease_name": "Rice Bacterial Leaf Blight",
+          "is_default_fallback": false,
+          "overview": "Bacterial leaf blight (Xanthomonas oryzae pv. oryzae) is a widespread vascular bacterial disease causing wavy yellow-white lesions along leaf margins from tip downwards.",
+          "symptoms": [
+            "Water-soaked stripes starting from leaf tips and margins, expanding into wavy yellowish-white stripes.",
+            "Milky bacterial ooze droplets appearing on young lesions in humid morning hours.",
+            "Leaves rolling, turning straw-colored, and dying prematurely.",
+            "'Kresek' or total seedling wilt phase in young transplants within 2-3 weeks."
+          ],
+          "immediate_actions": [
+            "Drain standing water from the field for 2-3 days if blight is spreading rapidly.",
+            "Suspend top-dressing of nitrogen fertilizer until disease progression ceases.",
+            "Avoid clipping seedling leaf tips during transplanting as wounds allow bacterial entry."
+          ],
+          "prevention": [
+            "Plant certified blight-resistant rice cultivars.",
+            "Apply balanced potash (K) fertilizers to enhance plant cell wall resistance.",
+            "Keep irrigation channels clean and prevent floodwater transfer between adjacent fields."
+          ],
+          "monitoring": [
+            "Scout fields during active tillering to panicle initiation stages following cyclones or heavy winds.",
+            "Check leaf margins for characteristic wavy, serrated yellow borders."
+          ],
+          "expert_escalation": "Consult local KVK extension agronomists if bacterial blight exceeds 15% of the leaf canopy.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 44,
+          "crop_id": "rice",
+          "crop_name": "Rice",
+          "disease_name": "Rice Brown Spot",
+          "is_default_fallback": false,
+          "overview": "Brown spot (Bipolaris oryzae) is a fungal disease closely linked with soil nutrient deficiency, producing thousands of small oval dark brown spots on leaves and glumes.",
+          "symptoms": [
+            "Small, circular to oval dark brown spots scattered across leaf blades.",
+            "Mature spots with grey or light brown centers surrounded by a distinct dark reddish-brown margin and yellow halo.",
+            "Discoloration and black spotting of grains on the panicle ('pecky rice').",
+            "Seedling blight and poor germination when infected seeds are sown."
+          ],
+          "immediate_actions": [
+            "Top-dress with balanced potassium and micronutrients (zinc, silica) to boost plant vigor.",
+            "Ensure fields do not suffer drought or intermittent water stress.",
+            "Avoid planting in severely nutrient-depleted, unamended sandy soils."
+          ],
+          "prevention": [
+            "Treat seeds before sowing with hot water (52-54°C for 10 min) or approved seed dressings.",
+            "Conduct soil testing and apply balanced N-P-K along with farmyard manure.",
+            "Destroy infected crop stubble and wild grass hosts on bunds."
+          ],
+          "monitoring": [
+            "Scout seedlings in nurseries and plants at maximum tillering to grain filling.",
+            "Monitor light-textured or unfertilized plots where soil nutrient stress is highest."
+          ],
+          "expert_escalation": "Consult KVK specialists for soil nutrient correction and integrated disease management.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 133,
+          "crop_id": "rice",
+          "crop_name": "Rice",
+          "disease_name": "Rice Sheath Blight",
+          "is_default_fallback": false,
+          "overview": "Sheath blight (Rhizoctonia solani) produces large oval or snake-skin lesions on leaf sheaths near the waterline that creep upward to choke upper leaves and panicles.",
+          "symptoms": [
+            "Oval or irregular greenish-grey water-soaked spots on leaf sheaths just above the water line.",
+            "Lesions enlarging with bleached white/grey centers and dark reddish-brown borders (snake-skin appearance).",
+            "Infection creeping up to upper sheaths and flag leaves causing premature lodging.",
+            "Tiny spherical brown fungal resting bodies (sclerotia) loosely attached to diseased sheaths."
+          ],
+          "immediate_actions": [
+            "Drain excess floodwater and practice alternate wetting and moderate drying to aerate the root zone.",
+            "Avoid excessive nitrogen top-dressing which increases canopy humidity and density.",
+            "Skim floating sclerotia from standing water after puddling during next land preparation."
+          ],
+          "prevention": [
+            "Maintain optimal hill spacing (20 x 15 cm) to avoid excessively dense plant canopies.",
+            "Apply potash in split doses along with nitrogen.",
+            "Apply Trichoderma-enriched organic compost during basal land preparation."
+          ],
+          "monitoring": [
+            "Inspect lower leaf sheaths near the water level from maximum tillering stage onward.",
+            "Check dense patches of canopy after humid, cloudy weather."
+          ],
+          "expert_escalation": "Contact local extension agronomists if lesions reach the third leaf from top before heading.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 136,
+          "crop_id": "rice",
+          "crop_name": "Rice",
+          "disease_name": "Rice Tungro",
+          "is_default_fallback": false,
+          "overview": "Rice tungro disease is a devastating viral disease complex transmitted by green leafhoppers (Nephotettix virescens). It causes intense plant stunting and bright yellow-orange leaf discoloration.",
+          "symptoms": [
+            "Intense yellowing or orange-yellow discoloration of leaves starting from the tips.",
+            "Severe stunting of rice hills with reduced tiller numbers.",
+            "Mottled appearance on young leaves with small rusty brown specks.",
+            "Delayed flowering, incomplete panicle exertion, and sterile/unfilled grains."
+          ],
+          "immediate_actions": [
+            "Rogue and destroy infected hills in early stages to eliminate virus reservoirs.",
+            "Set up light traps to monitor and catch vector green leafhoppers at night.",
+            "Maintain intermittent drainage to disturb leafhopper habitats."
+          ],
+          "prevention": [
+            "Plant tungro-resistant or tolerant paddy cultivars.",
+            "Synchronize planting across the village to break the leafhopper reproduction cycle.",
+            "Plow under rice stubble immediately after harvest to destroy green leafhopper habitats."
+          ],
+          "monitoring": [
+            "Sweep-net nursery beds and young tillering fields weekly to check green leafhopper counts.",
+            "Inspect early-stage fields for patchy yellowing and stunted hills."
+          ],
+          "expert_escalation": "Contact local KVK extension officers immediately if green leafhopper counts exceed 1 per hill in young paddy.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        }
+      ]
+    },
+    {
+      "crop_id": "wheat",
+      "crop_display": "Wheat",
+      "aliases": [
+        "wheat"
+      ],
+      "default_fallback_disease_id": 62,
+      "diseases": [
+        {
+          "disease_id": 62,
+          "crop_id": "wheat",
+          "crop_name": "Wheat",
+          "disease_name": "Wheat Leaf / Brown Rust",
+          "is_default_fallback": true,
+          "overview": "Leaf rust (Puccinia triticina) is the most common wheat rust, producing small, round to oval orange-brown powdery pustules scattered randomly on upper leaf surfaces.",
+          "symptoms": [
+            "Small, circular to oval bright orange-brown powdery pustules on the upper leaf surface.",
+            "Pustules scattered randomly across the leaf blade without forming distinct stripes.",
+            "Rubbing leaves with fingers leaves a reddish-brown powdery spore residue.",
+            "Premature yellowing and drying of leaves, resulting in shriveled grains."
+          ],
+          "immediate_actions": [
+            "Inspect fields immediately to map early focal hotspots of infection.",
+            "Avoid late irrigation that raises humidity in dense crop canopies.",
+            "Eradicate volunteer wheat plants and alternate hosts around field edges."
+          ],
+          "prevention": [
+            "Sow certified rust-resistant wheat varieties recommended for your agro-climatic zone.",
+            "Sow crops timely during the recommended sowing window to escape late-season rust buildup.",
+            "Avoid over-fertilizing with nitrogen; maintain balanced potassium levels."
+          ],
+          "monitoring": [
+            "Scout upper canopy leaves weekly starting from jointing to grain fill stages.",
+            "Monitor fields closely when temperatures range between 15-25°C with morning dews."
+          ],
+          "expert_escalation": "Immediately alert local KVK or Wheat Directorate extension team if rust pustules appear on flag leaves before flowering.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 67,
+          "crop_id": "wheat",
+          "crop_name": "Wheat",
+          "disease_name": "Wheat Stripe / Yellow Rust",
+          "is_default_fallback": false,
+          "overview": "Stripe rust (Puccinia striiformis) thrives in cool climates, forming narrow yellow-orange pustules arranged in parallel linear stripes along the leaf veins.",
+          "symptoms": [
+            "Bright yellow to orange-yellow powdery pustules arranged in distinct parallel stripes along leaf veins.",
+            "Linear stripes appearing on leaf blades, leaf sheaths, and even glumes.",
+            "Severe chlorosis and necrosis of leaf tissue leading to complete drying.",
+            "Drastic reduction in grain number and severe grain shriveling."
+          ],
+          "immediate_actions": [
+            "Identify and flag early focal patches ('foci') in the field.",
+            "Avoid excessive irrigation during cold, overcast periods.",
+            "Report immediate presence to local extension authorities for regional surveillance."
+          ],
+          "prevention": [
+            "Grow stripe-rust-resistant wheat cultivars.",
+            "Avoid growing highly susceptible legacy varieties in foothills and northern plains.",
+            "Practice uniform timely sowing across the village cluster."
+          ],
+          "monitoring": [
+            "Scout cool, shaded parts of fields (near trees, canals) during December to February (10-15°C).",
+            "Look for yellow linear stripes on lower and middle leaves."
+          ],
+          "expert_escalation": "Immediately report any stripe rust foci to KVK or District Agriculture Officer for community-wide advisories.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 66,
+          "crop_id": "wheat",
+          "crop_name": "Wheat",
+          "disease_name": "Wheat Stem Rust",
+          "is_default_fallback": false,
+          "overview": "Stem rust (Puccinia graminis f. sp. tritici) is a late-season rust occurring in warm temperatures, producing large, elongated reddish-brown pustules on stems and leaf sheaths.",
+          "symptoms": [
+            "Large, elongated, dark reddish-brown to blackish pustules on stems, leaf sheaths, and heads.",
+            "Pustules rupturing the epidermis, leaving ragged, frayed epidermal tissue around the edges.",
+            "Stems becoming brittle and lodging heavily under wind.",
+            "Severe grain shriveling and total crop lodging in heavy epidemics."
+          ],
+          "immediate_actions": [
+            "Scout stems and leaf sheaths across the entire field for ragged brown pustules.",
+            "Avoid late nitrogen applications that prolong vegetative succulence.",
+            "Harvest mature fields promptly to avoid pre-harvest lodging losses."
+          ],
+          "prevention": [
+            "Plant stem-rust-resistant wheat varieties.",
+            "Eradicate alternate barberry hosts if present in proximity to wheat fields.",
+            "Sow early to escape late-season warm temperature peaks."
+          ],
+          "monitoring": [
+            "Scout stems and leaf sheaths from boot stage through grain maturity under warm weather (>20°C).",
+            "Inspect lower stems where initial pustules erupt through the green bark."
+          ],
+          "expert_escalation": "Immediately notify KVK or agricultural extension officers upon confirmation of stem rust.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 63,
+          "crop_id": "wheat",
+          "crop_name": "Wheat",
+          "disease_name": "Wheat Loose Smut",
+          "is_default_fallback": false,
+          "overview": "Loose smut (Ustilago tritici) is an internally seed-borne fungal disease where entire emergent wheat heads are transformed into masses of black powdery spores.",
+          "symptoms": [
+            "Entire wheat head (spike) converted into a loose, powdery mass of olive-black spores.",
+            "Infected heads emerging earlier than healthy heads.",
+            "Black spore mass blowing away in the wind, leaving only a bare central rachis (skeleton head).",
+            "Normal vegetative growth prior to heading with no visible foliar symptoms."
+          ],
+          "immediate_actions": [
+            "Carefully rogue out smutted heads early in the morning into plastic bags before spores disperse.",
+            "Burn or bury bagged smutted heads deep in the ground away from wheat fields.",
+            "Never save seeds from loose-smut-affected fields for next year's crop."
+          ],
+          "prevention": [
+            "Use certified loose-smut-free seed from authorized government seed agencies.",
+            "Treat seeds before sowing with hot water or certified systemic fungicidal seed treatments.",
+            "Adopt solar seed treatment (soaking seeds in water for 4 hours, then drying in hot summer sun on a tarp)."
+          ],
+          "monitoring": [
+            "Scout wheat fields daily during the head emergence (earhead emergence) stage.",
+            "Look for blackened emergent spikes standing taller than the green canopy."
+          ],
+          "expert_escalation": "Consult KVK for certified seed replacement and solar seed treatment demonstrations.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 68,
+          "crop_id": "wheat",
+          "crop_name": "Wheat",
+          "disease_name": "Wheat Karnal Bunt",
+          "is_default_fallback": false,
+          "overview": "Karnal bunt (Tilletia indica) is a fungal disease affecting developing wheat grains, converting portions of the grain into a black powdery mass that emits a characteristic foul fishy odor.",
+          "symptoms": [
+            "Only a portion of the grain in an earhead converted into black powdery teliospores (partial bunting).",
+            "Embryo end or longitudinal crease of the grain blackened and hollowed.",
+            "Characteristic rotten fish odor (due to trimethylamine) in harvested bunted grain.",
+            "Infected spikes showing slightly spread-out glumes at maturity."
+          ],
+          "immediate_actions": [
+            "Do not use bunted wheat lots as seed for subsequent crop cycles.",
+            "Thoroughly clean combine harvesters and grain storage bins after handling bunted lots.",
+            "Deep summer plowing to bury teliospores beneath the germination zone."
+          ],
+          "prevention": [
+            "Sow certified Karnal-bunt-free seed in disease-free geographical zones.",
+            "Avoid excessive nitrogen fertilization and excessive irrigation at the heading stage.",
+            "Adopt crop rotation with non-host crops like gram, mustard, or lentil."
+          ],
+          "monitoring": [
+            "Scout fields during flowering when temperatures are 18-24°C with overcast skies or light rain.",
+            "Inspect threshed grain samples under good light for blackened, fishy-smelling grains."
+          ],
+          "expert_escalation": "Report Karnal bunt occurrence to district agricultural officers for quarantine and seed certification management.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        }
+      ]
+    },
+    {
+      "crop_id": "sugarcane",
+      "crop_display": "Sugarcane",
+      "aliases": [
+        "sugarcane",
+        "sugar cane"
+      ],
+      "default_fallback_disease_id": 151,
+      "diseases": [
+        {
+          "disease_id": 151,
+          "crop_id": "sugarcane",
+          "crop_name": "Sugarcane",
+          "disease_name": "Sugarcane Red Rot",
+          "is_default_fallback": true,
+          "overview": "Red rot (Colletotrichum falcatum) is the most destructive fungal disease of sugarcane ('cancer of sugarcane'), causing internal red discoloration of stalks with white patches and plant drying.",
+          "symptoms": [
+            "Yellowing and drying of upper leaves (third or fourth leaf from top) starting from margins towards the midrib.",
+            "Entire crown drying up and whole cane collapsing in the field.",
+            "Splitting the stalk reveals longitudinal dark red pith discoloration interspersed with distinct white transverse patches.",
+            "Internal pith smelling sour or alcoholic (fermented juice smell)."
+          ],
+          "immediate_actions": [
+            "Uproot and burn dried, red-rot-affected cane stools along with underground stubble.",
+            "Do not take a ratoon crop from fields showing red rot incidence.",
+            "Drain stagnant water from the field; do not let irrigation water flow from diseased to healthy fields."
+          ],
+          "prevention": [
+            "Plant certified disease-free setts from healthy seed nurseries.",
+            "Adopt moist hot air treatment (MHAT at 54°C for 2.5 hours) or hot water treatment of seed setts.",
+            "Grow red-rot-resistant sugarcane varieties recommended by local sugar research stations."
+          ],
+          "monitoring": [
+            "Scout fields during post-monsoon months (August to November) when red rot symptoms peak.",
+            "Split open stalks of unthrifty, yellowing canes to examine the pith."
+          ],
+          "expert_escalation": "Immediately inform local Sugar Mill cane development officer or KVK if red rot is detected in seed plots.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 152,
+          "crop_id": "sugarcane",
+          "crop_name": "Sugarcane Smut",
+          "disease_name": "Sugarcane Smut",
+          "is_default_fallback": false,
+          "overview": "Sugarcane smut (Sporisorium scitamineum) produces a prominent, curved, whip-like black dusty structure from the terminal shoot of the cane, stunting growth and ruining juice.",
+          "symptoms": [
+            "Emergence of a long, pencil-thick, curved whip-like structure (20-150 cm) from the cane shoot tip.",
+            "Whip initially covered by a thin silvery membrane that ruptures to release billions of black sooty spores.",
+            "Severe stunting of stools with thin, spindly, grass-like tillers (witches' broom appearance).",
+            "Narrow, erect, small leaves on infected stalks."
+          ],
+          "immediate_actions": [
+            "Carefully cover smut whips with a damp gunny bag, cut the entire stalk from the base, and burn it.",
+            "Never shake or snap dry smut whips in the field to prevent wind dispersal of spores.",
+            "Do not ratoon smut-infested cane stools; dig out the root clump entirely."
+          ],
+          "prevention": [
+            "Plant certified smut-free seed cane setts.",
+            "Treat seed setts in hot water (52°C for 30 minutes) before planting.",
+            "Grow smut-resistant sugarcane varieties."
+          ],
+          "monitoring": [
+            "Scout fields weekly during formative and tillering stages (2 to 5 months after planting).",
+            "Look for emergent shoots exhibiting silver or black terminal whips."
+          ],
+          "expert_escalation": "Report smut outbreaks to local sugarcane extension officers for community sanitation drives.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 153,
+          "crop_id": "sugarcane",
+          "crop_name": "Sugarcane Wilt",
+          "disease_name": "Sugarcane Wilt",
+          "is_default_fallback": false,
+          "overview": "Sugarcane wilt (Cephalosporium sacchari / Fusarium sacchari) causes gradual yellowing, drying of the crown, hollow cane stalks, and purple-reddish internal discoloration.",
+          "symptoms": [
+            "Gradual yellowing and withering of leaves starting from the crown during post-monsoon periods.",
+            "Cane stalks losing weight, turning light and hollow with boat-shaped internal cavities.",
+            "Splitting the cane reveals diffuse reddish-purple pith discoloration without distinct white bands.",
+            "Cane juice quantity and sugar recovery severely depressed."
+          ],
+          "immediate_actions": [
+            "Harvest wilted stalks promptly and destroy infected stubbles after harvest.",
+            "Avoid waterlogging and improve soil drainage across the field.",
+            "Avoid root damage from deep inter-cultivation implements during late growth stages."
+          ],
+          "prevention": [
+            "Plant healthy setts obtained from disease-free seed crop nurseries.",
+            "Treat setts with hot water before planting.",
+            "Practice crop rotation with green manure crops (sunnhemp, daincha) or paddy."
+          ],
+          "monitoring": [
+            "Scout fields during dry spells following heavy monsoon rains (September to December).",
+            "Check stalks for weight loss, shriveling, and hollow central pith."
+          ],
+          "expert_escalation": "Consult local KVK or Sugarcane Breeding Institute extension agronomists for soil health management.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 154,
+          "crop_id": "sugarcane",
+          "crop_name": "Sugarcane Grassy Shoot Disease",
+          "disease_name": "Sugarcane Grassy Shoot Disease",
+          "is_default_fallback": false,
+          "overview": "Grassy shoot disease (GSD), caused by phytoplasmas transmitted by aphids and leafhoppers, leads to profuse, thin, chlorotic grass-like tillering without forming normal millable cane stalks.",
+          "symptoms": [
+            "Proliferation of numerous thin, stunted, pencil-thin shoots from the base of the stool (grassy, bushy clump).",
+            "Leaves completely yellow, pale cream, or white (albino) with narrow, papery blades.",
+            "Failure to form normal millable cane stalks, causing total yield loss in affected clumps.",
+            "Severe stunting and yellowing particularly noticeable in ratoon crops."
+          ],
+          "immediate_actions": [
+            "Uproot and destroy bushy, grassy clumps immediately to remove phytoplasma inoculum sources.",
+            "Do not keep ratoon crops from GSD-infected plant cane fields.",
+            "Control vectoring aphid and leafhopper populations around field borders."
+          ],
+          "prevention": [
+            "Plant setts derived from hot water treated (50°C for 2 hours) or aerated steam treated (54°C for 1 hour) nurseries.",
+            "Use certified tissue-culture-raised sugarcane plantlets.",
+            "Rotate with non-host legume or cereal crops."
+          ],
+          "monitoring": [
+            "Inspect ratoon sprouts and young plant crops at 1-3 months for bushy, grassy shoots.",
+            "Look for pale white or cream-colored young tillers."
+          ],
+          "expert_escalation": "Consult sugarcane extension scientists for seed nursery certification and heat therapy facilities.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        },
+        {
+          "disease_id": 156,
+          "crop_id": "sugarcane",
+          "crop_name": "Sugarcane Pokkah Boeng",
+          "disease_name": "Sugarcane Pokkah Boeng",
+          "is_default_fallback": false,
+          "overview": "Pokkah boeng (Fusarium moniliforme / Gibberella fujikuroi) is an airborne fungal disease causing malformation, wrinkling, twisting, and chlorosis of young sugarcane spindle leaves during the monsoon.",
+          "symptoms": [
+            "Chlorotic whitening of the base of young emergent spindle leaves.",
+            "Wrinkling, twisting, shortening, and bunching of young leaves at the crown (top rot phase).",
+            "Reddish-brown ladder-like transverse lesions inside the leaf sheath and stem.",
+            "Death of the growing point and stalk rotting in severe acute cases."
+          ],
+          "immediate_actions": [
+            "Prune off severely deformed, twisted top spindle leaves during early monsoon breaks.",
+            "Ensure field drainage is rapid so high humidity does not linger around cane crowns.",
+            "Avoid excess nitrogen top-dressing during heavy monsoon rain spells."
+          ],
+          "prevention": [
+            "Plant Pokkah-boeng-tolerant sugarcane varieties.",
+            "Treat seed setts with approved biocontrol agents or hot water before planting.",
+            "Maintain adequate row spacing for wind circulation across the canopy."
+          ],
+          "monitoring": [
+            "Scout fields closely during humid monsoon months (July to September).",
+            "Inspect newly emerging whorl leaves for initial base chlorosis and crinkling."
+          ],
+          "expert_escalation": "Contact sugarcane factory development agronomists if top-rot phase occurs in more than 5% of canes.",
+          "safety_note": "Verify symptoms in the field before taking action. Consult local agricultural authorities for region-specific guidance."
+        }
+      ]
+    }
+  ]
+}

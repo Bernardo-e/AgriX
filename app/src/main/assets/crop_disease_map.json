@@ -1,0 +1,789 @@
+{
+  "apple": {
+    "crop_display": "Apple",
+    "class_count": 4,
+    "class_ids": [
+      0,
+      1,
+      2,
+      3
+    ],
+    "diseases": [
+      "apple black rot",
+      "apple mosaic virus",
+      "apple rust",
+      "apple scab"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "apple black rot",
+        "class_id": 0,
+        "crop": "Apple"
+      },
+      {
+        "disease_name": "apple mosaic virus",
+        "class_id": 1,
+        "crop": "Apple"
+      },
+      {
+        "disease_name": "apple rust",
+        "class_id": 2,
+        "crop": "Apple"
+      },
+      {
+        "disease_name": "apple scab",
+        "class_id": 3,
+        "crop": "Apple"
+      }
+    ]
+  },
+  "banana": {
+    "crop_display": "Banana",
+    "class_count": 4,
+    "class_ids": [
+      4,
+      5,
+      6,
+      7
+    ],
+    "diseases": [
+      "banana anthracnose",
+      "banana black leaf streak",
+      "banana bunchy top",
+      "banana panama disease"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "banana anthracnose",
+        "class_id": 4,
+        "crop": "Banana"
+      },
+      {
+        "disease_name": "banana black leaf streak",
+        "class_id": 5,
+        "crop": "Banana"
+      },
+      {
+        "disease_name": "banana bunchy top",
+        "class_id": 6,
+        "crop": "Banana"
+      },
+      {
+        "disease_name": "banana panama disease",
+        "class_id": 7,
+        "crop": "Banana"
+      }
+    ]
+  },
+  "basil": {
+    "crop_display": "Basil",
+    "class_count": 1,
+    "class_ids": [
+      8
+    ],
+    "diseases": [
+      "basil downy mildew"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "basil downy mildew",
+        "class_id": 8,
+        "crop": "Basil"
+      }
+    ]
+  },
+  "bean": {
+    "crop_display": "Bean",
+    "class_count": 1,
+    "class_ids": [
+      9
+    ],
+    "diseases": [
+      "bean rust"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "bean rust",
+        "class_id": 9,
+        "crop": "Bean"
+      }
+    ]
+  },
+  "bell pepper": {
+    "crop_display": "Bell pepper",
+    "class_count": 2,
+    "class_ids": [
+      10,
+      11
+    ],
+    "diseases": [
+      "bell pepper bacterial spot",
+      "bell pepper blossom end rot"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "bell pepper bacterial spot",
+        "class_id": 10,
+        "crop": "Bell pepper"
+      },
+      {
+        "disease_name": "bell pepper blossom end rot",
+        "class_id": 11,
+        "crop": "Bell pepper"
+      }
+    ]
+  },
+  "broccoli": {
+    "crop_display": "Broccoli",
+    "class_count": 1,
+    "class_ids": [
+      12
+    ],
+    "diseases": [
+      "broccoli alternaria leaf spot"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "broccoli alternaria leaf spot",
+        "class_id": 12,
+        "crop": "Broccoli"
+      }
+    ]
+  },
+  "cabbage": {
+    "crop_display": "Cabbage",
+    "class_count": 2,
+    "class_ids": [
+      13,
+      14
+    ],
+    "diseases": [
+      "cabbage black rot",
+      "cabbage downy mildew"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "cabbage black rot",
+        "class_id": 13,
+        "crop": "Cabbage"
+      },
+      {
+        "disease_name": "cabbage downy mildew",
+        "class_id": 14,
+        "crop": "Cabbage"
+      }
+    ]
+  },
+  "carrot": {
+    "crop_display": "Carrot",
+    "class_count": 1,
+    "class_ids": [
+      15
+    ],
+    "diseases": [
+      "carrot cavity spot"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "carrot cavity spot",
+        "class_id": 15,
+        "crop": "Carrot"
+      }
+    ]
+  },
+  "cherry": {
+    "crop_display": "Cherry",
+    "class_count": 1,
+    "class_ids": [
+      16
+    ],
+    "diseases": [
+      "cherry leaf spot"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "cherry leaf spot",
+        "class_id": 16,
+        "crop": "Cherry"
+      }
+    ]
+  },
+  "citrus": {
+    "crop_display": "Citrus",
+    "class_count": 2,
+    "class_ids": [
+      17,
+      18
+    ],
+    "diseases": [
+      "citrus canker",
+      "citrus greening disease"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "citrus canker",
+        "class_id": 17,
+        "crop": "Citrus"
+      },
+      {
+        "disease_name": "citrus greening disease",
+        "class_id": 18,
+        "crop": "Citrus"
+      }
+    ]
+  },
+  "coffee": {
+    "crop_display": "Coffee",
+    "class_count": 2,
+    "class_ids": [
+      19,
+      20
+    ],
+    "diseases": [
+      "coffee berry blotch",
+      "coffee leaf rust"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "coffee berry blotch",
+        "class_id": 19,
+        "crop": "Coffee"
+      },
+      {
+        "disease_name": "coffee leaf rust",
+        "class_id": 20,
+        "crop": "Coffee"
+      }
+    ]
+  },
+  "corn": {
+    "crop_display": "Corn",
+    "class_count": 4,
+    "class_ids": [
+      21,
+      22,
+      23,
+      24
+    ],
+    "diseases": [
+      "corn gray leaf spot",
+      "corn northern leaf blight",
+      "corn rust",
+      "corn smut"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "corn gray leaf spot",
+        "class_id": 21,
+        "crop": "Corn"
+      },
+      {
+        "disease_name": "corn northern leaf blight",
+        "class_id": 22,
+        "crop": "Corn"
+      },
+      {
+        "disease_name": "corn rust",
+        "class_id": 23,
+        "crop": "Corn"
+      },
+      {
+        "disease_name": "corn smut",
+        "class_id": 24,
+        "crop": "Corn"
+      }
+    ]
+  },
+  "cucumber": {
+    "crop_display": "Cucumber",
+    "class_count": 3,
+    "class_ids": [
+      25,
+      26,
+      27
+    ],
+    "diseases": [
+      "cucumber angular leaf spot",
+      "cucumber bacterial wilt",
+      "cucumber powdery mildew"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "cucumber angular leaf spot",
+        "class_id": 25,
+        "crop": "Cucumber"
+      },
+      {
+        "disease_name": "cucumber bacterial wilt",
+        "class_id": 26,
+        "crop": "Cucumber"
+      },
+      {
+        "disease_name": "cucumber powdery mildew",
+        "class_id": 27,
+        "crop": "Cucumber"
+      }
+    ]
+  },
+  "garlic": {
+    "crop_display": "Garlic",
+    "class_count": 2,
+    "class_ids": [
+      28,
+      29
+    ],
+    "diseases": [
+      "garlic leaf blight",
+      "garlic rust"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "garlic leaf blight",
+        "class_id": 28,
+        "crop": "Garlic"
+      },
+      {
+        "disease_name": "garlic rust",
+        "class_id": 29,
+        "crop": "Garlic"
+      }
+    ]
+  },
+  "ginger": {
+    "crop_display": "Ginger",
+    "class_count": 1,
+    "class_ids": [
+      30
+    ],
+    "diseases": [
+      "ginger sheath blight"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "ginger sheath blight",
+        "class_id": 30,
+        "crop": "Ginger"
+      }
+    ]
+  },
+  "grape": {
+    "crop_display": "Grape",
+    "class_count": 3,
+    "class_ids": [
+      31,
+      32,
+      33
+    ],
+    "diseases": [
+      "grape black rot",
+      "grape downy mildew",
+      "grape leaf spot"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "grape black rot",
+        "class_id": 31,
+        "crop": "Grape"
+      },
+      {
+        "disease_name": "grape downy mildew",
+        "class_id": 32,
+        "crop": "Grape"
+      },
+      {
+        "disease_name": "grape leaf spot",
+        "class_id": 33,
+        "crop": "Grape"
+      }
+    ]
+  },
+  "grapevine": {
+    "crop_display": "Grapevine",
+    "class_count": 1,
+    "class_ids": [
+      34
+    ],
+    "diseases": [
+      "grapevine leafroll disease"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "grapevine leafroll disease",
+        "class_id": 34,
+        "crop": "Grapevine"
+      }
+    ]
+  },
+  "lettuce": {
+    "crop_display": "Lettuce",
+    "class_count": 1,
+    "class_ids": [
+      35
+    ],
+    "diseases": [
+      "lettuce downy mildew"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "lettuce downy mildew",
+        "class_id": 35,
+        "crop": "Lettuce"
+      }
+    ]
+  },
+  "maple": {
+    "crop_display": "Maple",
+    "class_count": 1,
+    "class_ids": [
+      36
+    ],
+    "diseases": [
+      "maple tar spot"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "maple tar spot",
+        "class_id": 36,
+        "crop": "Maple"
+      }
+    ]
+  },
+  "peach": {
+    "crop_display": "Peach",
+    "class_count": 3,
+    "class_ids": [
+      37,
+      38,
+      39
+    ],
+    "diseases": [
+      "peach brown rot",
+      "peach leaf curl",
+      "peach scab"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "peach brown rot",
+        "class_id": 37,
+        "crop": "Peach"
+      },
+      {
+        "disease_name": "peach leaf curl",
+        "class_id": 38,
+        "crop": "Peach"
+      },
+      {
+        "disease_name": "peach scab",
+        "class_id": 39,
+        "crop": "Peach"
+      }
+    ]
+  },
+  "plum": {
+    "crop_display": "Plum",
+    "class_count": 1,
+    "class_ids": [
+      40
+    ],
+    "diseases": [
+      "plum brown rot"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "plum brown rot",
+        "class_id": 40,
+        "crop": "Plum"
+      }
+    ]
+  },
+  "potato": {
+    "crop_display": "Potato",
+    "class_count": 2,
+    "class_ids": [
+      41,
+      42
+    ],
+    "diseases": [
+      "potato early blight",
+      "potato late blight"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "potato early blight",
+        "class_id": 41,
+        "crop": "Potato"
+      },
+      {
+        "disease_name": "potato late blight",
+        "class_id": 42,
+        "crop": "Potato"
+      }
+    ]
+  },
+  "rice": {
+    "crop_display": "Rice",
+    "class_count": 2,
+    "class_ids": [
+      43,
+      44
+    ],
+    "diseases": [
+      "rice blast",
+      "rice sheath blight"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "rice blast",
+        "class_id": 43,
+        "crop": "Rice"
+      },
+      {
+        "disease_name": "rice sheath blight",
+        "class_id": 44,
+        "crop": "Rice"
+      }
+    ]
+  },
+  "soybean": {
+    "crop_display": "Soybean",
+    "class_count": 6,
+    "class_ids": [
+      45,
+      46,
+      47,
+      48,
+      49,
+      50
+    ],
+    "diseases": [
+      "soybean bacterial blight",
+      "soybean brown spot",
+      "soybean downy mildew",
+      "soybean frog eye leaf spot",
+      "soybean mosaic",
+      "soybean rust"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "soybean bacterial blight",
+        "class_id": 45,
+        "crop": "Soybean"
+      },
+      {
+        "disease_name": "soybean brown spot",
+        "class_id": 46,
+        "crop": "Soybean"
+      },
+      {
+        "disease_name": "soybean downy mildew",
+        "class_id": 47,
+        "crop": "Soybean"
+      },
+      {
+        "disease_name": "soybean frog eye leaf spot",
+        "class_id": 48,
+        "crop": "Soybean"
+      },
+      {
+        "disease_name": "soybean mosaic",
+        "class_id": 49,
+        "crop": "Soybean"
+      },
+      {
+        "disease_name": "soybean rust",
+        "class_id": 50,
+        "crop": "Soybean"
+      }
+    ]
+  },
+  "squash": {
+    "crop_display": "Squash",
+    "class_count": 1,
+    "class_ids": [
+      51
+    ],
+    "diseases": [
+      "squash powdery mildew"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "squash powdery mildew",
+        "class_id": 51,
+        "crop": "Squash"
+      }
+    ]
+  },
+  "tobacco": {
+    "crop_display": "Tobacco",
+    "class_count": 1,
+    "class_ids": [
+      52
+    ],
+    "diseases": [
+      "tobacco brown spot"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "tobacco brown spot",
+        "class_id": 52,
+        "crop": "Tobacco"
+      }
+    ]
+  },
+  "tomato": {
+    "crop_display": "Tomato",
+    "class_count": 7,
+    "class_ids": [
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59
+    ],
+    "diseases": [
+      "tomato bacterial leaf spot",
+      "tomato early blight",
+      "tomato late blight",
+      "tomato leaf mold",
+      "tomato mosaic virus",
+      "tomato septoria leaf spot",
+      "tomato yellow leaf curl virus"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "tomato bacterial leaf spot",
+        "class_id": 53,
+        "crop": "Tomato"
+      },
+      {
+        "disease_name": "tomato early blight",
+        "class_id": 54,
+        "crop": "Tomato"
+      },
+      {
+        "disease_name": "tomato late blight",
+        "class_id": 55,
+        "crop": "Tomato"
+      },
+      {
+        "disease_name": "tomato leaf mold",
+        "class_id": 56,
+        "crop": "Tomato"
+      },
+      {
+        "disease_name": "tomato mosaic virus",
+        "class_id": 57,
+        "crop": "Tomato"
+      },
+      {
+        "disease_name": "tomato septoria leaf spot",
+        "class_id": 58,
+        "crop": "Tomato"
+      },
+      {
+        "disease_name": "tomato yellow leaf curl virus",
+        "class_id": 59,
+        "crop": "Tomato"
+      }
+    ]
+  },
+  "wheat": {
+    "crop_display": "Wheat",
+    "class_count": 8,
+    "class_ids": [
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67
+    ],
+    "diseases": [
+      "wheat bacterial leaf streak (black chaff)",
+      "wheat head scab",
+      "wheat leaf rust",
+      "wheat loose smut",
+      "wheat powdery mildew",
+      "wheat septoria blotch",
+      "wheat stem rust",
+      "wheat stripe rust"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "wheat bacterial leaf streak (black chaff)",
+        "class_id": 60,
+        "crop": "Wheat"
+      },
+      {
+        "disease_name": "wheat head scab",
+        "class_id": 61,
+        "crop": "Wheat"
+      },
+      {
+        "disease_name": "wheat leaf rust",
+        "class_id": 62,
+        "crop": "Wheat"
+      },
+      {
+        "disease_name": "wheat loose smut",
+        "class_id": 63,
+        "crop": "Wheat"
+      },
+      {
+        "disease_name": "wheat powdery mildew",
+        "class_id": 64,
+        "crop": "Wheat"
+      },
+      {
+        "disease_name": "wheat septoria blotch",
+        "class_id": 65,
+        "crop": "Wheat"
+      },
+      {
+        "disease_name": "wheat stem rust",
+        "class_id": 66,
+        "crop": "Wheat"
+      },
+      {
+        "disease_name": "wheat stripe rust",
+        "class_id": 67,
+        "crop": "Wheat"
+      }
+    ]
+  },
+  "zucchini": {
+    "crop_display": "Zucchini",
+    "class_count": 3,
+    "class_ids": [
+      68,
+      69,
+      70
+    ],
+    "diseases": [
+      "zucchini bacterial wilt",
+      "zucchini powdery mildew",
+      "zucchini yellow mosaic virus"
+    ],
+    "disease_details": [
+      {
+        "disease_name": "zucchini bacterial wilt",
+        "class_id": 68,
+        "crop": "Zucchini"
+      },
+      {
+        "disease_name": "zucchini powdery mildew",
+        "class_id": 69,
+        "crop": "Zucchini"
+      },
+      {
+        "disease_name": "zucchini yellow mosaic virus",
+        "class_id": 70,
+        "crop": "Zucchini"
+      }
+    ]
+  }
+}

@@ -1,0 +1,77 @@
+# AgriX Machine Learning Training Configuration
+
+project_name: "agrix_plant_disease_detection"
+experiment_name: "mobilenetv3_large_20classes"
+
+# Model Architecture
+model:
+  architecture: "mobilenetv3_large_100"  # timm / torchvision model name
+  num_classes: 20
+  pretrained: true
+  drop_rate: 0.2
+  drop_path_rate: 0.1
+
+# Dataset & Class Definitions
+dataset:
+  raw_data_dir: "data/raw"
+  processed_data_dir: "data/processed"
+  image_size: 224
+  train_split: 0.70
+  val_split: 0.15
+  test_split: 0.15
+  random_seed: 42
+  num_workers: 4
+  classes:
+    - "tomato_healthy"
+    - "tomato_early_blight"
+    - "tomato_late_blight"
+    - "tomato_leaf_mold"
+    - "tomato_yellow_leaf_curl"
+    - "potato_healthy"
+    - "potato_early_blight"
+    - "potato_late_blight"
+    - "rice_healthy"
+    - "rice_bacterial_blight"
+    - "rice_brown_spot"
+    - "rice_leaf_blast"
+    - "cotton_healthy"
+    - "cotton_bacterial_blight"
+    - "cotton_curl_virus"
+    - "maize_healthy"
+    - "maize_common_rust"
+    - "maize_northern_blight"
+    - "chili_healthy"
+    - "chili_bacterial_spot"
+
+# Training Hyperparameters
+training:
+  batch_size: 32
+  epochs: 35
+  learning_rate: 0.0005
+  min_learning_rate: 0.00001
+  weight_decay: 0.01
+  optimizer: "adamw"           # Options: adamw, sgd
+  scheduler: "cosine_annealing" # Options: cosine_annealing, step
+  warmup_epochs: 3
+  early_stopping_patience: 7
+  mixed_precision: true         # Automatic mixed precision (AMP) for CUDA
+  label_smoothing: 0.1
+
+# Augmentation Policies
+augmentation:
+  horizontal_flip_prob: 0.5
+  vertical_flip_prob: 0.3
+  random_rotate_degrees: 30
+  color_jitter_brightness: 0.2
+  color_jitter_contrast: 0.2
+  color_jitter_saturation: 0.2
+  gaussian_blur_prob: 0.2
+  cutout_prob: 0.3
+
+# Evaluation & Export
+export:
+  checkpoint_dir: "models"
+  output_tflite_path: "models/disease_model.tflite"
+  quantization: "int8"         # Options: none (fp32), fp16, int8
+  calibration_samples: 200
+  reports_dir: "reports"

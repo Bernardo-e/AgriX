@@ -4,6 +4,6 @@ import android.net.Uri
 
 interface AiEngine {
     val type: AiEngineType
-    suspend fun analyze(imageUri: Uri, cropHint: String? = null): Result<AiResult>
+    suspend fun analyze(imageUri: Uri?, cropHint: String? = null): Result<AiResult>
     fun isAvailable(): Boolean
 }

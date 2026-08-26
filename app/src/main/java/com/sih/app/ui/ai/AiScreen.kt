@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -43,6 +44,7 @@ fun AiScreen(
     viewModel: AiViewModel,
     onNavigateToHome: () -> Unit,
     onNavigateToDiseaseScan: () -> Unit,
+    onNavigateToHistory: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val farmProfile by viewModel.farmProfile.collectAsState()
@@ -51,6 +53,7 @@ fun AiScreen(
         cropName = farmProfile?.currentCrop,
         onNavigateToHome = onNavigateToHome,
         onNavigateToDiseaseScan = onNavigateToDiseaseScan,
+        onNavigateToHistory = onNavigateToHistory,
         modifier = modifier,
     )
 }
@@ -60,6 +63,7 @@ fun AiScreenContent(
     cropName: String?,
     onNavigateToHome: () -> Unit,
     onNavigateToDiseaseScan: () -> Unit,
+    onNavigateToHistory: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
@@ -156,7 +160,66 @@ fun AiScreenContent(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Card 2: Smart Recommendations
+            // Card 2: Diagnosis History & Sync
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                shape = RoundedCornerShape(16.dp),
+                colors = CardDefaults.cardColors(
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                ),
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_nav_home),
+                            contentDescription = null,
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(26.dp),
+                        )
+                        Spacer(modifier = Modifier.width(12.dp))
+                        Text(
+                            text = stringResource(R.string.ai_card_history_title),
+                            style = MaterialTheme.typography.titleLarge,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Text(
+                        text = stringResource(R.string.ai_card_history_desc),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.85f),
+                    )
+
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    OutlinedButton(
+                        onClick = onNavigateToHistory,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 48.dp),
+                        shape = RoundedCornerShape(12.dp),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.ai_action_view_history),
+                            style = MaterialTheme.typography.labelLarge,
+                            fontWeight = FontWeight.SemiBold,
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            // Card 3: Smart Recommendations
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -303,6 +366,7 @@ private fun AiScreenPreview() {
             cropName = "Tomato",
             onNavigateToHome = {},
             onNavigateToDiseaseScan = {},
+            onNavigateToHistory = {},
         )
     }
 }

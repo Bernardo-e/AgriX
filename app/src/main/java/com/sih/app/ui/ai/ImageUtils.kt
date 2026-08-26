@@ -29,7 +29,7 @@ object ImageUtils {
 
             val decodeOptions = BitmapFactory.Options().apply {
                 inSampleSize = sampleSize
-                inPreferredConfig = Bitmap.Config.RGB_565
+                inPreferredConfig = Bitmap.Config.ARGB_8888
             }
 
             context.contentResolver.openInputStream(uri)?.use { stream ->

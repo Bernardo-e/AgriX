@@ -4,21 +4,23 @@ import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.runtime.remember
 import com.sih.app.core.locale.AppLanguage
 import com.sih.app.di.AppContainer
 import com.sih.app.ui.ai.AiScreen
 import com.sih.app.ui.ai.AiViewModel
 import com.sih.app.ui.ai.CropDiseaseScanScreen
 import com.sih.app.ui.ai.CropDiseaseScanViewModel
+import com.sih.app.ui.ai.DiagnosisHistoryScreen
+import com.sih.app.ui.ai.DiagnosisHistoryViewModel
 import com.sih.app.ui.farmsetup.FarmSavedScreen
 import com.sih.app.ui.farmsetup.FarmSetupScreen
 import com.sih.app.ui.farmsetup.FarmSetupViewModel
@@ -39,6 +41,8 @@ fun SihNavHost(
     navController: NavHostController = rememberNavController(),
 ) {
     val startDestination = when {
+        appContainer.farmSetupCompleted -> SihRoute.Home
+        appContainer.onboardingCompleted -> SihRoute.FarmSetup
         appContainer.languageSelectionCompleted -> SihRoute.Onboarding
         appContainer.splashCompleted -> SihRoute.Language
         else -> SihRoute.Splash
@@ -53,7 +57,13 @@ fun SihNavHost(
             SplashScreen(
                 onFinished = {
                     appContainer.splashCompleted = true
-                    navController.navigate(SihRoute.Language) {
+                    val nextRoute = when {
+                        appContainer.farmSetupCompleted -> SihRoute.Home
+                        appContainer.onboardingCompleted -> SihRoute.FarmSetup
+                        appContainer.languageSelectionCompleted -> SihRoute.Onboarding
+                        else -> SihRoute.Language
+                    }
+                    navController.navigate(nextRoute) {
                         popUpTo(SihRoute.Splash) { inclusive = true }
                     }
                 },
@@ -73,7 +83,13 @@ fun SihNavHost(
                     appContainer.splashCompleted = true
                     appContainer.languageSelectionCompleted = true
 
-                    navController.navigate(SihRoute.Onboarding) {
+                    val nextRoute = when {
+                        appContainer.farmSetupCompleted -> SihRoute.Home
+                        appContainer.onboardingCompleted -> SihRoute.FarmSetup
+                        else -> SihRoute.Onboarding
+                    }
+
+                    navController.navigate(nextRoute) {
                         popUpTo(SihRoute.Language) { inclusive = true }
                     }
 
@@ -95,7 +111,10 @@ fun SihNavHost(
         }
         composable(route = SihRoute.FarmSetup) {
             val viewModel: FarmSetupViewModel = viewModel(
-                factory = FarmSetupViewModel.provideFactory(appContainer.farmRepository),
+                factory = FarmSetupViewModel.provideFactory(
+                    farmRepository = appContainer.farmRepository,
+                    locationRepository = appContainer.locationRepository,
+                ),
             )
             FarmSetupScreen(
                 viewModel = viewModel,
@@ -134,6 +153,9 @@ fun SihNavHost(
                 onNavigateToAi = {
                     navController.navigate(SihRoute.Ai)
                 },
+                onEditFarm = {
+                    navController.navigate(SihRoute.FarmSetup)
+                },
             )
         }
         composable(route = SihRoute.SensorConnection) {
@@ -161,16 +183,36 @@ fun SihNavHost(
                 onNavigateToDiseaseScan = {
                     navController.navigate(SihRoute.DiseaseScan)
                 },
+                onNavigateToHistory = {
+                    navController.navigate(SihRoute.DiagnosisHistory)
+                },
             )
         }
         composable(route = SihRoute.DiseaseScan) {
             val viewModel: CropDiseaseScanViewModel = viewModel(
                 factory = CropDiseaseScanViewModel.provideFactory(
                     aiEngineRouter = appContainer.aiEngineRouter,
+                    classifier = appContainer.localAiEngine.classifier,
                     farmRepository = appContainer.farmRepository,
+                    diagnosisRepository = appContainer.diagnosisRepository,
+                    advisoryRepository = appContainer.advisoryRepository,
+                    languageStore = appContainer.languageStore,
                 ),
             )
             CropDiseaseScanScreen(
+                viewModel = viewModel,
+                onBack = {
+                    navController.popBackStack()
+                },
+            )
+        }
+        composable(route = SihRoute.DiagnosisHistory) {
+            val viewModel: DiagnosisHistoryViewModel = viewModel(
+                factory = DiagnosisHistoryViewModel.provideFactory(
+                    diagnosisRepository = appContainer.diagnosisRepository,
+                ),
+            )
+            DiagnosisHistoryScreen(
                 viewModel = viewModel,
                 onBack = {
                     navController.popBackStack()
