@@ -2,10 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- BLE Hardware Feature -->
+    <!-- BLE Hardware Feature (Optional for Demo / Simulator mode) -->
     <uses-feature
         android:name="android.hardware.bluetooth_le"
-        android:required="true" />
+        android:required="false" />
 
     <!-- Legacy Bluetooth Permissions (API 26-30) -->
     <uses-permission
