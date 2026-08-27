@@ -244,5 +244,13 @@
     <string name="sensor_probe_ready">Sensor probe ready. Insert into soil and tap Scan Soil.</string>
     <string name="sensor_scan_again">Scan Again</string>
     <string name="sensor_done_home">Done</string>
+    <string name="sensor_action_find_sensor">SCAN / FIND SENSOR</string>
+    <string name="sensor_no_sensor_detected_title">No sensor detected</string>
+    <string name="sensor_no_sensor_detected_desc">Make sure the sensor is powered on and nearby.</string>
+    <string name="sensor_reset_demo">Reset Demo</string>
+    <string name="sensor_scan_soil_again">Scan Soil Again</string>
+    <string name="sensor_data_title">AGRI X SENSOR DATA</string>
+    <string name="sensor_timestamp">Timestamp</string>
+    <string name="sensor_connection_mode">Connection: Demo BLE</string>
 </resources>
 

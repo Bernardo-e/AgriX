@@ -1,5 +1,6 @@
 package com.sih.app.ui.ai
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,46 +32,57 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.sih.app.R
-import com.sih.app.ui.theme.SIHTheme
 
 @Composable
 fun AiScreen(
     viewModel: AiViewModel,
     onNavigateToHome: () -> Unit,
+    onNavigateToSoil: () -> Unit,
     onNavigateToDiseaseScan: () -> Unit,
     onNavigateToHistory: () -> Unit = {},
+    onNavigateToFarm: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    val farmProfile by viewModel.farmProfile.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     AiScreenContent(
-        cropName = farmProfile?.currentCrop,
+        uiState = uiState,
         onNavigateToHome = onNavigateToHome,
+        onNavigateToSoil = onNavigateToSoil,
         onNavigateToDiseaseScan = onNavigateToDiseaseScan,
         onNavigateToHistory = onNavigateToHistory,
+        onNavigateToFarm = onNavigateToFarm,
         modifier = modifier,
     )
 }
 
 @Composable
 fun AiScreenContent(
-    cropName: String?,
+    uiState: AiUiState,
     onNavigateToHome: () -> Unit,
+    onNavigateToSoil: () -> Unit,
     onNavigateToDiseaseScan: () -> Unit,
     onNavigateToHistory: () -> Unit = {},
+    onNavigateToFarm: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
+    val farm = uiState.farm
+    val reading = uiState.latestReading
+    val localAnalysis = uiState.localAnalysis
+
     Scaffold(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
             AgriXBottomNavBar(
                 onNavigateToHome = onNavigateToHome,
+                onNavigateToSoil = onNavigateToSoil,
+                onNavigateToFarm = onNavigateToFarm,
             )
         },
     ) { innerPadding ->
@@ -219,7 +231,7 @@ fun AiScreenContent(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            // Card 3: Smart Recommendations
+            // Card 3: Smart Recommendations (Active Soil & Crop Advisory)
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
@@ -255,12 +267,13 @@ fun AiScreenContent(
 
                         Surface(
                             shape = RoundedCornerShape(8.dp),
-                            color = MaterialTheme.colorScheme.secondary.copy(alpha = 0.15f),
+                            color = if (reading != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f),
                         ) {
                             Text(
-                                text = stringResource(R.string.ai_status_sensor_required),
+                                text = if (reading != null) "Live Telemetry" else "Demo Ready",
                                 style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                fontWeight = FontWeight.Bold,
+                                color = if (reading != null) Color.White else MaterialTheme.colorScheme.onSecondaryContainer,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             )
                         }
@@ -268,13 +281,78 @@ fun AiScreenContent(
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    Text(
-                        text = stringResource(R.string.ai_card_recommendations_desc),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.85f),
-                    )
+                    if (reading != null && localAnalysis != null) {
+                        Text(
+                            text = "Crop: ${farm?.currentCrop ?: "Tomato"} • Soil: ${localAnalysis.soilCondition}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
+                        )
+
+                        Spacer(modifier = Modifier.height(6.dp))
+
+                        Text(
+                            text = "Irrigation: ${localAnalysis.irrigationRecommendation}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.9f),
+                        )
+
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "Action: ${localAnalysis.immediateAction}",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.85f),
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = onNavigateToSoil,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 46.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                            ),
+                        ) {
+                            Text(
+                                text = "View Sensor Analysis",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                    } else {
+                        Text(
+                            text = stringResource(R.string.ai_card_recommendations_desc),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.85f),
+                        )
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Button(
+                            onClick = onNavigateToSoil,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .heightIn(min = 46.dp),
+                            shape = RoundedCornerShape(12.dp),
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = MaterialTheme.colorScheme.primary,
+                            ),
+                        ) {
+                            Text(
+                                text = "Scan Soil Sensor",
+                                style = MaterialTheme.typography.labelMedium,
+                                fontWeight = FontWeight.Bold,
+                            )
+                        }
+                    }
                 }
             }
+
+            Spacer(modifier = Modifier.height(20.dp))
         }
     }
 }
@@ -282,6 +360,8 @@ fun AiScreenContent(
 @Composable
 private fun AgriXBottomNavBar(
     onNavigateToHome: () -> Unit,
+    onNavigateToSoil: () -> Unit,
+    onNavigateToFarm: () -> Unit,
 ) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
@@ -306,7 +386,7 @@ private fun AgriXBottomNavBar(
         )
         NavigationBarItem(
             selected = false,
-            onClick = { /* Soil slice */ },
+            onClick = onNavigateToSoil,
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_soil_sprout),
@@ -340,7 +420,7 @@ private fun AgriXBottomNavBar(
         )
         NavigationBarItem(
             selected = false,
-            onClick = { /* Farm slice */ },
+            onClick = onNavigateToFarm,
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_onboarding_soil),
@@ -354,19 +434,6 @@ private fun AgriXBottomNavBar(
                     style = MaterialTheme.typography.labelSmall,
                 )
             },
-        )
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun AiScreenPreview() {
-    SIHTheme {
-        AiScreenContent(
-            cropName = "Tomato",
-            onNavigateToHome = {},
-            onNavigateToDiseaseScan = {},
-            onNavigateToHistory = {},
         )
     }
 }

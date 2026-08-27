@@ -177,7 +177,11 @@ fun SihNavHost(
         }
         composable(route = SihRoute.Ai) {
             val viewModel: AiViewModel = viewModel(
-                factory = AiViewModel.provideFactory(appContainer.farmRepository),
+                factory = AiViewModel.provideFactory(
+                    farmRepository = appContainer.farmRepository,
+                    bleSensorRepository = appContainer.bleSensorRepository,
+                    localSensorEngine = appContainer.localSensorEngine,
+                ),
             )
             AiScreen(
                 viewModel = viewModel,
@@ -186,11 +190,17 @@ fun SihNavHost(
                         popUpTo(SihRoute.Home) { inclusive = true }
                     }
                 },
+                onNavigateToSoil = {
+                    navController.navigate(SihRoute.SensorConnection)
+                },
                 onNavigateToDiseaseScan = {
                     navController.navigate(SihRoute.DiseaseScan)
                 },
                 onNavigateToHistory = {
                     navController.navigate(SihRoute.DiagnosisHistory)
+                },
+                onNavigateToFarm = {
+                    navController.navigate(SihRoute.FarmSetup)
                 },
             )
         }

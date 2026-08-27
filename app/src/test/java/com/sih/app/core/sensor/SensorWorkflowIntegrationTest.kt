@@ -15,6 +15,32 @@ class SensorWorkflowIntegrationTest {
     private val localEngine = LocalSensorEngine()
 
     @Test
+    fun `test discrete stages of SensorState`() {
+        val demoDevice = BleDevice("AgriX Sensor", "DEMO:BLE:AGRIX:01", -55, isDemo = true)
+        val reading = SensorReading(28.5, 62.0, 47.0, 6.7, source = "SIMULATED_BLE")
+        val localAnalysis = localEngine.analyze(reading, "Tomato")
+        val report = CombinedSensorReport(
+            reading = reading,
+            localAnalysis = localAnalysis,
+            cloudAnalysis = null,
+            isCloudFallback = true,
+            finalRecommendation = "Optimal soil moisture.",
+        )
+
+        assertEquals(SensorStateStage.DISCONNECTED_INITIAL, SensorState.DisconnectedInitial.stage)
+        assertEquals(SensorStateStage.SCAN_1_NO_SENSOR, SensorState.Scan1NoSensor(isScanning = false).stage)
+        assertEquals(SensorStateStage.SCAN_2_SENSOR_FOUND, SensorState.Scan2SensorFound(demoDevice, isScanning = false).stage)
+        assertEquals(SensorStateStage.CONNECTING, SensorState.Connecting(demoDevice).stage)
+        assertEquals(SensorStateStage.CONNECTED_DEMO, SensorState.ConnectedDemo(demoDevice).stage)
+        assertEquals(SensorStateStage.SCANNING_SOIL, SensorState.ScanningSoil(demoDevice, "Reading moisture...", 0.35f).stage)
+        assertEquals(SensorStateStage.DATA_READY, SensorState.DataReady(demoDevice, reading).stage)
+        assertEquals(SensorStateStage.ANALYZING_LOCAL, SensorState.AnalyzingLocal(demoDevice, reading).stage)
+        assertEquals(SensorStateStage.ANALYZING_CLOUD, SensorState.AnalyzingCloud(demoDevice, reading, localAnalysis).stage)
+        assertEquals(SensorStateStage.CLOUD_FAILED_LOCAL_FALLBACK, SensorState.ResultReady(demoDevice, report, isCloudFallback = true).stage)
+        assertEquals(SensorStateStage.RESULT_READY, SensorState.ResultReady(demoDevice, report, isCloudFallback = false).stage)
+    }
+
+    @Test
     fun `test combined report synthesis with local analysis and successful cloud analysis`() {
         val reading = SensorReading(
             temperature = 28.5,

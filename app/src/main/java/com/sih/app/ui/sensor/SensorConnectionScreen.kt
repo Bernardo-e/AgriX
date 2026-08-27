@@ -4,9 +4,6 @@ import android.Manifest
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -21,8 +18,6 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,7 +27,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -59,8 +53,10 @@ import com.sih.app.R
 import com.sih.app.core.sensor.BleConnectionState
 import com.sih.app.core.sensor.BleDevice
 import com.sih.app.core.sensor.CombinedSensorReport
-import com.sih.app.core.sensor.IrrigationPriority
-import com.sih.app.core.sensor.SensorReading
+import com.sih.app.core.sensor.SensorState
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Composable
 fun SensorConnectionScreen(
@@ -68,9 +64,8 @@ fun SensorConnectionScreen(
     onBack: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val sensorState by viewModel.sensorState.collectAsState()
     val connectionState by viewModel.connectionState.collectAsState()
-    val isScanning by viewModel.isScanning.collectAsState()
-    val scanState by viewModel.scanState.collectAsState()
 
     val permissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestMultiplePermissions(),
@@ -81,28 +76,6 @@ fun SensorConnectionScreen(
         }
     }
 
-    LaunchedEffect(Unit) {
-        if (!viewModel.hasRequiredPermissions()) {
-            val permissionsToRequest = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                arrayOf(
-                    Manifest.permission.BLUETOOTH_SCAN,
-                    Manifest.permission.BLUETOOTH_CONNECT,
-                )
-            } else {
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-            }
-            permissionLauncher.launch(permissionsToRequest)
-        } else {
-            viewModel.startScan()
-        }
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            viewModel.stopScan()
-        }
-    }
-
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -110,22 +83,40 @@ fun SensorConnectionScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp, vertical = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                IconButton(onClick = onBack) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_arrow_back),
-                        contentDescription = stringResource(R.string.action_back),
-                        modifier = Modifier.size(24.dp),
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_arrow_back),
+                            contentDescription = stringResource(R.string.action_back),
+                            modifier = Modifier.size(24.dp),
+                        )
+                    }
+                    Text(
+                        text = stringResource(R.string.sensor_screen_title),
+                        style = MaterialTheme.typography.titleLarge,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground,
+                        modifier = Modifier.padding(start = 8.dp),
                     )
                 }
-                Text(
-                    text = stringResource(R.string.sensor_screen_title),
-                    style = MaterialTheme.typography.titleLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(start = 8.dp),
-                )
+
+                // Demo Reset Action Button in header
+                Surface(
+                    shape = RoundedCornerShape(8.dp),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    modifier = Modifier.clickable { viewModel.resetDemo() },
+                ) {
+                    Text(
+                        text = stringResource(R.string.sensor_reset_demo),
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                    )
+                }
             }
         },
     ) { innerPadding ->
@@ -135,80 +126,89 @@ fun SensorConnectionScreen(
                 .padding(innerPadding)
                 .padding(horizontal = 18.dp),
         ) {
-            when {
-                // 1. Soil Telemetry Scanning in Progress
-                scanState is SensorScanState.Scanning -> {
-                    val scanning = scanState as SensorScanState.Scanning
-                    ScanningProgressView(
-                        stepName = scanning.stepName,
-                        progress = scanning.progress,
-                    )
-                }
-
-                // 2. Completed Sensor Report & Analysis View
-                scanState is SensorScanState.Completed -> {
-                    val completed = scanState as SensorScanState.Completed
-                    SensorReportView(
-                        report = completed.report,
-                        onScanAgain = { viewModel.performSoilScan() },
-                        onDone = onBack,
-                    )
-                }
-
-                // 3. Sensor Connected & Probe Ready for Soil Insertion
-                connectionState is BleConnectionState.Connected -> {
-                    val connectedDevice = (connectionState as BleConnectionState.Connected).device
-                    ConnectedReadyView(
-                        device = connectedDevice,
-                        onScanSoil = { viewModel.performSoilScan() },
-                        onDisconnect = { viewModel.disconnect() },
-                    )
-                }
-
-                // 4. Connecting in progress
-                connectionState is BleConnectionState.Connecting -> {
-                    val connectingDevice = (connectionState as BleConnectionState.Connecting).device
-                    ConnectingCard(device = connectingDevice)
-                }
-
-                // 5. Bluetooth permissions needed
-                connectionState is BleConnectionState.PermissionRequired -> {
-                    PermissionRequiredCard(
-                        onRequestPermissions = {
-                            val perms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                arrayOf(
-                                    Manifest.permission.BLUETOOTH_SCAN,
-                                    Manifest.permission.BLUETOOTH_CONNECT,
-                                )
+            when (val state = sensorState) {
+                // 1. Initial State before any scan
+                is SensorState.DisconnectedInitial -> {
+                    DisconnectedInitialView(
+                        onStartScan = {
+                            if (!viewModel.hasRequiredPermissions()) {
+                                val perms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                    arrayOf(
+                                        Manifest.permission.BLUETOOTH_SCAN,
+                                        Manifest.permission.BLUETOOTH_CONNECT,
+                                    )
+                                } else {
+                                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+                                }
+                                permissionLauncher.launch(perms)
                             } else {
-                                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+                                viewModel.startScan()
                             }
-                            permissionLauncher.launch(perms)
                         },
                     )
                 }
 
-                // 6. Bluetooth Unavailable
-                connectionState is BleConnectionState.BluetoothUnavailable -> {
-                    BluetoothUnavailableCard()
+                // 2. First Scan: 1-2s scanning -> Empty State ("No sensor detected")
+                is SensorState.Scan1NoSensor -> {
+                    if (state.isScanning) {
+                        SearchingSpinnerView()
+                    } else {
+                        Scan1NoSensorView(
+                            onScanAgain = { viewModel.startScan() },
+                        )
+                    }
                 }
 
-                // 7. Connection Failed
-                connectionState is BleConnectionState.ConnectionFailed -> {
-                    ConnectionFailedCard(
-                        message = (connectionState as BleConnectionState.ConnectionFailed).message,
-                        onRetry = { viewModel.startScan() },
+                // 3. Second Scan: 1-2s scanning -> Found "AgriX Sensor"
+                is SensorState.Scan2SensorFound -> {
+                    if (state.isScanning) {
+                        SearchingSpinnerView()
+                    } else {
+                        Scan2SensorFoundView(
+                            device = state.device,
+                            onConnect = { viewModel.connect(state.device) },
+                            onScanAgain = { viewModel.startScan() },
+                        )
+                    }
+                }
+
+                // 4. Connecting Animation
+                is SensorState.Connecting -> {
+                    ConnectingCard(device = state.device)
+                }
+
+                // 5. Sensor Connected & Ready for Soil Insertion
+                is SensorState.ConnectedDemo -> {
+                    ConnectedDemoView(
+                        device = state.device,
+                        onScanSoil = { viewModel.performSoilScan() },
+                        onDisconnect = { viewModel.disconnect() },
+                        onResetDemo = { viewModel.resetDemo() },
                     )
                 }
 
-                // 8. Default Discovery State
-                else -> {
-                    DiscoveredDevicesSection(
-                        connectionState = connectionState,
-                        isScanning = isScanning,
-                        onScan = { viewModel.startScan() },
-                        onStopScan = { viewModel.stopScan() },
-                        onConnect = { device -> viewModel.connect(device) },
+                // 6. Active Soil Scan Multi-step Animation
+                is SensorState.ScanningSoil -> {
+                    ScanningSoilProgressView(
+                        stepName = state.stepName,
+                        progress = state.progress,
+                    )
+                }
+
+                // 7. Analyzing State (Local & Cloud)
+                is SensorState.DataReady,
+                is SensorState.AnalyzingLocal,
+                is SensorState.AnalyzingCloud -> {
+                    AnalyzingProgressView()
+                }
+
+                // 8. Result Ready (Full Report Screen)
+                is SensorState.ResultReady -> {
+                    SensorReportView(
+                        report = state.report,
+                        onScanSoilAgain = { viewModel.performSoilScan() },
+                        onDone = onBack,
+                        onResetDemo = { viewModel.resetDemo() },
                     )
                 }
             }
@@ -217,250 +217,339 @@ fun SensorConnectionScreen(
 }
 
 // -------------------------------------------------------------
-// SENSOR DISCOVERY & CONNECTION VIEWS
+// STAGE 1: DISCONNECTED INITIAL VIEW
 // -------------------------------------------------------------
 
 @Composable
-private fun DiscoveredDevicesSection(
-    connectionState: BleConnectionState,
-    isScanning: Boolean,
-    onScan: () -> Unit,
-    onStopScan: () -> Unit,
-    onConnect: (BleDevice) -> Unit,
+private fun DisconnectedInitialView(
+    onStartScan: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val devices = (connectionState as? BleConnectionState.DevicesFound)?.devices.orEmpty()
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Spacer(modifier = Modifier.height(8.dp))
 
-    Column(modifier = modifier.fillMaxSize()) {
         Text(
             text = stringResource(R.string.sensor_screen_subtitle),
             style = MaterialTheme.typography.bodyLarge,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 4.dp),
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         // Demo Prototype Notice Card
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(12.dp),
+            shape = RoundedCornerShape(14.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f),
             ),
         ) {
             Row(
-                modifier = Modifier.padding(14.dp),
+                modifier = Modifier.padding(16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Icon(
                     painter = painterResource(R.drawable.ic_soil_sprout),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(22.dp),
+                    modifier = Modifier.size(24.dp),
                 )
-                Spacer(modifier = Modifier.width(10.dp))
+                Spacer(modifier = Modifier.width(12.dp))
                 Text(
                     text = stringResource(R.string.sensor_demo_notice),
-                    style = MaterialTheme.typography.bodySmall,
+                    style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSecondaryContainer,
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(18.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
-        Row(
+        Card(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
         ) {
-            Text(
-                text = stringResource(R.string.sensor_section_nearby),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.primary,
-            )
-
-            if (isScanning) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    CircularProgressIndicator(
-                        modifier = Modifier.size(16.dp),
-                        strokeWidth = 2.dp,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(R.string.sensor_action_scanning),
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
-
-        if (devices.isEmpty()) {
-            Card(
+            Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f, fill = false),
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                ),
+                    .padding(28.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Column(
+                Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(28.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
+                        .size(64.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center,
                 ) {
-                    CircularProgressIndicator(
+                    Icon(
+                        painter = painterResource(R.drawable.ic_soil_sprout),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
                         modifier = Modifier.size(36.dp),
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                    Spacer(modifier = Modifier.height(14.dp))
-                    Text(
-                        text = if (isScanning) {
-                            "Searching for nearby sensors..."
-                        } else {
-                            stringResource(R.string.sensor_no_devices_found)
-                        },
-                        style = MaterialTheme.typography.bodyMedium,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-            }
-        } else {
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-                verticalArrangement = Arrangement.spacedBy(10.dp),
-            ) {
-                items(devices, key = { it.address }) { device ->
-                    DeviceItemCard(
-                        device = device,
-                        onConnect = { onConnect(device) },
-                    )
-                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Ready to discover soil sensor",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+
+                Text(
+                    text = "Press the button below to scan for nearby AgriX sensor probes.",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    modifier = Modifier.padding(top = 6.dp),
+                )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Button(
-            onClick = {
-                if (isScanning) onStopScan() else onScan()
-            },
+            onClick = onStartScan,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 50.dp),
+                .heightIn(min = 54.dp),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+        ) {
+            Text(
+                text = stringResource(R.string.sensor_action_find_sensor),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    }
+}
+
+// -------------------------------------------------------------
+// STAGE 2: FIRST SCAN -> NO SENSOR FOUND (EMPTY STATE)
+// -------------------------------------------------------------
+
+@Composable
+private fun Scan1NoSensorView(
+    onScanAgain: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(32.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(64.dp)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.error.copy(alpha = 0.12f)),
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Text(
+                        text = "!",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.error,
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(18.dp))
+
+                Text(
+                    text = stringResource(R.string.sensor_no_sensor_detected_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+
+                Text(
+                    text = stringResource(R.string.sensor_no_sensor_detected_desc),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f),
+                    modifier = Modifier.padding(top = 8.dp),
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Button(
+            onClick = onScanAgain,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 54.dp),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+        ) {
+            Text(
+                text = stringResource(R.string.sensor_action_find_sensor),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+            )
+        }
+    }
+}
+
+// -------------------------------------------------------------
+// STAGE 3: SECOND SCAN -> SENSOR FOUND
+// -------------------------------------------------------------
+
+@Composable
+private fun Scan2SensorFoundView(
+    device: BleDevice,
+    onConnect: () -> Unit,
+    onScanAgain: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+    ) {
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = stringResource(R.string.sensor_section_nearby),
+            style = MaterialTheme.typography.labelLarge,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+        )
+
+        Spacer(modifier = Modifier.height(14.dp))
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(onClick = onConnect),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.55f),
+            ),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(
+                            text = device.name,
+                            style = MaterialTheme.typography.titleMedium,
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Surface(
+                            shape = RoundedCornerShape(6.dp),
+                            color = MaterialTheme.colorScheme.primary,
+                        ) {
+                            Text(
+                                text = stringResource(R.string.sensor_demo_badge),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.White,
+                                modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+                            )
+                        }
+                    }
+
+                    Text(
+                        text = "Available • Demo BLE Sensor",
+                        style = MaterialTheme.typography.bodySmall,
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.padding(top = 4.dp),
+                    )
+
+                    Text(
+                        text = "${device.address} • RSSI: ${device.rssi} dBm",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                        modifier = Modifier.padding(top = 2.dp),
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Button(
+                    onClick = onConnect,
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                    ),
+                ) {
+                    Text(
+                        text = stringResource(R.string.sensor_action_connect),
+                        style = MaterialTheme.typography.labelMedium,
+                        fontWeight = FontWeight.Bold,
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        OutlinedButton(
+            onClick = onScanAgain,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 48.dp),
             shape = RoundedCornerShape(12.dp),
         ) {
             Text(
-                text = if (isScanning) {
-                    stringResource(R.string.sensor_action_scanning)
-                } else if (devices.isNotEmpty()) {
-                    stringResource(R.string.sensor_action_scan_again)
-                } else {
-                    stringResource(R.string.sensor_action_scan)
-                },
+                text = stringResource(R.string.sensor_action_scan_again),
                 style = MaterialTheme.typography.labelLarge,
                 fontWeight = FontWeight.SemiBold,
             )
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-    }
-}
-
-@Composable
-private fun DeviceItemCard(
-    device: BleDevice,
-    onConnect: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Card(
-        modifier = modifier
-            .fillMaxWidth()
-            .clickable(onClick = onConnect),
-        shape = RoundedCornerShape(14.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = if (device.isEsp32OrAgriX) {
-                MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.5f)
-            } else {
-                MaterialTheme.colorScheme.surfaceVariant
-            },
-        ),
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = device.name,
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = if (device.isDemo) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary,
-                    ) {
-                        Text(
-                            text = if (device.isDemo) stringResource(R.string.sensor_demo_badge) else stringResource(R.string.sensor_agrix_badge),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.White,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                        )
-                    }
-                }
-                Text(
-                    text = "${device.address} • Available • RSSI: ${device.rssi} dBm",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.75f),
-                    modifier = Modifier.padding(top = 4.dp),
-                )
-            }
-
-            Spacer(modifier = Modifier.width(12.dp))
-
-            Button(
-                onClick = onConnect,
-                shape = RoundedCornerShape(10.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ),
-            ) {
-                Text(
-                    text = stringResource(R.string.sensor_action_connect),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
-        }
     }
 }
 
 // -------------------------------------------------------------
-// CONNECTED & READY FOR PROBE SCAN VIEW
+// STAGE 4 & 5: CONNECTED DEMO VIEW (READY FOR SOIL INSERTION)
 // -------------------------------------------------------------
 
 @Composable
-private fun ConnectedReadyView(
+private fun ConnectedDemoView(
     device: BleDevice,
     onScanSoil: () -> Unit,
     onDisconnect: () -> Unit,
+    onResetDemo: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -502,18 +591,18 @@ private fun ConnectedReadyView(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "✓ AgriX Sensor Connected",
-                    style = MaterialTheme.typography.titleLarge,
+                    text = "✓ " + device.name,
+                    style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
 
                 Text(
-                    text = device.name,
+                    text = "Connected",
                     style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.SemiBold,
+                    fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.padding(top = 4.dp),
+                    modifier = Modifier.padding(top = 2.dp),
                 )
 
                 Surface(
@@ -522,7 +611,7 @@ private fun ConnectedReadyView(
                     modifier = Modifier.padding(top = 8.dp),
                 ) {
                     Text(
-                        text = "Connection Type: Demo BLE (Simulated Telemetry)",
+                        text = stringResource(R.string.sensor_connection_mode),
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
@@ -530,37 +619,30 @@ private fun ConnectedReadyView(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(18.dp))
 
                 Surface(
                     shape = RoundedCornerShape(12.dp),
-                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.85f),
+                    color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
                 ) {
                     Column(
                         modifier = Modifier.padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
-                            text = "🌱 Sensor Probe Ready",
-                            style = MaterialTheme.typography.titleSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
-                        )
-                        Text(
-                            text = "Insert the physical sensor probe into the soil around the crop root zone, then tap Scan Soil below.",
+                            text = "🌱 " + stringResource(R.string.sensor_probe_ready),
                             style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Center,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(top = 6.dp),
                         )
                     }
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
-        // Large Primary Action: SCAN SOIL
+        // Large CTA Button: SCAN SOIL (remains persistently available)
         Button(
             onClick = onScanSoil,
             modifier = Modifier
@@ -589,30 +671,47 @@ private fun ConnectedReadyView(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        OutlinedButton(
-            onClick = onDisconnect,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 48.dp),
-            shape = RoundedCornerShape(12.dp),
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
-            Text(
-                text = stringResource(R.string.sensor_action_disconnect),
-                style = MaterialTheme.typography.labelLarge,
-                fontWeight = FontWeight.SemiBold,
-            )
-        }
+            OutlinedButton(
+                onClick = onDisconnect,
+                modifier = Modifier
+                    .weight(1f)
+                    .heightIn(min = 48.dp),
+                shape = RoundedCornerShape(12.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.sensor_action_disconnect),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
 
-        Spacer(modifier = Modifier.height(24.dp))
+            OutlinedButton(
+                onClick = onResetDemo,
+                modifier = Modifier
+                    .weight(1f)
+                    .heightIn(min = 48.dp),
+                shape = RoundedCornerShape(12.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.sensor_reset_demo),
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.SemiBold,
+                )
+            }
+        }
     }
 }
 
 // -------------------------------------------------------------
-// LIVE SCANNING PROGRESS ANIMATION VIEW
+// STAGE 6: ACTIVE SOIL SCAN ANIMATION (2-4 SECONDS)
 // -------------------------------------------------------------
 
 @Composable
-private fun ScanningProgressView(
+private fun ScanningSoilProgressView(
     stepName: String,
     progress: Float,
     modifier: Modifier = Modifier,
@@ -685,17 +784,16 @@ private fun ScanningProgressView(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Step tracker list
         Column(
             modifier = Modifier.fillMaxWidth(0.9f),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
-            StepItemRow("Preparing soil scan", progress >= 0.15f)
-            StepItemRow("Reading temperature", progress >= 0.35f)
-            StepItemRow("Reading humidity", progress >= 0.55f)
-            StepItemRow("Reading soil moisture", progress >= 0.75f)
-            StepItemRow("Estimating soil pH", progress >= 0.90f)
-            StepItemRow("Finalizing sensor packet", progress >= 1.00f)
+            StepItemRow("Preparing sensor...", progress >= 0.15f)
+            StepItemRow("Reading soil moisture...", progress >= 0.35f)
+            StepItemRow("Reading temperature...", progress >= 0.55f)
+            StepItemRow("Reading humidity...", progress >= 0.75f)
+            StepItemRow("Estimating soil pH...", progress >= 0.90f)
+            StepItemRow("Analyzing soil...", progress >= 1.00f)
         }
     }
 }
@@ -723,18 +821,55 @@ private fun StepItemRow(label: String, isDone: Boolean) {
 }
 
 // -------------------------------------------------------------
-// COMPREHENSIVE FINAL SENSOR REPORT VIEW
+// STAGE 7: ANALYZING PROGRESS
+// -------------------------------------------------------------
+
+@Composable
+private fun AnalyzingProgressView(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(28.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        CircularProgressIndicator(
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(52.dp),
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Analyzing Soil Telemetry...",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        Text(
+            text = "Running local deterministic rules & companion Gemini AI...",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 6.dp),
+        )
+    }
+}
+
+// -------------------------------------------------------------
+// STAGE 8: COMPREHENSIVE FINAL SENSOR REPORT VIEW
 // -------------------------------------------------------------
 
 @Composable
 private fun SensorReportView(
     report: CombinedSensorReport,
-    onScanAgain: () -> Unit,
+    onScanSoilAgain: () -> Unit,
     onDone: () -> Unit,
+    onResetDemo: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val reading = report.reading
     val scrollState = rememberScrollState()
+    val formattedTime = SimpleDateFormat("MMM dd, yyyy • hh:mm a", Locale.getDefault()).format(Date(reading.timestamp))
 
     Column(
         modifier = modifier
@@ -756,7 +891,7 @@ private fun SensorReportView(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = stringResource(R.string.sensor_report_title),
+                        text = stringResource(R.string.sensor_data_title),
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -766,7 +901,7 @@ private fun SensorReportView(
                         color = MaterialTheme.colorScheme.primary,
                     ) {
                         Text(
-                            text = "✓ Connected",
+                            text = "✓ Sensor connected",
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
@@ -778,9 +913,17 @@ private fun SensorReportView(
                 Spacer(modifier = Modifier.height(6.dp))
 
                 Text(
-                    text = "Data Source: Demo BLE Sensor (Simulated Telemetry)",
+                    text = "Data source: Demo BLE Sensor",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
+                )
+
+                Text(
+                    text = "${stringResource(R.string.sensor_timestamp)}: $formattedTime",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
+                    modifier = Modifier.padding(top = 2.dp),
                 )
             }
         }
@@ -827,7 +970,7 @@ private fun SensorReportView(
                 title = "Soil Moisture",
                 value = "${reading.soilMoisture} %",
                 badge = when {
-                    reading.soilMoisture < 35.0 -> "Low / Deficit"
+                    reading.soilMoisture < 35.0 -> "Low"
                     reading.soilMoisture <= 55.0 -> "Optimal"
                     else -> "High"
                 },
@@ -856,7 +999,7 @@ private fun SensorReportView(
 
         Spacer(modifier = Modifier.height(20.dp))
 
-        // 3. Local Analysis Card (100% Offline)
+        // 3. Local Analysis Card (100% Offline Rule Engine)
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -1036,44 +1179,146 @@ private fun SensorReportView(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Actions: Scan Again & Done
+        // Primary Persistent Action: SCAN SOIL AGAIN (Never disappears!)
+        Button(
+            onClick = onScanSoilAgain,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(min = 54.dp),
+            shape = RoundedCornerShape(14.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+            ),
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_soil_sprout),
+                    contentDescription = null,
+                    tint = Color.White,
+                    modifier = Modifier.size(22.dp),
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
+                    text = stringResource(R.string.sensor_scan_soil_again).uppercase(),
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold,
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             OutlinedButton(
-                onClick = onScanAgain,
+                onClick = onResetDemo,
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = 50.dp),
+                    .heightIn(min = 48.dp),
                 shape = RoundedCornerShape(12.dp),
             ) {
                 Text(
-                    text = stringResource(R.string.sensor_scan_again),
-                    style = MaterialTheme.typography.labelLarge,
+                    text = stringResource(R.string.sensor_reset_demo),
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
             }
 
-            Button(
+            OutlinedButton(
                 onClick = onDone,
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = 50.dp),
+                    .heightIn(min = 48.dp),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                ),
             ) {
                 Text(
                     text = stringResource(R.string.sensor_done_home),
-                    style = MaterialTheme.typography.labelLarge,
+                    style = MaterialTheme.typography.labelMedium,
                     fontWeight = FontWeight.SemiBold,
                 )
             }
         }
 
         Spacer(modifier = Modifier.height(28.dp))
+    }
+}
+
+// -------------------------------------------------------------
+// HELPER SUB-COMPONENTS
+// -------------------------------------------------------------
+
+@Composable
+private fun SearchingSpinnerView(
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+    ) {
+        CircularProgressIndicator(
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.size(48.dp),
+        )
+        Spacer(modifier = Modifier.height(20.dp))
+        Text(
+            text = "Scanning for nearby sensors...",
+            style = MaterialTheme.typography.titleMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onBackground,
+        )
+        Text(
+            text = "Searching on simulated BLE channels...",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(top = 4.dp),
+        )
+    }
+}
+
+@Composable
+private fun ConnectingCard(
+    device: BleDevice,
+    modifier: Modifier = Modifier,
+) {
+    Card(
+        modifier = modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(32.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            CircularProgressIndicator(
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.size(44.dp),
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = stringResource(R.string.sensor_action_connecting),
+                style = MaterialTheme.typography.titleMedium,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+
+            Text(
+                text = device.name,
+                style = MaterialTheme.typography.bodyLarge,
+                color = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.padding(top = 6.dp),
+            )
+        }
     }
 }
 
@@ -1147,165 +1392,5 @@ private fun AnalysisFieldRow(
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 2.dp),
         )
-    }
-}
-
-@Composable
-private fun ConnectingCard(
-    device: BleDevice,
-    modifier: Modifier = Modifier,
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(32.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            CircularProgressIndicator(
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(44.dp),
-            )
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            Text(
-                text = stringResource(R.string.sensor_action_connecting),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-
-            Text(
-                text = device.name,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(top = 6.dp),
-            )
-        }
-    }
-}
-
-@Composable
-private fun PermissionRequiredCard(
-    onRequestPermissions: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer,
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.sensor_permission_needed),
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = onRequestPermissions,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 48.dp),
-                shape = RoundedCornerShape(12.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.sensor_action_grant_permission),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun BluetoothUnavailableCard(
-    modifier: Modifier = Modifier,
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.sensor_bt_off),
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.error,
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = stringResource(R.string.sensor_bt_turn_on),
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-        }
-    }
-}
-
-@Composable
-private fun ConnectionFailedCard(
-    message: String,
-    onRetry: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Card(
-        modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.errorContainer,
-        ),
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(20.dp),
-        ) {
-            Text(
-                text = stringResource(R.string.sensor_status_failed),
-                style = MaterialTheme.typography.bodyLarge,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onErrorContainer,
-            )
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = onRetry,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 48.dp),
-                shape = RoundedCornerShape(12.dp),
-            ) {
-                Text(
-                    text = stringResource(R.string.sensor_action_scan_again),
-                    style = MaterialTheme.typography.labelLarge,
-                    fontWeight = FontWeight.SemiBold,
-                )
-            }
-        }
     }
 }

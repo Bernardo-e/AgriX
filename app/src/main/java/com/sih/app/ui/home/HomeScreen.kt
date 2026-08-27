@@ -79,7 +79,9 @@ fun HomeScreenContent(
         modifier = modifier.fillMaxSize(),
         bottomBar = {
             AgriXBottomNavBar(
+                onConnectSensor = onConnectSensor,
                 onNavigateToAi = onNavigateToAi,
+                onEditFarm = onEditFarm,
             )
         },
     ) { innerPadding ->
@@ -491,7 +493,9 @@ private fun ConditionParameterCard(
 
 @Composable
 private fun AgriXBottomNavBar(
+    onConnectSensor: () -> Unit,
     onNavigateToAi: () -> Unit,
+    onEditFarm: () -> Unit,
 ) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surface,
@@ -516,7 +520,7 @@ private fun AgriXBottomNavBar(
         )
         NavigationBarItem(
             selected = false,
-            onClick = { /* Visual placeholder for Soil slice */ },
+            onClick = onConnectSensor,
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_soil_sprout),
@@ -550,7 +554,7 @@ private fun AgriXBottomNavBar(
         )
         NavigationBarItem(
             selected = false,
-            onClick = { /* Visual placeholder for Farm slice */ },
+            onClick = onEditFarm,
             icon = {
                 Icon(
                     painter = painterResource(R.drawable.ic_onboarding_soil),

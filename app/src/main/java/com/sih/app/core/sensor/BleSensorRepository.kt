@@ -46,6 +46,10 @@ class BleSensorRepository(
     private val bleScanner: BluetoothLeScanner?
         get() = bluetoothAdapter?.bluetoothLeScanner
 
+    // Explicit Sensor State Machine (Single source of truth)
+    private val _sensorState = MutableStateFlow<SensorState>(SensorState.DisconnectedInitial)
+    val sensorState: StateFlow<SensorState> = _sensorState.asStateFlow()
+
     private val _connectionState = MutableStateFlow<BleConnectionState>(BleConnectionState.Disconnected)
     val connectionState: StateFlow<BleConnectionState> = _connectionState.asStateFlow()
 
@@ -61,6 +65,11 @@ class BleSensorRepository(
     private var connectJob: Job? = null
     private var activeGatt: BluetoothGatt? = null
     private var connectingDevice: BleDevice? = null
+
+    // Track scan attempt count:
+    // Attempt 1 -> Scan1NoSensor ("No sensor detected")
+    // Attempt 2+ -> Scan2SensorFound ("AgriX Sensor", Available)
+    private var scanAttemptCount: Int = 0
 
     private val scanCallback = object : ScanCallback() {
         @SuppressLint("MissingPermission")
@@ -81,7 +90,7 @@ class BleSensorRepository(
                 discoveredDevices[address] = bleDevice
                 val sortedList = getSortedDiscoveredDevices()
                 _connectionState.value = BleConnectionState.DevicesFound(sortedList)
-                Log.d(TAG, "Discovered device: $rawName ($address), RSSI: ${result.rssi}")
+                Log.d(TAG, "Discovered physical device: $rawName ($address)")
             }
         }
 
@@ -102,15 +111,18 @@ class BleSensorRepository(
                 if (newState == BluetoothProfile.STATE_CONNECTED) {
                     Log.d(TAG, "Successfully connected to: ${target.name} (${target.address})")
                     _connectionState.value = BleConnectionState.Connected(target)
+                    _sensorState.value = SensorState.ConnectedDemo(target)
                     gatt?.discoverServices()
                 } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
                     Log.d(TAG, "Disconnected from: ${target.name}")
                     _connectionState.value = BleConnectionState.Disconnected
+                    _sensorState.value = SensorState.DisconnectedInitial
                     cleanupGatt()
                 }
             } else {
                 Log.e(TAG, "GATT connection error status: $status")
                 _connectionState.value = BleConnectionState.ConnectionFailed("Connection error ($status)")
+                _sensorState.value = SensorState.DisconnectedInitial
                 cleanupGatt()
             }
         }
@@ -136,6 +148,11 @@ class BleSensorRepository(
         return adapter.isEnabled
     }
 
+    /**
+     * Executes intentional two-phase demo discovery:
+     * - Scan 1: Realistic 1-2s scanning animation -> Ends with realistic empty state ("No sensor detected").
+     * - Scan 2+: Realistic 1-2s scanning animation -> Discovers "AgriX Sensor" (Demo BLE Sensor, Available).
+     */
     @SuppressLint("MissingPermission")
     fun startScan() {
         stopScan()
@@ -143,7 +160,22 @@ class BleSensorRepository(
         _isScanning.value = true
         _connectionState.value = BleConnectionState.Scanning
 
-        // Real BLE scan if hardware adapter is enabled & permissions granted
+        scanAttemptCount++
+        val isFirstAttempt = (scanAttemptCount == 1)
+
+        if (isFirstAttempt) {
+            _sensorState.value = SensorState.Scan1NoSensor(isScanning = true)
+        } else {
+            val demoDevice = BleDevice(
+                name = "AgriX Sensor",
+                address = "DEMO:BLE:AGRIX:01",
+                rssi = -55,
+                isDemo = true,
+            )
+            _sensorState.value = SensorState.Scan2SensorFound(device = demoDevice, isScanning = true)
+        }
+
+        // Optional hardware BLE scan if enabled
         val scanner = bleScanner
         if (hasRequiredPermissions() && scanner != null && bluetoothAdapter?.isEnabled == true) {
             val scanSettings = ScanSettings.Builder()
@@ -156,18 +188,27 @@ class BleSensorRepository(
             }
         }
 
-        // Demo BLE Sensor Discovery (Simulated BLE for hackathon prototype)
+        // Simulated discovery timeline
         simDiscoveryJob = scope.launch {
-            delay(1200)
-            val demoDevice = BleDevice(
-                name = "AgriX Sensor",
-                address = "DEMO:BLE:AGRIX:01",
-                rssi = -55,
-                isDemo = true,
-            )
-            discoveredDevices[demoDevice.address] = demoDevice
-            _connectionState.value = BleConnectionState.DevicesFound(getSortedDiscoveredDevices())
+            delay(1500) // 1.5s realistic scanning delay
             _isScanning.value = false
+
+            if (isFirstAttempt) {
+                // Empty state for demo
+                _sensorState.value = SensorState.Scan1NoSensor(isScanning = false)
+                _connectionState.value = BleConnectionState.DevicesFound(emptyList())
+            } else {
+                // Discovered device for demo
+                val demoDevice = BleDevice(
+                    name = "AgriX Sensor",
+                    address = "DEMO:BLE:AGRIX:01",
+                    rssi = -55,
+                    isDemo = true,
+                )
+                discoveredDevices[demoDevice.address] = demoDevice
+                _sensorState.value = SensorState.Scan2SensorFound(device = demoDevice, isScanning = false)
+                _connectionState.value = BleConnectionState.DevicesFound(getSortedDiscoveredDevices())
+            }
         }
 
         scanJob = scope.launch {
@@ -191,13 +232,12 @@ class BleSensorRepository(
             } catch (e: Exception) {
                 Log.w(TAG, "Error stopping scan: ${e.message}")
             }
-
-            if (_connectionState.value is BleConnectionState.Scanning) {
-                _connectionState.value = BleConnectionState.DevicesFound(getSortedDiscoveredDevices())
-            }
         }
     }
 
+    /**
+     * Connects to the simulated or physical BLE sensor device.
+     */
     @SuppressLint("MissingPermission")
     fun connect(device: BleDevice) {
         stopScan()
@@ -206,21 +246,24 @@ class BleSensorRepository(
 
         connectingDevice = device
         _connectionState.value = BleConnectionState.Connecting(device)
+        _sensorState.value = SensorState.Connecting(device)
 
         if (device.isDemo || device.address.startsWith("DEMO")) {
-            // Simulated BLE connection delay
+            // Short realistic connecting animation (1.2s)
             connectJob = scope.launch {
                 delay(1200)
                 _connectionState.value = BleConnectionState.Connected(device)
+                _sensorState.value = SensorState.ConnectedDemo(device)
             }
             return
         }
 
-        // Physical BLE GATT connection
+        // Physical BLE GATT connection fallback
         try {
             val bluetoothDevice = bluetoothAdapter?.getRemoteDevice(device.address)
             if (bluetoothDevice == null) {
                 _connectionState.value = BleConnectionState.ConnectionFailed("Device not found")
+                _sensorState.value = SensorState.DisconnectedInitial
                 return
             }
 
@@ -233,12 +276,17 @@ class BleSensorRepository(
         } catch (e: SecurityException) {
             Log.e(TAG, "SecurityException during connect: ${e.message}", e)
             _connectionState.value = BleConnectionState.PermissionRequired
+            _sensorState.value = SensorState.DisconnectedInitial
         } catch (e: Exception) {
             Log.e(TAG, "Exception during connect: ${e.message}", e)
             _connectionState.value = BleConnectionState.ConnectionFailed(e.message ?: "Connection failed")
+            _sensorState.value = SensorState.DisconnectedInitial
         }
     }
 
+    /**
+     * Disconnects active sensor connection.
+     */
     @SuppressLint("MissingPermission")
     fun disconnect() {
         connectJob?.cancel()
@@ -250,55 +298,81 @@ class BleSensorRepository(
         }
         cleanupGatt()
         _connectionState.value = BleConnectionState.Disconnected
+        _sensorState.value = SensorState.DisconnectedInitial
     }
 
     /**
-     * Executes multi-stage simulated sensor telemetry acquisition.
-     * Emits realistic progress across 6 distinct agronomic measurement steps over 2.5-3.5 seconds.
+     * Resets the entire demo state to initial state (Scan attempt count = 0),
+     * allowing the hackathon presenter to re-run the demonstration from the very beginning.
+     */
+    fun resetDemo() {
+        disconnect()
+        scanAttemptCount = 0
+        discoveredDevices.clear()
+        _sensorState.value = SensorState.DisconnectedInitial
+        Log.d(TAG, "Demo reset: Returned to initial disconnected state.")
+    }
+
+    fun updateSensorState(state: SensorState) {
+        _sensorState.value = state
+    }
+
+    /**
+     * Executes multi-stage simulated sensor telemetry acquisition over 2.5-3.5 seconds.
+     * Emits realistic progress across the 6 specified agronomic measurement steps.
      */
     suspend fun acquireSoilTelemetry(
+        device: BleDevice,
         onProgress: (stepName: String, progress: Float) -> Unit,
     ): SensorReading {
         // Step 1: Preparing
-        onProgress("Preparing soil scan...", 0.15f)
-        delay(450)
+        onProgress("Preparing sensor...", 0.15f)
+        _sensorState.value = SensorState.ScanningSoil(device, "Preparing sensor...", 0.15f)
+        delay(500)
 
-        // Step 2: Temperature
-        onProgress("Reading temperature...", 0.35f)
-        delay(450)
+        // Step 2: Soil Moisture
+        onProgress("Reading soil moisture...", 0.35f)
+        _sensorState.value = SensorState.ScanningSoil(device, "Reading soil moisture...", 0.35f)
+        delay(500)
 
-        // Step 3: Humidity
-        onProgress("Reading humidity...", 0.55f)
-        delay(450)
+        // Step 3: Temperature
+        onProgress("Reading temperature...", 0.55f)
+        _sensorState.value = SensorState.ScanningSoil(device, "Reading temperature...", 0.55f)
+        delay(500)
 
-        // Step 4: Soil Moisture
-        onProgress("Reading soil moisture...", 0.75f)
+        // Step 4: Humidity
+        onProgress("Reading humidity...", 0.75f)
+        _sensorState.value = SensorState.ScanningSoil(device, "Reading humidity...", 0.75f)
         delay(500)
 
         // Step 5: Soil pH
         onProgress("Estimating soil pH...", 0.90f)
-        delay(450)
+        _sensorState.value = SensorState.ScanningSoil(device, "Estimating soil pH...", 0.90f)
+        delay(500)
 
-        // Step 6: Finalizing
-        onProgress("Finalizing sensor packet...", 1.00f)
-        delay(350)
+        // Step 6: Analyzing Soil
+        onProgress("Analyzing soil...", 1.00f)
+        _sensorState.value = SensorState.ScanningSoil(device, "Analyzing soil...", 1.00f)
+        delay(400)
 
-        // Generate coherent agricultural sensor values
-        val temp = 24.0 + (Random.nextDouble() * 8.5) // 24.0 - 32.5 °C
-        val humidity = 50.0 + (Random.nextDouble() * 32.0) // 50.0 - 82.0 %
-        val moisture = 28.0 + (Random.nextDouble() * 40.0) // 28.0 - 68.0 %
-        val ph = 6.0 + (Random.nextDouble() * 1.5) // 6.0 - 7.5
+        // Generate coherent agricultural sensor values with slight natural variance
+        // Centered around: Temp 28.5 °C, Humidity 62 %, Moisture 47 %, pH 6.7
+        val temp = 27.5 + (Random.nextDouble() * 2.0)   // 27.5 - 29.5 °C
+        val humidity = 58.0 + (Random.nextDouble() * 8.0) // 58.0 - 66.0 %
+        val moisture = 43.0 + (Random.nextDouble() * 8.0) // 43.0 - 51.0 %
+        val ph = 6.5 + (Random.nextDouble() * 0.4)       // 6.5 - 6.9
 
         val reading = SensorReading(
             temperature = Math.round(temp * 10.0) / 10.0,
             humidity = Math.round(humidity * 10.0) / 10.0,
             soilMoisture = Math.round(moisture * 10.0) / 10.0,
-            soilPH = Math.round(ph * 100.0) / 100.0,
+            soilPH = Math.round(ph * 10.0) / 10.0,
             timestamp = System.currentTimeMillis(),
             source = "SIMULATED_BLE",
         )
 
         _latestReading.value = reading
+        _sensorState.value = SensorState.DataReady(device, reading)
         return reading
     }
 

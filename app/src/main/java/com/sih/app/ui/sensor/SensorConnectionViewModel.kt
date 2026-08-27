@@ -14,20 +14,11 @@ import com.sih.app.core.sensor.BleSensorRepository
 import com.sih.app.core.sensor.CloudSensorAnalysis
 import com.sih.app.core.sensor.CombinedSensorReport
 import com.sih.app.core.sensor.LocalSensorEngine
-import kotlinx.coroutines.flow.MutableStateFlow
+import com.sih.app.core.sensor.SensorState
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
 private const val TAG = "AgriX_SensorVM"
-
-sealed interface SensorScanState {
-    data object Idle : SensorScanState
-    data class Scanning(val stepName: String, val progress: Float) : SensorScanState
-    data class Completed(val report: CombinedSensorReport) : SensorScanState
-    data class Error(val message: String) : SensorScanState
-}
 
 class SensorConnectionViewModel(
     private val bleSensorRepository: BleSensorRepository,
@@ -37,11 +28,10 @@ class SensorConnectionViewModel(
     private val languageStore: LanguageStore,
 ) : ViewModel() {
 
+    // Single source of truth for the 11-stage Sensor State Machine
+    val sensorState: StateFlow<SensorState> = bleSensorRepository.sensorState
     val connectionState: StateFlow<BleConnectionState> = bleSensorRepository.connectionState
     val isScanning: StateFlow<Boolean> = bleSensorRepository.isScanning
-
-    private val _scanState = MutableStateFlow<SensorScanState>(SensorScanState.Idle)
-    val scanState: StateFlow<SensorScanState> = _scanState.asStateFlow()
 
     fun startScan() {
         bleSensorRepository.startScan()
@@ -57,7 +47,10 @@ class SensorConnectionViewModel(
 
     fun disconnect() {
         bleSensorRepository.disconnect()
-        _scanState.value = SensorScanState.Idle
+    }
+
+    fun resetDemo() {
+        bleSensorRepository.resetDemo()
     }
 
     fun isBluetoothAvailable(): Boolean {
@@ -68,16 +61,22 @@ class SensorConnectionViewModel(
         return bleSensorRepository.hasRequiredPermissions()
     }
 
-    fun resetScanState() {
-        _scanState.value = SensorScanState.Idle
-    }
-
     fun performSoilScan() {
         viewModelScope.launch {
+            val currentState = bleSensorRepository.sensorState.value
+            val device = when (currentState) {
+                is SensorState.ConnectedDemo -> currentState.device
+                is SensorState.ResultReady -> currentState.device
+                is SensorState.DataReady -> currentState.device
+                is SensorState.AnalyzingLocal -> currentState.device
+                is SensorState.AnalyzingCloud -> currentState.device
+                else -> BleDevice("AgriX Sensor", "DEMO:BLE:AGRIX:01", -55, isDemo = true)
+            }
+
             try {
-                // 1. Multi-stage simulated BLE telemetry acquisition
-                val reading = bleSensorRepository.acquireSoilTelemetry { stepName, progress ->
-                    _scanState.value = SensorScanState.Scanning(stepName, progress)
+                // 1. Multi-stage simulated BLE telemetry acquisition (2-4 seconds)
+                val reading = bleSensorRepository.acquireSoilTelemetry(device) { stepName, progress ->
+                    // Progress emitted directly into sensorState by repository
                 }
 
                 // 2. Fetch farm profile context for tailored analysis
@@ -87,9 +86,11 @@ class SensorConnectionViewModel(
                 val languageTag = languageStore.getLanguageTag().ifBlank { "en" }
 
                 // 3. Instant Local Agricultural Rule Engine Evaluation (100% Offline)
+                bleSensorRepository.updateSensorState(SensorState.AnalyzingLocal(device, reading))
                 val localAnalysis = localSensorEngine.analyze(reading, cropName)
 
                 // 4. Companion Cloud AI Escalation (FastAPI -> Gemini)
+                bleSensorRepository.updateSensorState(SensorState.AnalyzingCloud(device, reading, localAnalysis))
                 var cloudAnalysis: CloudSensorAnalysis? = null
                 var isCloudFallback = false
 
@@ -139,10 +140,17 @@ class SensorConnectionViewModel(
                     finalRecommendation = finalRec,
                 )
 
-                _scanState.value = SensorScanState.Completed(report)
+                bleSensorRepository.updateSensorState(
+                    SensorState.ResultReady(
+                        device = device,
+                        report = report,
+                        isCloudFallback = isCloudFallback || cloudAnalysis == null,
+                    )
+                )
             } catch (e: Exception) {
                 Log.e(TAG, "Soil scan failed: ${e.message}", e)
-                _scanState.value = SensorScanState.Error(e.message ?: "Failed to acquire soil telemetry")
+                // Fallback to connected demo state so user can retry easily
+                bleSensorRepository.updateSensorState(SensorState.ConnectedDemo(device))
             }
         }
     }
