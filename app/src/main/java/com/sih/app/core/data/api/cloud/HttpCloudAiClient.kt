@@ -157,6 +157,9 @@ class HttpCloudAiClient(
                 put("soil_ph", request.soilPH)
                 if (request.cropName != null) put("crop_name", request.cropName)
                 if (request.soilType != null) put("soil_type", request.soilType)
+                if (request.diseaseName != null) put("disease_name", request.diseaseName)
+                if (request.diseaseConfidence != null) put("disease_confidence", request.diseaseConfidence.toDouble())
+                if (request.diseaseStatus != null) put("disease_status", request.diseaseStatus)
                 if (request.language != null) put("language", request.language)
             }
 
@@ -199,6 +202,16 @@ class HttpCloudAiClient(
                     recommendedNextAction = json.optString("recommended_next_action", "Maintain routine soil care."),
                     farmerSummary = json.optString("farmer_summary", "Soil conditions are stable."),
                     latencyMs = json.optInt("latency_ms", 0),
+                    overallCondition = if (json.isNull("overall_condition")) null else json.optString("overall_condition"),
+                    priority = if (json.isNull("priority")) null else json.optString("priority"),
+                    wateringDecision = if (json.isNull("watering_decision")) null else json.optString("watering_decision"),
+                    wateringExplanation = if (json.isNull("watering_explanation")) null else json.optString("watering_explanation"),
+                    wateringTiming = if (json.isNull("watering_timing")) null else json.optString("watering_timing"),
+                    wateringAction = if (json.isNull("watering_action")) null else json.optString("watering_action"),
+                    environmentAssessment = if (json.isNull("environment_assessment")) null else json.optString("environment_assessment"),
+                    diseasePrevention = if (json.isNull("disease_prevention")) null else json.optString("disease_prevention"),
+                    cropGrowthGuidance = if (json.isNull("crop_growth_guidance")) null else json.optString("crop_growth_guidance"),
+                    actionNowSummary = if (json.isNull("action_now_summary")) null else json.optString("action_now_summary"),
                 )
                 Result.success(analysis)
             } else {

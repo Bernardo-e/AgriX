@@ -165,6 +165,7 @@ fun SihNavHost(
                     localSensorEngine = appContainer.localSensorEngine,
                     cloudAiClient = appContainer.cloudAiClient,
                     farmRepository = appContainer.farmRepository,
+                    diagnosisRepository = appContainer.diagnosisRepository,
                     languageStore = appContainer.languageStore,
                 ),
             )
@@ -180,6 +181,7 @@ fun SihNavHost(
                 factory = AiViewModel.provideFactory(
                     farmRepository = appContainer.farmRepository,
                     bleSensorRepository = appContainer.bleSensorRepository,
+                    diagnosisRepository = appContainer.diagnosisRepository,
                     localSensorEngine = appContainer.localSensorEngine,
                 ),
             )

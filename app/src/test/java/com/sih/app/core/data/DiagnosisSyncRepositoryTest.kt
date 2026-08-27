@@ -15,6 +15,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
@@ -219,6 +220,14 @@ class FakeDiagnosisDao : DiagnosisDao {
 
     override fun getAllDiagnosesFlow(): Flow<List<DiagnosisEntity>> {
         return flow.asStateFlow()
+    }
+
+    override suspend fun getLatestDiagnosis(): DiagnosisEntity? {
+        return storage.values.maxByOrNull { it.createdAt }
+    }
+
+    override fun getLatestDiagnosisFlow(): Flow<DiagnosisEntity?> {
+        return flow.map { it.firstOrNull() }
     }
 
     override suspend fun getPendingDiagnoses(): List<DiagnosisEntity> {

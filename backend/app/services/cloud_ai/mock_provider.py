@@ -181,6 +181,12 @@ class MockDiagnosisProvider(CloudDiagnosisProvider):
             f"{irrigation_advice} Soil pH ({request.soil_ph}) is within a manageable range."
         )
 
+        priority_val = "HIGH" if request.soil_moisture < 35.0 or (request.disease_name and request.humidity > 75.0) else ("MEDIUM" if request.soil_moisture > 65.0 or request.soil_ph < 5.8 else "LOW")
+        overall_cond = "Needs Attention: Low Moisture" if request.soil_moisture < 35.0 else ("Needs Attention: Excess Moisture" if request.soil_moisture > 65.0 else "Suitable & Stable Conditions")
+        wat_decision = "Irrigate now to restore root zone moisture" if request.soil_moisture < 35.0 else ("Pause irrigation and monitor field drainage" if request.soil_moisture > 65.0 else "No immediate irrigation required")
+        wat_timing = "Initiate watering within 2-4 hours" if request.soil_moisture < 35.0 else ("Withhold watering for 24-48 hours" if request.soil_moisture > 65.0 else "Recheck soil moisture within 12-24 hours")
+        wat_action = "Apply drip irrigation to replenish root zone." if request.soil_moisture < 35.0 else ("Ensure drainage channels are clear." if request.soil_moisture > 65.0 else "Maintain current watering schedule.")
+
         return SensorAnalysisRawResult(
             soil_interpretation=soil_interp,
             crop_implications=crop_imp,
@@ -190,4 +196,14 @@ class MockDiagnosisProvider(CloudDiagnosisProvider):
             farmer_summary=farmer_summary,
             provider_name="mock",
             model_name="mock-v1",
+            overall_condition=overall_cond,
+            priority=priority_val,
+            watering_decision=wat_decision,
+            watering_explanation=soil_interp,
+            watering_timing=wat_timing,
+            watering_action=wat_action,
+            environment_assessment=f"Temperature ({request.temperature}°C) and Humidity ({request.humidity}%) evaluated.",
+            disease_prevention=f"Current humidity ({request.humidity}%) indicates standard disease management.",
+            crop_growth_guidance="Balanced moisture supports healthy vegetative growth while preventing water stress.",
+            action_now_summary=farmer_summary,
         )

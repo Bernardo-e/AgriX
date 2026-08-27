@@ -48,6 +48,16 @@ async def perform_sensor_analysis(request: SensorAnalysisRequest):
             recommended_next_action=raw_result.recommended_next_action,
             farmer_summary=raw_result.farmer_summary,
             latency_ms=latency_ms,
+            overall_condition=raw_result.overall_condition,
+            priority=raw_result.priority or "LOW",
+            watering_decision=raw_result.watering_decision,
+            watering_explanation=raw_result.watering_explanation,
+            watering_timing=raw_result.watering_timing,
+            watering_action=raw_result.watering_action,
+            environment_assessment=raw_result.environment_assessment,
+            disease_prevention=raw_result.disease_prevention,
+            crop_growth_guidance=raw_result.crop_growth_guidance,
+            action_now_summary=raw_result.action_now_summary or raw_result.farmer_summary,
         )
     except CloudProviderUnavailableException as e:
         logger.warning("Cloud provider unavailable for sensor analysis: %s", str(e))

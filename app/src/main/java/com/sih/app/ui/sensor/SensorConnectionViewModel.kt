@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.sih.app.core.data.DiagnosisRepository
 import com.sih.app.core.data.FarmRepository
 import com.sih.app.core.data.api.cloud.CloudAiClient
 import com.sih.app.core.data.api.cloud.CloudSensorRequestData
@@ -14,7 +15,9 @@ import com.sih.app.core.sensor.BleSensorRepository
 import com.sih.app.core.sensor.CloudSensorAnalysis
 import com.sih.app.core.sensor.CombinedSensorReport
 import com.sih.app.core.sensor.LocalSensorEngine
+import com.sih.app.core.sensor.RecommendationPriority
 import com.sih.app.core.sensor.SensorState
+import com.sih.app.core.sensor.UnifiedAgriXRecommendation
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -25,6 +28,7 @@ class SensorConnectionViewModel(
     private val localSensorEngine: LocalSensorEngine,
     private val cloudAiClient: CloudAiClient,
     private val farmRepository: FarmRepository,
+    private val diagnosisRepository: DiagnosisRepository,
     private val languageStore: LanguageStore,
 ) : ViewModel() {
 
@@ -79,15 +83,26 @@ class SensorConnectionViewModel(
                     // Progress emitted directly into sensorState by repository
                 }
 
-                // 2. Fetch farm profile context for tailored analysis
+                // 2. Fetch farm profile and latest disease diagnosis for unified context
                 val farm = farmRepository.getFarm()
-                val cropName = farm?.currentCrop ?: "Tomato"
+                val latestDiag = diagnosisRepository.getLatestDiagnosis()
+                val cropName = farm?.currentCrop ?: latestDiag?.cropName ?: "Tomato"
                 val soilType = farm?.soilType ?: "Loamy"
+                val diseaseName = latestDiag?.diseaseName
+                val diseaseConfidence = latestDiag?.confidence
+                val diseaseStatus = latestDiag?.diagnosticStatus
                 val languageTag = languageStore.getLanguageTag().ifBlank { "en" }
 
                 // 3. Instant Local Agricultural Rule Engine Evaluation (100% Offline)
                 bleSensorRepository.updateSensorState(SensorState.AnalyzingLocal(device, reading))
                 val localAnalysis = localSensorEngine.analyze(reading, cropName)
+                val localUnified = localSensorEngine.synthesizeUnifiedRecommendation(
+                    reading = reading,
+                    cropName = cropName,
+                    diseaseName = diseaseName,
+                    diseaseConfidence = diseaseConfidence,
+                    diseaseStatus = diseaseStatus,
+                )
 
                 // 4. Companion Cloud AI Escalation (FastAPI -> Gemini)
                 bleSensorRepository.updateSensorState(SensorState.AnalyzingCloud(device, reading, localAnalysis))
@@ -103,6 +118,9 @@ class SensorConnectionViewModel(
                         soilPH = reading.soilPH,
                         cropName = cropName,
                         soilType = soilType,
+                        diseaseName = diseaseName,
+                        diseaseConfidence = diseaseConfidence,
+                        diseaseStatus = diseaseStatus,
                         language = languageTag,
                     )
                     val cloudResult = cloudAiClient.performCloudSensorAnalysis(cloudReq)
@@ -121,23 +139,38 @@ class SensorConnectionViewModel(
                     isCloudFallback = true
                 }
 
-                // 5. Harmonize Final AgriX Recommendation
-                val finalRec = if (cloudAnalysis != null && !cloudAnalysis!!.farmerSummary.isNullOrBlank()) {
-                    cloudAnalysis!!.farmerSummary
+                // 5. Harmonize into ONE Unified AgriX Recommendation
+                val finalUnifiedRec = if (cloudAnalysis != null && !cloudAnalysis!!.wateringDecision.isNullOrBlank()) {
+                    val parsedPriority = runCatching {
+                        RecommendationPriority.valueOf(cloudAnalysis!!.priority ?: "LOW")
+                    }.getOrDefault(localUnified.priority)
+
+                    UnifiedAgriXRecommendation(
+                        cropName = cropName,
+                        overallCondition = cloudAnalysis!!.overallCondition ?: localUnified.overallCondition,
+                        priority = parsedPriority,
+                        soilCondition = cloudAnalysis!!.soilInterpretation.ifBlank { localUnified.soilCondition },
+                        wateringDecision = cloudAnalysis!!.wateringDecision ?: localUnified.wateringDecision,
+                        wateringExplanation = cloudAnalysis!!.wateringExplanation ?: localUnified.wateringExplanation,
+                        wateringTiming = cloudAnalysis!!.wateringTiming ?: localUnified.wateringTiming,
+                        wateringAction = cloudAnalysis!!.wateringAction ?: localUnified.wateringAction,
+                        environmentAssessment = cloudAnalysis!!.environmentAssessment ?: localUnified.environmentAssessment,
+                        diseasePrevention = cloudAnalysis!!.diseasePrevention ?: localUnified.diseasePrevention,
+                        cropGrowthGuidance = cloudAnalysis!!.cropGrowthGuidance ?: localUnified.cropGrowthGuidance,
+                        immediateActionSummary = cloudAnalysis!!.actionNowSummary ?: localUnified.immediateActionSummary,
+                        isCloudEnhanced = true,
+                    )
                 } else {
-                    buildString {
-                        append("Current soil moisture is ${reading.soilMoisture.toInt()}% (${localAnalysis.soilCondition.lowercase()}). ")
-                        append(localAnalysis.immediateAction)
-                        append(" Soil pH is ${reading.soilPH} which is ${if (reading.soilPH in 5.8..7.5) "within a generally suitable range" else "outside ideal range"}.")
-                    }
+                    localUnified.copy(isCloudEnhanced = false)
                 }
 
                 val report = CombinedSensorReport(
                     reading = reading,
+                    recommendation = finalUnifiedRec,
                     localAnalysis = localAnalysis,
                     cloudAnalysis = cloudAnalysis,
                     isCloudFallback = isCloudFallback || cloudAnalysis == null,
-                    finalRecommendation = finalRec,
+                    finalRecommendation = finalUnifiedRec.immediateActionSummary,
                 )
 
                 bleSensorRepository.updateSensorState(
@@ -166,6 +199,7 @@ class SensorConnectionViewModel(
             localSensorEngine: LocalSensorEngine,
             cloudAiClient: CloudAiClient,
             farmRepository: FarmRepository,
+            diagnosisRepository: DiagnosisRepository,
             languageStore: LanguageStore,
         ): ViewModelProvider.Factory =
             object : ViewModelProvider.Factory {
@@ -176,6 +210,7 @@ class SensorConnectionViewModel(
                         localSensorEngine = localSensorEngine,
                         cloudAiClient = cloudAiClient,
                         farmRepository = farmRepository,
+                        diagnosisRepository = diagnosisRepository,
                         languageStore = languageStore,
                     ) as T
                 }

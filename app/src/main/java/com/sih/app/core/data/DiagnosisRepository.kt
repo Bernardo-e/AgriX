@@ -49,6 +49,14 @@ class DiagnosisRepository(
         return diagnosisDao.getAllDiagnosesFlow()
     }
 
+    fun getLatestDiagnosisFlow(): Flow<DiagnosisEntity?> {
+        return diagnosisDao.getLatestDiagnosisFlow()
+    }
+
+    suspend fun getLatestDiagnosis(): DiagnosisEntity? = withContext(Dispatchers.IO) {
+        diagnosisDao.getLatestDiagnosis()
+    }
+
     /**
      * Retrieve a specific diagnosis by local ID.
      */

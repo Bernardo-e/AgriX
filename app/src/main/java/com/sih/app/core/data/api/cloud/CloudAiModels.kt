@@ -66,5 +66,8 @@ data class CloudSensorRequestData(
     val soilPH: Double,
     val cropName: String? = null,
     val soilType: String? = null,
+    val diseaseName: String? = null,
+    val diseaseConfidence: Float? = null,
+    val diseaseStatus: String? = null,
     val language: String? = "en",
 )

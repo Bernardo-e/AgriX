@@ -1,7 +1,8 @@
 package com.sih.app.ui.ai
 
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,8 +37,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.sih.app.R
+import com.sih.app.core.sensor.RecommendationPriority
+import com.sih.app.core.sensor.UnifiedAgriXRecommendation
 
 @Composable
 fun AiScreen(
@@ -72,9 +76,8 @@ fun AiScreenContent(
     onNavigateToFarm: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
-    val farm = uiState.farm
     val reading = uiState.latestReading
-    val localAnalysis = uiState.localAnalysis
+    val rec = uiState.recommendation
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -91,9 +94,9 @@ fun AiScreenContent(
                 .fillMaxSize()
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = 20.dp, vertical = 16.dp),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
         ) {
-            // Header
+            // Screen Header
             Text(
                 text = stringResource(R.string.ai_screen_title),
                 style = MaterialTheme.typography.headlineMedium,
@@ -108,7 +111,7 @@ fun AiScreenContent(
                 modifier = Modifier.padding(top = 4.dp),
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             // Card 1: Crop Disease Photo Scan
             Card(
@@ -121,7 +124,7 @@ fun AiScreenContent(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(20.dp),
+                        .padding(18.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -130,7 +133,7 @@ fun AiScreenContent(
                             painter = painterResource(R.drawable.ic_onboarding_recommendations),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.onPrimaryContainer,
-                            modifier = Modifier.size(28.dp),
+                            modifier = Modifier.size(26.dp),
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
@@ -141,7 +144,7 @@ fun AiScreenContent(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
                         text = stringResource(R.string.ai_card_disease_desc),
@@ -149,7 +152,7 @@ fun AiScreenContent(
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
                     )
 
-                    Spacer(modifier = Modifier.height(18.dp))
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
                         onClick = onNavigateToDiseaseScan,
@@ -170,7 +173,7 @@ fun AiScreenContent(
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Card 2: Diagnosis History & Sync
             Card(
@@ -183,7 +186,7 @@ fun AiScreenContent(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(20.dp),
+                        .padding(18.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -192,7 +195,7 @@ fun AiScreenContent(
                             painter = painterResource(R.drawable.ic_nav_home),
                             contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.size(26.dp),
+                            modifier = Modifier.size(24.dp),
                         )
                         Spacer(modifier = Modifier.width(12.dp))
                         Text(
@@ -203,7 +206,7 @@ fun AiScreenContent(
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
                         text = stringResource(R.string.ai_card_history_desc),
@@ -229,61 +232,90 @@ fun AiScreenContent(
                 }
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
-            // Card 3: Smart Recommendations (Active Soil & Crop Advisory)
+            // Card 3: Unified Smart AgriX Agricultural Recommendation
             Card(
                 modifier = Modifier.fillMaxWidth(),
                 shape = RoundedCornerShape(16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.7f),
                 ),
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(20.dp),
+                        .padding(18.dp),
                 ) {
+                    // Header Row with Compact Badge (No vertical text wrapping)
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
-                        Row(verticalAlignment = Alignment.CenterVertically) {
+                        Row(
+                            modifier = Modifier.weight(1f, fill = false),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_soil_sprout),
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                                modifier = Modifier.size(26.dp),
+                                modifier = Modifier.size(24.dp),
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(
-                                text = stringResource(R.string.ai_card_recommendations_title),
+                                text = "Smart Recommendation",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
 
+                        Spacer(modifier = Modifier.width(8.dp))
+
                         Surface(
-                            shape = RoundedCornerShape(8.dp),
+                            shape = RoundedCornerShape(6.dp),
                             color = if (reading != null) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondary.copy(alpha = 0.2f),
                         ) {
                             Text(
-                                text = if (reading != null) "Live Telemetry" else "Demo Ready",
+                                text = if (reading != null) "LIVE TELEMETRY" else "DEMO READY",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = if (reading != null) Color.White else MaterialTheme.colorScheme.onSecondaryContainer,
+                                maxLines = 1,
+                                softWrap = false,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                             )
                         }
                     }
 
-                    Spacer(modifier = Modifier.height(10.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
-                    if (reading != null && localAnalysis != null) {
+                    if (rec != null) {
+                        // Crop & Priority Row
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            Text(
+                                text = "Crop: ${rec.cropName}",
+                                style = MaterialTheme.typography.titleSmall,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                            )
+
+                            PriorityBadge(priority = rec.priority)
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // 🌱 Soil Condition
                         Text(
-                            text = "Crop: ${farm?.currentCrop ?: "Tomato"} • Soil: ${localAnalysis.soilCondition}",
+                            text = "🌱 Soil: ${rec.soilCondition}",
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -291,21 +323,40 @@ fun AiScreenContent(
 
                         Spacer(modifier = Modifier.height(6.dp))
 
+                        // 💧 Watering Decision
                         Text(
-                            text = "Irrigation: ${localAnalysis.irrigationRecommendation}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.9f),
+                            text = "💧 Watering: ${rec.wateringDecision}",
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
 
-                        Spacer(modifier = Modifier.height(4.dp))
+                        Spacer(modifier = Modifier.height(6.dp))
 
-                        Text(
-                            text = "Action: ${localAnalysis.immediateAction}",
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.85f),
-                        )
+                        // 🎯 Action Now Highlight
+                        Surface(
+                            shape = RoundedCornerShape(10.dp),
+                            color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
+                            modifier = Modifier.fillMaxWidth(),
+                        ) {
+                            Column(modifier = Modifier.padding(12.dp)) {
+                                Text(
+                                    text = "🎯 ACTION NOW",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    fontWeight = FontWeight.Bold,
+                                    color = MaterialTheme.colorScheme.primary,
+                                )
+                                Text(
+                                    text = rec.immediateActionSummary,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    fontWeight = FontWeight.Medium,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    modifier = Modifier.padding(top = 2.dp),
+                                )
+                            }
+                        }
 
-                        Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(14.dp))
 
                         Button(
                             onClick = onNavigateToSoil,
@@ -318,7 +369,7 @@ fun AiScreenContent(
                             ),
                         ) {
                             Text(
-                                text = "View Sensor Analysis",
+                                text = "View Full Sensor Telemetry & Report",
                                 style = MaterialTheme.typography.labelMedium,
                                 fontWeight = FontWeight.Bold,
                             )
@@ -354,6 +405,30 @@ fun AiScreenContent(
 
             Spacer(modifier = Modifier.height(20.dp))
         }
+    }
+}
+
+@Composable
+fun PriorityBadge(priority: RecommendationPriority) {
+    val (label, bgColor, textColor) = when (priority) {
+        RecommendationPriority.HIGH -> Triple("HIGH PRIORITY", MaterialTheme.colorScheme.error, Color.White)
+        RecommendationPriority.MEDIUM -> Triple("MEDIUM PRIORITY", Color(0xFFE65100), Color.White)
+        RecommendationPriority.LOW -> Triple("NORMAL / STABLE", Color(0xFF2E7D32), Color.White)
+    }
+
+    Surface(
+        shape = RoundedCornerShape(6.dp),
+        color = bgColor,
+    ) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            fontWeight = FontWeight.Bold,
+            color = textColor,
+            maxLines = 1,
+            softWrap = false,
+            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
+        )
     }
 }
 

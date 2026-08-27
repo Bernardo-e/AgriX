@@ -21,6 +21,12 @@ interface DiagnosisDao {
     @Query("SELECT * FROM diagnosis_records ORDER BY createdAt DESC")
     fun getAllDiagnosesFlow(): Flow<List<DiagnosisEntity>>
 
+    @Query("SELECT * FROM diagnosis_records ORDER BY createdAt DESC LIMIT 1")
+    suspend fun getLatestDiagnosis(): DiagnosisEntity?
+
+    @Query("SELECT * FROM diagnosis_records ORDER BY createdAt DESC LIMIT 1")
+    fun getLatestDiagnosisFlow(): Flow<DiagnosisEntity?>
+
     @Query("SELECT * FROM diagnosis_records WHERE syncStatus IN ('PENDING', 'FAILED') ORDER BY createdAt ASC")
     suspend fun getPendingDiagnoses(): List<DiagnosisEntity>
 

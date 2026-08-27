@@ -11,6 +11,9 @@ class SensorAnalysisRequest(BaseModel):
     soil_ph: float = Field(..., description="Soil pH reading (3.0..11.0)")
     crop_name: Optional[str] = Field(default=None, description="Optional target crop context")
     soil_type: Optional[str] = Field(default=None, description="Optional soil classification context")
+    disease_name: Optional[str] = Field(default=None, description="Optional detected crop disease name")
+    disease_confidence: Optional[float] = Field(default=None, description="Optional detected crop disease confidence (0..1.0)")
+    disease_status: Optional[str] = Field(default=None, description="Optional diagnostic status")
     language: Optional[str] = Field(default="en", description="Localization language code (en, hi, ta, te, kn, ml)")
 
     @field_validator("temperature")
@@ -54,6 +57,18 @@ class SensorAnalysisResponse(BaseModel):
     recommended_next_action: str = Field(..., description="Immediate practical step for the farmer")
     farmer_summary: str = Field(..., description="Concise, plain-language combined recommendation")
     latency_ms: int = Field(default=0, description="Inference latency in milliseconds")
+    
+    # Unified Action-Oriented Fields
+    overall_condition: Optional[str] = Field(default=None, description="Overall crop and soil health state")
+    priority: Optional[str] = Field(default="LOW", description="Priority level: HIGH, MEDIUM, LOW")
+    watering_decision: Optional[str] = Field(default=None, description="Direct watering verdict")
+    watering_explanation: Optional[str] = Field(default=None, description="Why this watering decision was made")
+    watering_timing: Optional[str] = Field(default=None, description="When to next check or irrigate")
+    watering_action: Optional[str] = Field(default=None, description="Concrete watering action for today")
+    environment_assessment: Optional[str] = Field(default=None, description="Temperature and humidity impact")
+    disease_prevention: Optional[str] = Field(default=None, description="Disease risk mitigation guidance")
+    crop_growth_guidance: Optional[str] = Field(default=None, description="Guidance to support healthy growth")
+    action_now_summary: Optional[str] = Field(default=None, description="Immediate action summary for the farmer")
 
 
 class SensorAnalysisRawResult(BaseModel):
@@ -66,3 +81,13 @@ class SensorAnalysisRawResult(BaseModel):
     farmer_summary: str
     provider_name: str
     model_name: str
+    overall_condition: Optional[str] = None
+    priority: Optional[str] = "LOW"
+    watering_decision: Optional[str] = None
+    watering_explanation: Optional[str] = None
+    watering_timing: Optional[str] = None
+    watering_action: Optional[str] = None
+    environment_assessment: Optional[str] = None
+    disease_prevention: Optional[str] = None
+    crop_growth_guidance: Optional[str] = None
+    action_now_summary: Optional[str] = None

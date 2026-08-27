@@ -182,32 +182,47 @@ class GeminiDiagnosisProvider(CloudDiagnosisProvider):
 
         crop_info = f"Target Crop: {request.crop_name}" if request.crop_name else "Crop: General agricultural field"
         soil_info = f"Soil Type: {request.soil_type}" if request.soil_type else "Soil Type: Not specified"
+        disease_info = f"Detected Crop Disease: {request.disease_name}" if request.disease_name else "Detected Disease: None reported / Healthy"
 
         system_prompt = (
-            "You are an expert agronomist and soil scientist for the AgriX agricultural advisory platform.\n"
-            "Analyze the given real-time soil & ambient sensor telemetry to provide clear, farmer-friendly guidance.\n\n"
+            "You are an expert agronomist and soil scientist for the AgriX agricultural intelligence platform.\n"
+            "Analyze real-time sensor telemetry alongside the detected crop and disease context to provide a unified, action-oriented recommendation.\n\n"
             "STRICT RULES:\n"
-            "1. Use simple, direct, non-technical language suitable for farmers.\n"
-            "2. Never recommend hazardous chemical overdoses. Focus on water management, organic matter, soil pH balance, and crop protection.\n"
-            "3. Return strictly valid JSON matching the exact schema below, with no markdown code blocks.\n\n"
+            "1. Focus on what the farmer should do TODAY answering WHAT, WHY, WHEN, and ACTION.\n"
+            "2. If a disease is detected, combine humidity & moisture readings to provide preventive advice without guaranteeing disease emergence.\n"
+            "3. Do not make unrealistic yield increase percentage promises; focus on practical growth and moisture management.\n"
+            "4. Return strictly valid JSON matching the exact schema below, with no markdown code blocks.\n\n"
             "Response Schema:\n"
             "{\n"
+            '  "overall_condition": "<e.g. Suitable & Stable Conditions | Needs Attention: Moisture Deficit | High Moisture Risk>",\n'
+            '  "priority": "<HIGH | MEDIUM | LOW>",\n'
+            '  "soil_condition": "<concise summary of soil moisture and pH condition for the target crop>",\n'
+            '  "watering_decision": "<WHAT: clear verdict e.g. No immediate irrigation required | Irrigate within 2-4 hours | Pause watering>",\n'
+            '  "watering_explanation": "<WHY: explanation based on current moisture percentage and crop requirements>",\n'
+            '  "watering_timing": "<WHEN: timeframe for next moisture check or irrigation cycle>",\n'
+            '  "watering_action": "<ACTION: practical watering guidance today, e.g. Maintain schedule / Apply 45 min drip>",\n'
+            '  "environment_assessment": "<assessment of temperature and humidity>",\n'
+            '  "disease_prevention": "<preventive advice linking humidity, moisture, and detected crop/disease>",\n'
+            '  "crop_growth_guidance": "<practical guidance on supporting healthy crop growth and yield>",\n'
+            '  "action_now_summary": "<concise 2-sentence summary of what the farmer should do today>",\n'
             '  "soil_interpretation": "<interpretation of soil moisture and soil pH>",\n'
             '  "crop_implications": "<how current readings affect crop growth and nutrient uptake>",\n'
-            '  "irrigation_advice": "<actionable irrigation recommendation with timing/method>",\n'
+            '  "irrigation_advice": "<actionable irrigation recommendation>",\n'
             '  "possible_risks": ["<risk 1>", "<risk 2>"],\n'
-            '  "recommended_next_action": "<most important single action for the farmer today>",\n'
-            '  "farmer_summary": "<concise 2-sentence summary of the recommendation>"\n'
+            '  "recommended_next_action": "<single most important action>",\n'
+            '  "farmer_summary": "<concise 2-sentence summary>"\n'
             "}"
         )
 
         user_content = (
-            f"Sensor Readings:\n"
+            f"Sensor & Agronomic Context:\n"
+            f"- Target Crop: {crop_info}\n"
+            f"- Disease Diagnosis Context: {disease_info}\n"
+            f"- Soil Type: {soil_info}\n"
             f"- Temperature: {request.temperature} °C\n"
             f"- Humidity: {request.humidity} %\n"
             f"- Soil Moisture: {request.soil_moisture} %\n"
             f"- Soil pH: {request.soil_ph}\n"
-            f"- Context: {crop_info}, {soil_info}\n"
             f"- Preferred Language: {request.language or 'en'}"
         )
 
@@ -274,6 +289,16 @@ class GeminiDiagnosisProvider(CloudDiagnosisProvider):
                 risks = [risks]
 
             return SensorAnalysisRawResult(
+                overall_condition=str(data.get("overall_condition", "Suitable & Stable Conditions")),
+                priority=str(data.get("priority", "LOW")).upper(),
+                watering_decision=str(data.get("watering_decision", data.get("irrigation_advice", "No immediate irrigation required"))),
+                watering_explanation=str(data.get("watering_explanation", data.get("soil_interpretation", "Soil moisture is within optimal range."))),
+                watering_timing=str(data.get("watering_timing", "Recheck soil moisture within 12–24 hours.")),
+                watering_action=str(data.get("watering_action", data.get("recommended_next_action", "Maintain current watering schedule."))),
+                environment_assessment=str(data.get("environment_assessment", "Temperature and humidity are currently acceptable.")),
+                disease_prevention=str(data.get("disease_prevention", "Continue monitoring and avoid excess standing moisture.")),
+                crop_growth_guidance=str(data.get("crop_growth_guidance", data.get("crop_implications", "Current soil conditions support healthy vegetative growth."))),
+                action_now_summary=str(data.get("action_now_summary", data.get("farmer_summary", "Maintain current watering schedule."))),
                 soil_interpretation=str(data.get("soil_interpretation", "Soil moisture and pH evaluated.")),
                 crop_implications=str(data.get("crop_implications", "Readings support current crop stage.")),
                 irrigation_advice=str(data.get("irrigation_advice", "Monitor soil moisture regularly.")),

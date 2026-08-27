@@ -1,9 +1,9 @@
 package com.sih.app.ui.sensor
 
-import android.Manifest
-import android.os.Build
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
+import android.annotation.SuppressLint
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +27,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -35,9 +36,9 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -48,16 +49,20 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.sih.app.R
-import com.sih.app.core.sensor.BleConnectionState
 import com.sih.app.core.sensor.BleDevice
 import com.sih.app.core.sensor.CombinedSensorReport
+import com.sih.app.core.sensor.RecommendationPriority
 import com.sih.app.core.sensor.SensorState
+import com.sih.app.core.sensor.UnifiedAgriXRecommendation
+import com.sih.app.ui.ai.PriorityBadge
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SensorConnectionScreen(
     viewModel: SensorConnectionViewModel,
@@ -65,90 +70,62 @@ fun SensorConnectionScreen(
     modifier: Modifier = Modifier,
 ) {
     val sensorState by viewModel.sensorState.collectAsState()
-    val connectionState by viewModel.connectionState.collectAsState()
-
-    val permissionLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.RequestMultiplePermissions(),
-    ) { permissions ->
-        val allGranted = permissions.values.all { it }
-        if (allGranted) {
-            viewModel.startScan()
-        }
-    }
 
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp, vertical = 12.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(onClick = onBack) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_arrow_back),
-                            contentDescription = stringResource(R.string.action_back),
-                            modifier = Modifier.size(24.dp),
-                        )
-                    }
+            TopAppBar(
+                title = {
                     Text(
                         text = stringResource(R.string.sensor_screen_title),
-                        style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onBackground,
-                        modifier = Modifier.padding(start = 8.dp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
                     )
-                }
-
-                // Demo Reset Action Button in header
-                Surface(
-                    shape = RoundedCornerShape(8.dp),
-                    color = MaterialTheme.colorScheme.surfaceVariant,
-                    modifier = Modifier.clickable { viewModel.resetDemo() },
-                ) {
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBack) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_nav_home),
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.primary,
+                        )
+                    }
+                },
+                actions = {
+                    // Quick Demo Reset Button in App Bar
                     Text(
-                        text = stringResource(R.string.sensor_reset_demo),
+                        text = "Reset Demo",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { viewModel.resetDemo() }
+                            .padding(horizontal = 12.dp, vertical = 6.dp),
                     )
-                }
-            }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                ),
+            )
         },
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding)
-                .padding(horizontal = 18.dp),
+                .padding(horizontal = 16.dp, vertical = 8.dp),
         ) {
             when (val state = sensorState) {
-                // 1. Initial State before any scan
+                // 1. Initial State before scanning
                 is SensorState.DisconnectedInitial -> {
                     DisconnectedInitialView(
-                        onStartScan = {
-                            if (!viewModel.hasRequiredPermissions()) {
-                                val perms = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                                    arrayOf(
-                                        Manifest.permission.BLUETOOTH_SCAN,
-                                        Manifest.permission.BLUETOOTH_CONNECT,
-                                    )
-                                } else {
-                                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
-                                }
-                                permissionLauncher.launch(perms)
-                            } else {
-                                viewModel.startScan()
-                            }
-                        },
+                        onStartScan = { viewModel.startScan() },
                     )
                 }
 
-                // 2. First Scan: 1-2s scanning -> Empty State ("No sensor detected")
+                // 2. Scan 1 -> Realistic Empty State (No sensor detected)
                 is SensorState.Scan1NoSensor -> {
                     if (state.isScanning) {
                         SearchingSpinnerView()
@@ -159,7 +136,7 @@ fun SensorConnectionScreen(
                     }
                 }
 
-                // 3. Second Scan: 1-2s scanning -> Found "AgriX Sensor"
+                // 3. Scan 2 -> Discovered "AgriX Sensor"
                 is SensorState.Scan2SensorFound -> {
                     if (state.isScanning) {
                         SearchingSpinnerView()
@@ -177,7 +154,7 @@ fun SensorConnectionScreen(
                     ConnectingCard(device = state.device)
                 }
 
-                // 5. Sensor Connected & Ready for Soil Insertion
+                // 5. Connected (Demo BLE mode, prompt probe insertion)
                 is SensorState.ConnectedDemo -> {
                     ConnectedDemoView(
                         device = state.device,
@@ -187,7 +164,7 @@ fun SensorConnectionScreen(
                     )
                 }
 
-                // 6. Active Soil Scan Multi-step Animation
+                // 6. Active Soil Scanning Animation (2-4 seconds across 6 steps)
                 is SensorState.ScanningSoil -> {
                     ScanningSoilProgressView(
                         stepName = state.stepName,
@@ -195,14 +172,14 @@ fun SensorConnectionScreen(
                     )
                 }
 
-                // 7. Analyzing State (Local & Cloud)
+                // 7. Analyzing Stages (Local & Cloud)
                 is SensorState.DataReady,
                 is SensorState.AnalyzingLocal,
                 is SensorState.AnalyzingCloud -> {
                     AnalyzingProgressView()
                 }
 
-                // 8. Result Ready (Full Report Screen)
+                // 8. Final Comprehensive Sensor Report (Persistent Scan Soil button)
                 is SensorState.ResultReady -> {
                     SensorReportView(
                         report = state.report,
@@ -217,7 +194,7 @@ fun SensorConnectionScreen(
 }
 
 // -------------------------------------------------------------
-// STAGE 1: DISCONNECTED INITIAL VIEW
+// STAGE 1: INITIAL DISCONNECTED VIEW
 // -------------------------------------------------------------
 
 @Composable
@@ -231,44 +208,7 @@ private fun DisconnectedInitialView(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
-
-        Text(
-            text = stringResource(R.string.sensor_screen_subtitle),
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        // Demo Prototype Notice Card
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(14.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.6f),
-            ),
-        ) {
-            Row(
-                modifier = Modifier.padding(16.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    painter = painterResource(R.drawable.ic_soil_sprout),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.size(24.dp),
-                )
-                Spacer(modifier = Modifier.width(12.dp))
-                Text(
-                    text = stringResource(R.string.sensor_demo_notice),
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer,
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(28.dp))
 
         Card(
             modifier = Modifier.fillMaxWidth(),
@@ -280,21 +220,21 @@ private fun DisconnectedInitialView(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(28.dp),
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
                     modifier = Modifier
                         .size(64.dp)
                         .clip(CircleShape)
-                        .background(MaterialTheme.colorScheme.primary.copy(alpha = 0.12f)),
+                        .background(MaterialTheme.colorScheme.primaryContainer),
                     contentAlignment = Alignment.Center,
                 ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_soil_sprout),
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier.size(32.dp),
                     )
                 }
 
@@ -317,14 +257,14 @@ private fun DisconnectedInitialView(
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
         Button(
             onClick = onStartScan,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 54.dp),
-            shape = RoundedCornerShape(14.dp),
+                .heightIn(min = 52.dp),
+            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
             ),
@@ -365,12 +305,12 @@ private fun Scan1NoSensorView(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(32.dp),
+                    .padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(60.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.error.copy(alpha = 0.12f)),
                     contentAlignment = Alignment.Center,
@@ -383,7 +323,7 @@ private fun Scan1NoSensorView(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(18.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
                     text = stringResource(R.string.sensor_no_sensor_detected_title),
@@ -402,14 +342,14 @@ private fun Scan1NoSensorView(
             }
         }
 
-        Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(28.dp))
 
         Button(
             onClick = onScanAgain,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 54.dp),
-            shape = RoundedCornerShape(14.dp),
+                .heightIn(min = 52.dp),
+            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
             ),
@@ -448,7 +388,7 @@ private fun Scan2SensorFoundView(
             color = MaterialTheme.colorScheme.primary,
         )
 
-        Spacer(modifier = Modifier.height(14.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Card(
             modifier = Modifier
@@ -462,17 +402,21 @@ private fun Scan2SensorFoundView(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(20.dp),
+                    .padding(18.dp),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
                         Text(
                             text = device.name,
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Surface(
@@ -480,9 +424,12 @@ private fun Scan2SensorFoundView(
                             color = MaterialTheme.colorScheme.primary,
                         ) {
                             Text(
-                                text = stringResource(R.string.sensor_demo_badge),
+                                text = "DEMO BLE",
                                 style = MaterialTheme.typography.labelSmall,
+                                fontWeight = FontWeight.Bold,
                                 color = Color.White,
+                                maxLines = 1,
+                                softWrap = false,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                             )
                         }
@@ -504,7 +451,7 @@ private fun Scan2SensorFoundView(
                     )
                 }
 
-                Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(10.dp))
 
                 Button(
                     onClick = onConnect,
@@ -522,7 +469,7 @@ private fun Scan2SensorFoundView(
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         OutlinedButton(
             onClick = onScanAgain,
@@ -558,11 +505,11 @@ private fun ConnectedDemoView(
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Card(
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(18.dp),
+            shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
             ),
@@ -570,12 +517,12 @@ private fun ConnectedDemoView(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(24.dp),
+                    .padding(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Box(
                     modifier = Modifier
-                        .size(64.dp)
+                        .size(56.dp)
                         .clip(CircleShape)
                         .background(MaterialTheme.colorScheme.primary),
                     contentAlignment = Alignment.Center,
@@ -584,15 +531,15 @@ private fun ConnectedDemoView(
                         painter = painterResource(R.drawable.ic_soil_sprout),
                         contentDescription = null,
                         tint = Color.White,
-                        modifier = Modifier.size(36.dp),
+                        modifier = Modifier.size(30.dp),
                     )
                 }
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 Text(
                     text = "✓ " + device.name,
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.titleLarge,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
@@ -606,27 +553,29 @@ private fun ConnectedDemoView(
                 )
 
                 Surface(
-                    shape = RoundedCornerShape(8.dp),
+                    shape = RoundedCornerShape(6.dp),
                     color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                    modifier = Modifier.padding(top = 8.dp),
+                    modifier = Modifier.padding(top = 6.dp),
                 ) {
                     Text(
-                        text = stringResource(R.string.sensor_connection_mode),
+                        text = "Connection: Demo BLE",
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp),
+                        maxLines = 1,
+                        softWrap = false,
+                        modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     )
                 }
 
-                Spacer(modifier = Modifier.height(18.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 Surface(
-                    shape = RoundedCornerShape(12.dp),
+                    shape = RoundedCornerShape(10.dp),
                     color = MaterialTheme.colorScheme.surface.copy(alpha = 0.9f),
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp),
+                        modifier = Modifier.padding(14.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         Text(
@@ -640,15 +589,15 @@ private fun ConnectedDemoView(
             }
         }
 
-        Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         // Large CTA Button: SCAN SOIL (remains persistently available)
         Button(
             onClick = onScanSoil,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 56.dp),
-            shape = RoundedCornerShape(14.dp),
+                .heightIn(min = 54.dp),
+            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
             ),
@@ -658,7 +607,7 @@ private fun ConnectedDemoView(
                     painter = painterResource(R.drawable.ic_soil_sprout),
                     contentDescription = null,
                     tint = Color.White,
-                    modifier = Modifier.size(24.dp),
+                    modifier = Modifier.size(22.dp),
                 )
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
@@ -669,18 +618,18 @@ private fun ConnectedDemoView(
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             OutlinedButton(
                 onClick = onDisconnect,
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = 48.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .heightIn(min = 46.dp),
+                shape = RoundedCornerShape(10.dp),
             ) {
                 Text(
                     text = stringResource(R.string.sensor_action_disconnect),
@@ -693,8 +642,8 @@ private fun ConnectedDemoView(
                 onClick = onResetDemo,
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = 48.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .heightIn(min = 46.dp),
+                shape = RoundedCornerShape(10.dp),
             ) {
                 Text(
                     text = stringResource(R.string.sensor_reset_demo),
@@ -719,20 +668,20 @@ private fun ScanningSoilProgressView(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(24.dp),
+            .padding(20.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
         Box(
             modifier = Modifier
-                .size(90.dp)
+                .size(84.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primaryContainer),
             contentAlignment = Alignment.Center,
         ) {
             CircularProgressIndicator(
                 progress = { progress },
-                modifier = Modifier.size(76.dp),
+                modifier = Modifier.size(72.dp),
                 strokeWidth = 5.dp,
                 color = MaterialTheme.colorScheme.primary,
                 trackColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -741,11 +690,11 @@ private fun ScanningSoilProgressView(
                 painter = painterResource(R.drawable.ic_soil_sprout),
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(36.dp),
+                modifier = Modifier.size(32.dp),
             )
         }
 
-        Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             text = "Acquiring Soil Telemetry...",
@@ -759,10 +708,10 @@ private fun ScanningSoilProgressView(
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.SemiBold,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = 6.dp),
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         LinearProgressIndicator(
             progress = { progress },
@@ -779,14 +728,14 @@ private fun ScanningSoilProgressView(
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 8.dp),
+            modifier = Modifier.padding(top = 6.dp),
         )
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
         Column(
             modifier = Modifier.fillMaxWidth(0.9f),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             StepItemRow("Preparing sensor...", progress >= 0.15f)
             StepItemRow("Reading soil moisture...", progress >= 0.35f)
@@ -837,26 +786,26 @@ private fun AnalyzingProgressView(
     ) {
         CircularProgressIndicator(
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(52.dp),
+            modifier = Modifier.size(48.dp),
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(18.dp))
         Text(
-            text = "Analyzing Soil Telemetry...",
+            text = "Synthesizing Smart Recommendation...",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground,
         )
         Text(
-            text = "Running local deterministic rules & companion Gemini AI...",
+            text = "Analyzing sensor readings, crop profile & environment...",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 6.dp),
+            modifier = Modifier.padding(top = 4.dp),
         )
     }
 }
 
 // -------------------------------------------------------------
-// STAGE 8: COMPREHENSIVE FINAL SENSOR REPORT VIEW
+// STAGE 8: UNIFIED SMART AGRIX RECOMMENDATION REPORT VIEW
 // -------------------------------------------------------------
 
 @Composable
@@ -868,6 +817,7 @@ private fun SensorReportView(
     modifier: Modifier = Modifier,
 ) {
     val reading = report.reading
+    val rec = report.recommendation
     val scrollState = rememberScrollState()
     val formattedTime = SimpleDateFormat("MMM dd, yyyy • hh:mm a", Locale.getDefault()).format(Date(reading.timestamp))
 
@@ -876,7 +826,7 @@ private fun SensorReportView(
             .fillMaxSize()
             .verticalScroll(scrollState),
     ) {
-        // 1. Report Header Card
+        // 1. Telemetry Header Card
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -891,44 +841,38 @@ private fun SensorReportView(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = stringResource(R.string.sensor_data_title),
+                        text = "AGRI X SENSOR DATA",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
                     )
                     Surface(
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(6.dp),
                         color = MaterialTheme.colorScheme.primary,
                     ) {
                         Text(
-                            text = "✓ Sensor connected",
+                            text = "✓ CONNECTED",
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
-                            modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                            maxLines = 1,
+                            softWrap = false,
+                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp),
                         )
                     }
                 }
 
-                Spacer(modifier = Modifier.height(6.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Data source: Demo BLE Sensor",
+                    text = "Data source: Demo BLE Sensor • $formattedTime",
                     style = MaterialTheme.typography.bodySmall,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
-                )
-
-                Text(
-                    text = "${stringResource(R.string.sensor_timestamp)}: $formattedTime",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
-                    modifier = Modifier.padding(top = 2.dp),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(14.dp))
 
         // 2. Telemetry Parameter Tiles (2x2 Grid)
         Text(
@@ -938,7 +882,7 @@ private fun SensorReportView(
             color = MaterialTheme.colorScheme.primary,
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -948,19 +892,19 @@ private fun SensorReportView(
                 title = "Temperature",
                 value = "${reading.temperature} °C",
                 badge = if (reading.temperature > 32.0) "High" else "Optimal",
-                badgeColor = if (reading.temperature > 32.0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                badgeColor = if (reading.temperature > 32.0) MaterialTheme.colorScheme.error else Color(0xFF2E7D32),
                 modifier = Modifier.weight(1f),
             )
             TelemetryTile(
                 title = "Humidity",
                 value = "${reading.humidity} %",
                 badge = if (reading.humidity > 80.0) "High" else "Normal",
-                badgeColor = if (reading.humidity > 80.0) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                badgeColor = if (reading.humidity > 80.0) MaterialTheme.colorScheme.error else Color(0xFF2E7D32),
                 modifier = Modifier.weight(1f),
             )
         }
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -976,8 +920,8 @@ private fun SensorReportView(
                 },
                 badgeColor = when {
                     reading.soilMoisture < 35.0 -> MaterialTheme.colorScheme.error
-                    reading.soilMoisture <= 55.0 -> MaterialTheme.colorScheme.primary
-                    else -> MaterialTheme.colorScheme.tertiary
+                    reading.soilMoisture <= 55.0 -> Color(0xFF2E7D32)
+                    else -> Color(0xFFE65100)
                 },
                 modifier = Modifier.weight(1f),
             )
@@ -990,16 +934,16 @@ private fun SensorReportView(
                     else -> "Alkaline"
                 },
                 badgeColor = when {
-                    reading.soilPH in 5.8..7.5 -> MaterialTheme.colorScheme.primary
+                    reading.soilPH in 5.8..7.5 -> Color(0xFF2E7D32)
                     else -> MaterialTheme.colorScheme.error
                 },
                 modifier = Modifier.weight(1f),
             )
         }
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(18.dp))
 
-        // 3. Local Analysis Card (100% Offline Rule Engine)
+        // 3. Single Unified SMART AGRIX RECOMMENDATION Card
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(16.dp),
@@ -1008,184 +952,134 @@ private fun SensorReportView(
             ),
         ) {
             Column(modifier = Modifier.padding(18.dp)) {
+                // Header with Priority
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = stringResource(R.string.sensor_local_analysis_title),
+                        text = "SMART AGRIX RECOMMENDATION",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false),
                     )
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.15f),
-                    ) {
-                        Text(
-                            text = "100% Offline Rule Engine",
-                            style = MaterialTheme.typography.labelSmall,
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
-                        )
-                    }
+
+                    Spacer(modifier = Modifier.width(8.dp))
+
+                    PriorityBadge(priority = rec.priority)
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
-
-                AnalysisFieldRow(
-                    label = stringResource(R.string.sensor_soil_condition),
-                    value = report.localAnalysis.soilCondition,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-
-                AnalysisFieldRow(
-                    label = stringResource(R.string.sensor_irrigation_rec),
-                    value = report.localAnalysis.irrigationRecommendation,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = stringResource(R.string.sensor_risk_indicators),
-                    style = MaterialTheme.typography.labelMedium,
-                    fontWeight = FontWeight.Bold,
+                    text = "Crop: ${rec.cropName} • Condition: ${rec.overallCondition}",
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
-                report.localAnalysis.riskIndicators.forEach { risk ->
-                    Text(
-                        text = "• $risk",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(start = 6.dp, top = 2.dp),
-                    )
-                }
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // Section 1: 🌱 Soil Condition
+                RecommendationSection(
+                    icon = "🌱",
+                    title = "Soil Condition",
+                    content = rec.soilCondition,
+                )
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                AnalysisFieldRow(
-                    label = stringResource(R.string.sensor_immediate_action),
-                    value = report.localAnalysis.immediateAction,
+                // Section 2: 💧 Watering
+                RecommendationSection(
+                    icon = "💧",
+                    title = "Watering",
+                    content = buildString {
+                        append(rec.wateringDecision)
+                        append("\n• Why: ")
+                        append(rec.wateringExplanation)
+                        append("\n• When: ")
+                        append(rec.wateringTiming)
+                        append("\n• Action: ")
+                        append(rec.wateringAction)
+                    },
                 )
-            }
-        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
-        // 4. Cloud AI Analysis Card (FastAPI + Gemini)
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f),
-            ),
-        ) {
-            Column(modifier = Modifier.padding(18.dp)) {
-                Row(
+                // Section 3: 🌡 Environment
+                RecommendationSection(
+                    icon = "🌡",
+                    title = "Environment",
+                    content = rec.environmentAssessment,
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Section 4: 🦠 Disease Prevention
+                RecommendationSection(
+                    icon = "🦠",
+                    title = "Disease Prevention",
+                    content = rec.diseasePrevention,
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                // Section 5: 📈 Crop Growth
+                RecommendationSection(
+                    icon = "📈",
+                    title = "Crop Growth",
+                    content = rec.cropGrowthGuidance,
+                )
+
+                Spacer(modifier = Modifier.height(14.dp))
+
+                // Section 6: 🎯 ACTION NOW (Highlighted Action Banner)
+                Surface(
+                    shape = RoundedCornerShape(12.dp),
+                    color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
-                        text = stringResource(R.string.sensor_cloud_analysis_title),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    )
-                    Surface(
-                        shape = RoundedCornerShape(6.dp),
-                        color = MaterialTheme.colorScheme.secondary,
-                    ) {
+                    Column(modifier = Modifier.padding(14.dp)) {
                         Text(
-                            text = if (report.cloudAnalysis != null) "Gemini Cloud AI" else "Offline Fallback",
-                            style = MaterialTheme.typography.labelSmall,
+                            text = "🎯 ACTION NOW",
+                            style = MaterialTheme.typography.labelMedium,
                             fontWeight = FontWeight.Bold,
                             color = Color.White,
-                            modifier = Modifier.padding(horizontal = 6.dp, vertical = 2.dp),
                         )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                if (report.cloudAnalysis != null) {
-                    val cloud = report.cloudAnalysis
-                    Text(
-                        text = cloud.soilInterpretation,
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    Text(
-                        text = "Crop Implications: ${cloud.cropImplications}",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.9f),
-                    )
-
-                    Spacer(modifier = Modifier.height(6.dp))
-
-                    Text(
-                        text = "Irrigation Guidance: ${cloud.irrigationAdvice}",
-                        style = MaterialTheme.typography.bodySmall,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSecondaryContainer,
-                    )
-                } else {
-                    Surface(
-                        shape = RoundedCornerShape(8.dp),
-                        color = MaterialTheme.colorScheme.surface.copy(alpha = 0.8f),
-                    ) {
                         Text(
-                            text = stringResource(R.string.sensor_cloud_fallback_notice),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            text = rec.immediateActionSummary,
+                            style = MaterialTheme.typography.bodyMedium,
+                            fontWeight = FontWeight.SemiBold,
+                            color = Color.White.copy(alpha = 0.95f),
+                            modifier = Modifier.padding(top = 2.dp),
                         )
                     }
                 }
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        // 5. Final AgriX Combined Recommendation Banner
-        Card(
-            modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-            ),
-        ) {
-            Column(modifier = Modifier.padding(20.dp)) {
-                Text(
-                    text = "🌱 " + stringResource(R.string.sensor_final_rec_title),
-                    style = MaterialTheme.typography.titleMedium,
-                    fontWeight = FontWeight.Bold,
-                    color = Color.White,
-                )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    text = report.finalRecommendation,
-                    style = MaterialTheme.typography.bodyLarge,
-                    color = Color.White.copy(alpha = 0.95f),
+                    text = "✓ AgriX Intelligence Analysis Complete",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.7f),
+                    modifier = Modifier.padding(top = 4.dp),
                 )
             }
         }
 
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(20.dp))
 
-        // Primary Persistent Action: SCAN SOIL AGAIN (Never disappears!)
+        // Primary Action: SCAN SOIL AGAIN (Always available!)
         Button(
             onClick = onScanSoilAgain,
             modifier = Modifier
                 .fillMaxWidth()
-                .heightIn(min = 54.dp),
-            shape = RoundedCornerShape(14.dp),
+                .heightIn(min = 52.dp),
+            shape = RoundedCornerShape(12.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
             ),
@@ -1206,18 +1100,18 @@ private fun SensorReportView(
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             OutlinedButton(
                 onClick = onResetDemo,
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = 48.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .heightIn(min = 46.dp),
+                shape = RoundedCornerShape(10.dp),
             ) {
                 Text(
                     text = stringResource(R.string.sensor_reset_demo),
@@ -1230,8 +1124,8 @@ private fun SensorReportView(
                 onClick = onDone,
                 modifier = Modifier
                     .weight(1f)
-                    .heightIn(min = 48.dp),
-                shape = RoundedCornerShape(12.dp),
+                    .heightIn(min = 46.dp),
+                shape = RoundedCornerShape(10.dp),
             ) {
                 Text(
                     text = stringResource(R.string.sensor_done_home),
@@ -1241,13 +1135,35 @@ private fun SensorReportView(
             }
         }
 
-        Spacer(modifier = Modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(24.dp))
     }
 }
 
 // -------------------------------------------------------------
 // HELPER SUB-COMPONENTS
 // -------------------------------------------------------------
+
+@Composable
+private fun RecommendationSection(
+    icon: String,
+    title: String,
+    content: String,
+) {
+    Column {
+        Text(
+            text = "$icon $title",
+            style = MaterialTheme.typography.labelMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+        Text(
+            text = content,
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.9f),
+            modifier = Modifier.padding(top = 2.dp),
+        )
+    }
+}
 
 @Composable
 private fun SearchingSpinnerView(
@@ -1264,7 +1180,7 @@ private fun SearchingSpinnerView(
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.size(48.dp),
         )
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(18.dp))
         Text(
             text = "Scanning for nearby sensors...",
             style = MaterialTheme.typography.titleMedium,
@@ -1295,15 +1211,15 @@ private fun ConnectingCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(32.dp),
+                .padding(28.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             CircularProgressIndicator(
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.size(44.dp),
+                modifier = Modifier.size(42.dp),
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(18.dp))
 
             Text(
                 text = stringResource(R.string.sensor_action_connecting),
@@ -1316,7 +1232,7 @@ private fun ConnectingCard(
                 text = device.name,
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.primary,
-                modifier = Modifier.padding(top = 6.dp),
+                modifier = Modifier.padding(top = 4.dp),
             )
         }
     }
@@ -1332,12 +1248,12 @@ private fun TelemetryTile(
 ) {
     Card(
         modifier = modifier,
-        shape = RoundedCornerShape(14.dp),
+        shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
     ) {
-        Column(modifier = Modifier.padding(14.dp)) {
+        Column(modifier = Modifier.padding(12.dp)) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -1347,6 +1263,8 @@ private fun TelemetryTile(
                     text = title,
                     style = MaterialTheme.typography.labelSmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 Surface(
                     shape = RoundedCornerShape(4.dp),
@@ -1357,12 +1275,14 @@ private fun TelemetryTile(
                         style = MaterialTheme.typography.labelSmall,
                         fontWeight = FontWeight.Bold,
                         color = badgeColor,
-                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp),
+                        maxLines = 1,
+                        softWrap = false,
+                        modifier = Modifier.padding(horizontal = 4.dp, vertical = 1.dp),
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(4.dp))
 
             Text(
                 text = value,
@@ -1371,26 +1291,5 @@ private fun TelemetryTile(
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
         }
-    }
-}
-
-@Composable
-private fun AnalysisFieldRow(
-    label: String,
-    value: String,
-) {
-    Column {
-        Text(
-            text = label,
-            style = MaterialTheme.typography.labelMedium,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-        )
-        Text(
-            text = value,
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = 2.dp),
-        )
     }
 }

@@ -19,12 +19,14 @@ class SensorWorkflowIntegrationTest {
         val demoDevice = BleDevice("AgriX Sensor", "DEMO:BLE:AGRIX:01", -55, isDemo = true)
         val reading = SensorReading(28.5, 62.0, 47.0, 6.7, source = "SIMULATED_BLE")
         val localAnalysis = localEngine.analyze(reading, "Tomato")
+        val recommendation = localEngine.synthesizeUnifiedRecommendation(reading, "Tomato")
         val report = CombinedSensorReport(
             reading = reading,
+            recommendation = recommendation,
             localAnalysis = localAnalysis,
             cloudAnalysis = null,
             isCloudFallback = true,
-            finalRecommendation = "Optimal soil moisture.",
+            finalRecommendation = recommendation.immediateActionSummary,
         )
 
         assertEquals(SensorStateStage.DISCONNECTED_INITIAL, SensorState.DisconnectedInitial.stage)
@@ -41,7 +43,7 @@ class SensorWorkflowIntegrationTest {
     }
 
     @Test
-    fun `test combined report synthesis with local analysis and successful cloud analysis`() {
+    fun `test unified recommendation with cloud AI enhancement`() {
         val reading = SensorReading(
             temperature = 28.5,
             humidity = 62.0,
@@ -51,6 +53,7 @@ class SensorWorkflowIntegrationTest {
         )
 
         val localAnalysis = localEngine.analyze(reading, "Tomato")
+        val localRec = localEngine.synthesizeUnifiedRecommendation(reading, "Tomato")
 
         val cloudAnalysis = CloudSensorAnalysis(
             provider = "mock",
@@ -62,52 +65,61 @@ class SensorWorkflowIntegrationTest {
             recommendedNextAction = "Monitor weekly.",
             farmerSummary = "Current soil moisture is adequate. Continue monitoring.",
             latencyMs = 45,
+            wateringDecision = "No immediate irrigation required",
+            wateringExplanation = "Soil moisture is optimal.",
+            wateringTiming = "Recheck in 24 hours.",
+            wateringAction = "Maintain current watering.",
+            actionNowSummary = "Current soil moisture is adequate. Continue monitoring.",
+        )
+
+        val unified = localRec.copy(
+            wateringDecision = cloudAnalysis.wateringDecision ?: localRec.wateringDecision,
+            immediateActionSummary = cloudAnalysis.actionNowSummary ?: localRec.immediateActionSummary,
+            isCloudEnhanced = true,
         )
 
         val report = CombinedSensorReport(
             reading = reading,
+            recommendation = unified,
             localAnalysis = localAnalysis,
             cloudAnalysis = cloudAnalysis,
             isCloudFallback = false,
-            finalRecommendation = cloudAnalysis.farmerSummary,
+            finalRecommendation = unified.immediateActionSummary,
         )
 
         assertEquals("SIMULATED_BLE", report.reading.source)
         assertEquals(28.5, report.reading.temperature, 0.01)
-        assertEquals(IrrigationPriority.MODERATE, report.localAnalysis.irrigationPriority)
+        assertEquals(RecommendationPriority.LOW, report.recommendation.priority)
         assertNotNull(report.cloudAnalysis)
+        assertTrue(report.recommendation.isCloudEnhanced)
         assertEquals("Current soil moisture is adequate. Continue monitoring.", report.finalRecommendation)
     }
 
     @Test
-    fun `test combined report synthesis with offline cloud fallback`() {
+    fun `test unified recommendation with offline fallback`() {
         val reading = SensorReading(
             temperature = 33.0,
             humidity = 75.0,
-            soilMoisture = 28.0, // Low
+            soilMoisture = 28.0, // Low for Tomato (< 40%)
             soilPH = 5.5,        // Acidic
             source = "SIMULATED_BLE",
         )
 
         val localAnalysis = localEngine.analyze(reading, "Tomato")
-
-        // Offline: cloudAnalysis is null
-        val fallbackRec = buildString {
-            append("Current soil moisture is ${reading.soilMoisture.toInt()}% (${localAnalysis.soilCondition.lowercase()}). ")
-            append(localAnalysis.immediateAction)
-        }
+        val localRec = localEngine.synthesizeUnifiedRecommendation(reading, "Tomato")
 
         val report = CombinedSensorReport(
             reading = reading,
+            recommendation = localRec,
             localAnalysis = localAnalysis,
             cloudAnalysis = null,
             isCloudFallback = true,
-            finalRecommendation = fallbackRec,
+            finalRecommendation = localRec.immediateActionSummary,
         )
 
-        assertEquals(IrrigationPriority.HIGH, report.localAnalysis.irrigationPriority)
+        assertEquals(RecommendationPriority.HIGH, report.recommendation.priority)
         assertTrue(report.isCloudFallback)
-        assertTrue(report.finalRecommendation.contains("immediately", ignoreCase = true))
+        assertTrue(report.recommendation.wateringDecision.contains("Irrigate now", ignoreCase = true))
     }
 
     @Test
@@ -129,6 +141,8 @@ class SensorWorkflowIntegrationTest {
                         recommendedNextAction = "No action needed.",
                         farmerSummary = "Optimal soil health.",
                         latencyMs = 120,
+                        wateringDecision = "No immediate irrigation required",
+                        actionNowSummary = "Optimal soil health.",
                     )
                 )
             }
