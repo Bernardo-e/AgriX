@@ -99,6 +99,7 @@ fun HomeScreenContent(
                     farm = uiState.farm,
                     isSensorConnected = uiState.isSensorConnected,
                     connectedDeviceName = uiState.connectedDeviceName,
+                    latestReading = uiState.latestReading,
                     onConnectSensor = onConnectSensor,
                     onNavigateToAi = onNavigateToAi,
                     onEditFarm = onEditFarm,
@@ -128,6 +129,7 @@ private fun HomeDashboardBody(
     farm: FarmEntity,
     isSensorConnected: Boolean,
     connectedDeviceName: String?,
+    latestReading: com.sih.app.core.sensor.SensorReading? = null,
     onConnectSensor: () -> Unit,
     onNavigateToAi: () -> Unit,
     onEditFarm: () -> Unit = {},
@@ -376,12 +378,12 @@ private fun HomeDashboardBody(
         ) {
             ConditionParameterCard(
                 title = stringResource(R.string.home_param_moisture),
-                value = stringResource(R.string.home_no_data),
+                value = latestReading?.let { "${it.soilMoisture}%" } ?: stringResource(R.string.home_no_data),
                 modifier = Modifier.weight(1f),
             )
             ConditionParameterCard(
                 title = stringResource(R.string.home_param_temperature),
-                value = stringResource(R.string.home_no_data),
+                value = latestReading?.let { "${it.temperature} °C" } ?: stringResource(R.string.home_no_data),
                 modifier = Modifier.weight(1f),
             )
         }
@@ -394,12 +396,12 @@ private fun HomeDashboardBody(
         ) {
             ConditionParameterCard(
                 title = stringResource(R.string.home_param_humidity),
-                value = stringResource(R.string.home_no_data),
+                value = latestReading?.let { "${it.humidity}%" } ?: stringResource(R.string.home_no_data),
                 modifier = Modifier.weight(1f),
             )
             ConditionParameterCard(
                 title = stringResource(R.string.home_param_ph),
-                value = stringResource(R.string.home_no_data),
+                value = latestReading?.let { "${it.soilPH}" } ?: stringResource(R.string.home_no_data),
                 modifier = Modifier.weight(1f),
             )
         }

@@ -228,5 +228,21 @@
     <string name="image_gate_healthy_badge">Healthy</string>
     <string name="image_gate_healthy_action">No immediate action required. Continue regular monitoring and good crop management.</string>
     <string name="edit_profile_btn">Edit</string>
+    <string name="sensor_demo_badge">Demo BLE Sensor</string>
+    <string name="sensor_demo_notice">Prototype / simulated sensor connection. Real-time telemetry is simulated for the hackathon demonstration.</string>
+    <string name="sensor_action_scan_soil">Scan Soil</string>
+    <string name="sensor_scanning_soil">Scanning Soil Telemetry...</string>
+    <string name="sensor_report_title">AGRI X SENSOR REPORT</string>
+    <string name="sensor_local_analysis_title">LOCAL ANALYSIS</string>
+    <string name="sensor_cloud_analysis_title">CLOUD AI ANALYSIS</string>
+    <string name="sensor_final_rec_title">FINAL AGRIX RECOMMENDATION</string>
+    <string name="sensor_cloud_fallback_notice">Cloud AI unavailable — showing local recommendation.</string>
+    <string name="sensor_soil_condition">Soil Condition</string>
+    <string name="sensor_irrigation_rec">Irrigation</string>
+    <string name="sensor_risk_indicators">Risk Indicators</string>
+    <string name="sensor_immediate_action">Immediate Action</string>
+    <string name="sensor_probe_ready">Sensor probe ready. Insert into soil and tap Scan Soil.</string>
+    <string name="sensor_scan_again">Scan Again</string>
+    <string name="sensor_done_home">Done</string>
 </resources>
 

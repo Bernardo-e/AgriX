@@ -2,6 +2,7 @@ package com.sih.app.core.data.api.cloud
 
 import com.sih.app.core.data.api.BackendCropRef
 import com.sih.app.core.data.api.BackendDiseaseRef
+import com.sih.app.core.sensor.CloudSensorAnalysis
 
 data class CloudDiagnosisRequestData(
     val imageBytes: ByteArray,
@@ -55,4 +56,15 @@ data class CloudDiagnosisResponseData(
     val diagnosis: CloudDiagnosisInfoData,
     val visualReasoning: String,
     val advisory: CloudAdvisoryInfoData,
+)
+
+data class CloudSensorRequestData(
+    val source: String = "SIMULATED_BLE",
+    val temperature: Double,
+    val humidity: Double,
+    val soilMoisture: Double,
+    val soilPH: Double,
+    val cropName: String? = null,
+    val soilType: String? = null,
+    val language: String? = "en",
 )

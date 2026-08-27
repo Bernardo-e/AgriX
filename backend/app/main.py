@@ -6,8 +6,8 @@ from app.routers.cloud_diagnosis import router as cloud_diagnosis_router
 from app.routers.crops import diseases_router
 from app.routers.crops import router as crops_router
 from app.routers.diagnosis import router as diagnosis_router
+from app.routers.sensor import router as sensor_router
 from app.routers.system import router as system_router
-
 
 app = FastAPI(
     title="AgriX Backend",
@@ -31,6 +31,7 @@ app.include_router(diseases_router)
 app.include_router(diagnosis_router)
 app.include_router(advisory_router)
 app.include_router(cloud_diagnosis_router)
+app.include_router(sensor_router)
 
 
 @app.get("/health", tags=["System"])

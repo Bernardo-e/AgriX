@@ -3,6 +3,7 @@ package com.sih.app.core.data.api.cloud
 import com.sih.app.core.data.api.ApiException
 import com.sih.app.core.data.api.BackendCropRef
 import com.sih.app.core.data.api.BackendDiseaseRef
+import com.sih.app.core.sensor.CloudSensorAnalysis
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -41,7 +42,6 @@ class HttpCloudAiClient(
             }
 
             DataOutputStream(connection.outputStream).use { dos ->
-                // Helper to write form field
                 fun writeFormField(fieldName: String, value: String?) {
                     if (value != null) {
                         dos.writeBytes("$twoHyphens$boundary$lineEnd")
@@ -52,7 +52,6 @@ class HttpCloudAiClient(
                     }
                 }
 
-                // Write text parameters
                 writeFormField("crop_id", request.cropId)
                 if (request.localDiseaseId != null) {
                     writeFormField("local_disease_id", request.localDiseaseId.toString())
@@ -73,14 +72,12 @@ class HttpCloudAiClient(
                     writeFormField("district", request.district)
                 }
 
-                // Write image binary file part
                 dos.writeBytes("$twoHyphens$boundary$lineEnd")
                 dos.writeBytes("Content-Disposition: form-data; name=\"image\"; filename=\"leaf_scan.jpg\"$lineEnd")
                 dos.writeBytes("Content-Type: image/jpeg$lineEnd$lineEnd")
                 dos.write(request.imageBytes)
                 dos.writeBytes(lineEnd)
 
-                // End of multipart payload
                 dos.writeBytes("$twoHyphens$boundary$twoHyphens$lineEnd")
                 dos.flush()
             }
@@ -95,7 +92,6 @@ class HttpCloudAiClient(
                 val diseaseObj = diagObj.getJSONObject("disease")
                 val advObj = json.getJSONObject("advisory")
 
-                // Parse list helper
                 fun parseStringList(key: String): List<String> {
                     val arr = advObj.optJSONArray(key) ?: return emptyList()
                     val list = mutableListOf<String>()
@@ -140,6 +136,74 @@ class HttpCloudAiClient(
             } else {
                 val errorBody = connection.errorStream?.let { readStream(it) } ?: "HTTP $responseCode"
                 Result.failure(ApiException(responseCode, "Cloud AI diagnosis failed: $errorBody"))
+            }
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun performCloudSensorAnalysis(
+        request: CloudSensorRequestData,
+    ): Result<CloudSensorAnalysis> = withContext(Dispatchers.IO) {
+        try {
+            val cleanBaseUrl = baseUrl.trimEnd('/')
+            val url = URL("$cleanBaseUrl/api/v1/sensor-analysis")
+
+            val jsonBody = JSONObject().apply {
+                put("source", request.source)
+                put("temperature", request.temperature)
+                put("humidity", request.humidity)
+                put("soil_moisture", request.soilMoisture)
+                put("soil_ph", request.soilPH)
+                if (request.cropName != null) put("crop_name", request.cropName)
+                if (request.soilType != null) put("soil_type", request.soilType)
+                if (request.language != null) put("language", request.language)
+            }
+
+            val connection = (url.openConnection() as HttpURLConnection).apply {
+                requestMethod = "POST"
+                connectTimeout = connectTimeoutMs
+                readTimeout = readTimeoutMs
+                doOutput = true
+                doInput = true
+                useCaches = false
+                setRequestProperty("Content-Type", "application/json; charset=UTF-8")
+                setRequestProperty("Accept", "application/json")
+            }
+
+            DataOutputStream(connection.outputStream).use { dos ->
+                dos.write(jsonBody.toString().toByteArray(Charsets.UTF_8))
+                dos.flush()
+            }
+
+            val responseCode = connection.responseCode
+            if (responseCode in 200..299) {
+                val responseBody = readStream(connection.inputStream)
+                val json = JSONObject(responseBody)
+
+                val risksArray = json.optJSONArray("possible_risks")
+                val risks = mutableListOf<String>()
+                if (risksArray != null) {
+                    for (i in 0 until risksArray.length()) {
+                        risks.add(risksArray.getString(i))
+                    }
+                }
+
+                val analysis = CloudSensorAnalysis(
+                    provider = json.optString("provider", "Gemini Cloud AI"),
+                    model = json.optString("model", "gemini"),
+                    soilInterpretation = json.optString("soil_interpretation", "Soil moisture and pH evaluated."),
+                    cropImplications = json.optString("crop_implications", "Readings support current crop stage."),
+                    irrigationAdvice = json.optString("irrigation_advice", "Monitor soil moisture regularly."),
+                    possibleRisks = risks,
+                    recommendedNextAction = json.optString("recommended_next_action", "Maintain routine soil care."),
+                    farmerSummary = json.optString("farmer_summary", "Soil conditions are stable."),
+                    latencyMs = json.optInt("latency_ms", 0),
+                )
+                Result.success(analysis)
+            } else {
+                val errorBody = connection.errorStream?.let { readStream(it) } ?: "HTTP $responseCode"
+                Result.failure(ApiException(responseCode, "Sensor analysis failed: $errorBody"))
             }
         } catch (e: Exception) {
             Result.failure(e)

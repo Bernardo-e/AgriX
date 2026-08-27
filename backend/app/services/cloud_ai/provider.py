@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 from pydantic import BaseModel, ConfigDict, Field
+from app.models.sensor import SensorAnalysisRawResult, SensorAnalysisRequest
 
 
 class CloudDiagnosisException(Exception):
@@ -60,11 +61,16 @@ class CloudDiagnosisRawResult(BaseModel):
 
 
 class CloudDiagnosisProvider(ABC):
-    """Abstract interface for multi-provider Cloud AI diagnosis."""
+    """Abstract interface for multi-provider Cloud AI diagnosis and sensor analysis."""
 
     @abstractmethod
     async def diagnose(self, request: CloudDiagnosisRequest) -> CloudDiagnosisRawResult:
         """Execute multimodal vision diagnosis against the cloud provider."""
+        pass
+
+    @abstractmethod
+    async def analyze_sensor(self, request: SensorAnalysisRequest) -> SensorAnalysisRawResult:
+        """Analyze soil and environmental sensor readings for agricultural guidance."""
         pass
 
     @abstractmethod

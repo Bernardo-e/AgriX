@@ -114,6 +114,28 @@ class CloudAiIntegrationTest {
                 Result.failure(ApiException(errorResponseCode, "Cloud AI error: HTTP $errorResponseCode"))
             }
         }
+
+        override suspend fun performCloudSensorAnalysis(
+            request: com.sih.app.core.data.api.cloud.CloudSensorRequestData,
+        ): Result<com.sih.app.core.sensor.CloudSensorAnalysis> {
+            return if (shouldSucceed) {
+                Result.success(
+                    com.sih.app.core.sensor.CloudSensorAnalysis(
+                        provider = "mock-cloud",
+                        model = "gemini-1.5-flash",
+                        soilInterpretation = "Soil moisture is optimal at ${request.soilMoisture}%.",
+                        cropImplications = "Optimal for ${request.cropName ?: "crop"} vegetative growth.",
+                        irrigationAdvice = "Continue standard irrigation.",
+                        possibleRisks = listOf("No acute risks."),
+                        recommendedNextAction = "Monitor weekly.",
+                        farmerSummary = "Current soil moisture is adequate. Continue monitoring.",
+                        latencyMs = 120,
+                    )
+                )
+            } else {
+                Result.failure(ApiException(errorResponseCode, "Cloud AI error: HTTP $errorResponseCode"))
+            }
+        }
     }
 
     @Test

@@ -7,6 +7,7 @@ import com.sih.app.core.data.FarmRepository
 import com.sih.app.core.database.FarmEntity
 import com.sih.app.core.sensor.BleConnectionState
 import com.sih.app.core.sensor.BleSensorRepository
+import com.sih.app.core.sensor.SensorReading
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
@@ -18,6 +19,7 @@ sealed interface HomeUiState {
         val farm: FarmEntity,
         val isSensorConnected: Boolean = false,
         val connectedDeviceName: String? = null,
+        val latestReading: SensorReading? = null,
     ) : HomeUiState
     data object NoFarm : HomeUiState
 }
@@ -30,7 +32,8 @@ class HomeViewModel(
     val uiState: StateFlow<HomeUiState> = combine(
         farmRepository.getFarmFlow(),
         bleSensorRepository.connectionState,
-    ) { farm, bleState ->
+        bleSensorRepository.latestReading,
+    ) { farm, bleState, reading ->
         if (farm != null) {
             val isConnected = bleState is BleConnectionState.Connected
             val deviceName = (bleState as? BleConnectionState.Connected)?.device?.name
@@ -38,6 +41,7 @@ class HomeViewModel(
                 farm = farm,
                 isSensorConnected = isConnected,
                 connectedDeviceName = deviceName,
+                latestReading = reading,
             )
         } else {
             HomeUiState.NoFarm

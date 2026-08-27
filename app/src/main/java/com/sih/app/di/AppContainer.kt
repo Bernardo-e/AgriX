@@ -11,10 +11,13 @@ import com.sih.app.core.data.DiagnosisRepository
 import com.sih.app.core.data.FarmRepository
 import com.sih.app.core.data.api.DiagnosisApiClient
 import com.sih.app.core.data.api.HttpDiagnosisApiClient
+import com.sih.app.core.data.api.cloud.CloudAiClient
+import com.sih.app.core.data.api.cloud.HttpCloudAiClient
 import com.sih.app.core.database.AgriXDatabase
 import com.sih.app.core.locale.LanguageStore
 import com.sih.app.core.location.LocationRepository
 import com.sih.app.core.sensor.BleSensorRepository
+import com.sih.app.core.sensor.LocalSensorEngine
 
 class AppContainer(context: Context) {
 
@@ -43,6 +46,10 @@ class AppContainer(context: Context) {
         HttpDiagnosisApiClient(baseUrl = "http://10.0.2.2:8000")
     }
 
+    val cloudAiClient: CloudAiClient by lazy {
+        HttpCloudAiClient(baseUrl = "http://10.0.2.2:8000")
+    }
+
     val diagnosisRepository: DiagnosisRepository by lazy {
         DiagnosisRepository(
             diagnosisDao = database.diagnosisDao(),
@@ -58,6 +65,10 @@ class AppContainer(context: Context) {
         BleSensorRepository(context.applicationContext)
     }
 
+    val localSensorEngine: LocalSensorEngine by lazy {
+        LocalSensorEngine()
+    }
+
     val localAiEngine: LocalAiEngine by lazy {
         LocalAiEngine(context.applicationContext)
     }
@@ -67,7 +78,10 @@ class AppContainer(context: Context) {
     }
 
     val cloudAiEngine: CloudAiEngine by lazy {
-        CloudAiEngine(context = context.applicationContext)
+        CloudAiEngine(
+            context = context.applicationContext,
+            client = cloudAiClient,
+        )
     }
 
     val aiEngineRouter: AiEngineRouter by lazy {

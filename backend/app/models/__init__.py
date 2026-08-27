@@ -14,6 +14,11 @@ from app.models.diagnosis import (
     DiagnosticStatusEnum,
     DiseaseRef,
 )
+from app.models.sensor import (
+    SensorAnalysisRawResult,
+    SensorAnalysisRequest,
+    SensorAnalysisResponse,
+)
 
 __all__ = [
     "CropRef",
@@ -28,4 +33,7 @@ __all__ = [
     "AdvisoryDiseaseItem",
     "AdvisoryCatalogSummaryResponse",
     "CropAdvisoryListResponse",
+    "SensorAnalysisRequest",
+    "SensorAnalysisResponse",
+    "SensorAnalysisRawResult",
 ]

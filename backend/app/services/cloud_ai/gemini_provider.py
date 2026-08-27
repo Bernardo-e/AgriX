@@ -1,3 +1,4 @@
+import asyncio
 import base64
 import json
 import logging
@@ -6,6 +7,7 @@ import urllib.error
 import urllib.request
 
 from app.core.config import settings
+from app.models.sensor import SensorAnalysisRawResult, SensorAnalysisRequest
 from app.services.cloud_ai.provider import (
     CloudDiagnosisException,
     CloudDiagnosisProvider,
@@ -21,7 +23,8 @@ logger = logging.getLogger("agrix.cloud_ai.gemini")
 
 class GeminiDiagnosisProvider(CloudDiagnosisProvider):
     """
-    Concrete Cloud AI Provider implementing Google Gemini Multimodal Vision REST API.
+    Concrete Cloud AI Provider implementing Google Gemini Multimodal Vision REST API
+    and Sensor Telemetry Agronomic Analysis.
     Uses standard async-safe HTTP execution with strict timeout and prompt safety guardrails.
     """
 
@@ -117,8 +120,6 @@ class GeminiDiagnosisProvider(CloudDiagnosisProvider):
         )
 
         try:
-            # Run in thread pool to avoid blocking async event loop
-            import asyncio
             loop = asyncio.get_running_loop()
             raw_response_bytes = await loop.run_in_executor(
                 None,
@@ -170,6 +171,120 @@ class GeminiDiagnosisProvider(CloudDiagnosisProvider):
             )
         except (KeyError, ValueError, json.JSONDecodeError) as e:
             logger.error("Failed to parse Gemini structured JSON: %s", str(e))
+            raise CloudResponseInvalidException(f"Gemini response could not be parsed: {str(e)}")
+
+    async def analyze_sensor(self, request: SensorAnalysisRequest) -> SensorAnalysisRawResult:
+        """Analyze soil and environmental telemetry with Gemini AI."""
+        if not await self.is_available():
+            raise CloudProviderUnavailableException(
+                "Gemini Cloud AI API key is not configured on the backend."
+            )
+
+        crop_info = f"Target Crop: {request.crop_name}" if request.crop_name else "Crop: General agricultural field"
+        soil_info = f"Soil Type: {request.soil_type}" if request.soil_type else "Soil Type: Not specified"
+
+        system_prompt = (
+            "You are an expert agronomist and soil scientist for the AgriX agricultural advisory platform.\n"
+            "Analyze the given real-time soil & ambient sensor telemetry to provide clear, farmer-friendly guidance.\n\n"
+            "STRICT RULES:\n"
+            "1. Use simple, direct, non-technical language suitable for farmers.\n"
+            "2. Never recommend hazardous chemical overdoses. Focus on water management, organic matter, soil pH balance, and crop protection.\n"
+            "3. Return strictly valid JSON matching the exact schema below, with no markdown code blocks.\n\n"
+            "Response Schema:\n"
+            "{\n"
+            '  "soil_interpretation": "<interpretation of soil moisture and soil pH>",\n'
+            '  "crop_implications": "<how current readings affect crop growth and nutrient uptake>",\n'
+            '  "irrigation_advice": "<actionable irrigation recommendation with timing/method>",\n'
+            '  "possible_risks": ["<risk 1>", "<risk 2>"],\n'
+            '  "recommended_next_action": "<most important single action for the farmer today>",\n'
+            '  "farmer_summary": "<concise 2-sentence summary of the recommendation>"\n'
+            "}"
+        )
+
+        user_content = (
+            f"Sensor Readings:\n"
+            f"- Temperature: {request.temperature} °C\n"
+            f"- Humidity: {request.humidity} %\n"
+            f"- Soil Moisture: {request.soil_moisture} %\n"
+            f"- Soil pH: {request.soil_ph}\n"
+            f"- Context: {crop_info}, {soil_info}\n"
+            f"- Preferred Language: {request.language or 'en'}"
+        )
+
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent?key={self.api_key}"
+
+        payload = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": f"{system_prompt}\n\n{user_content}"},
+                    ]
+                }
+            ],
+            "generationConfig": {
+                "temperature": 0.2,
+                "responseMimeType": "application/json",
+            },
+        }
+
+        json_bytes = json.dumps(payload).encode("utf-8")
+        req = urllib.request.Request(
+            url=url,
+            data=json_bytes,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+
+        try:
+            loop = asyncio.get_running_loop()
+            raw_response_bytes = await loop.run_in_executor(
+                None,
+                lambda: self._execute_http(req, self.timeout_sec),
+            )
+            resp_json = json.loads(raw_response_bytes.decode("utf-8"))
+        except urllib.error.HTTPError as e:
+            err_body = e.read().decode("utf-8", errors="ignore") if e.fp else str(e)
+            logger.error("Gemini API HTTP Error %d: %s", e.code, err_body)
+            if e.code == 429:
+                raise CloudDiagnosisException("Gemini API rate limit exceeded.", error_code="RATE_LIMIT_EXCEEDED")
+            elif e.code in (401, 403):
+                raise CloudProviderUnavailableException(f"Gemini API authentication failed: {err_body}")
+            else:
+                raise CloudDiagnosisException(f"Gemini API returned HTTP {e.code}: {err_body}")
+        except urllib.error.URLError as e:
+            if isinstance(e.reason, TimeoutError) or "timed out" in str(e.reason).lower():
+                raise CloudProviderTimeoutException(f"Gemini API timed out after {self.timeout_sec}s")
+            raise CloudDiagnosisException(f"Gemini network connection error: {e.reason}")
+        except TimeoutError:
+            raise CloudProviderTimeoutException(f"Gemini API timed out after {self.timeout_sec}s")
+        except Exception as e:
+            logger.error("Unexpected error during Gemini sensor analysis: %s", str(e), exc_info=True)
+            raise CloudDiagnosisException(f"Gemini sensor analysis failed: {str(e)}")
+
+        try:
+            candidates = resp_json.get("candidates", [])
+            if not candidates:
+                raise CloudResponseInvalidException("Gemini API returned no candidates.")
+
+            part_text = candidates[0]["content"]["parts"][0]["text"]
+            data = json.loads(part_text)
+
+            risks = data.get("possible_risks", [])
+            if isinstance(risks, str):
+                risks = [risks]
+
+            return SensorAnalysisRawResult(
+                soil_interpretation=str(data.get("soil_interpretation", "Soil moisture and pH evaluated.")),
+                crop_implications=str(data.get("crop_implications", "Readings support current crop stage.")),
+                irrigation_advice=str(data.get("irrigation_advice", "Monitor soil moisture regularly.")),
+                possible_risks=risks if risks else ["No acute environmental risks detected."],
+                recommended_next_action=str(data.get("recommended_next_action", "Maintain routine soil care.")),
+                farmer_summary=str(data.get("farmer_summary", "Soil conditions are stable.")),
+                provider_name="gemini",
+                model_name=self.model_name,
+            )
+        except (KeyError, ValueError, json.JSONDecodeError) as e:
+            logger.error("Failed to parse Gemini sensor structured JSON: %s", str(e))
             raise CloudResponseInvalidException(f"Gemini response could not be parsed: {str(e)}")
 
     def _execute_http(self, req: urllib.request.Request, timeout: float) -> bytes:

@@ -160,7 +160,13 @@ fun SihNavHost(
         }
         composable(route = SihRoute.SensorConnection) {
             val viewModel: SensorConnectionViewModel = viewModel(
-                factory = SensorConnectionViewModel.provideFactory(appContainer.bleSensorRepository),
+                factory = SensorConnectionViewModel.provideFactory(
+                    bleSensorRepository = appContainer.bleSensorRepository,
+                    localSensorEngine = appContainer.localSensorEngine,
+                    cloudAiClient = appContainer.cloudAiClient,
+                    farmRepository = appContainer.farmRepository,
+                    languageStore = appContainer.languageStore,
+                ),
             )
             SensorConnectionScreen(
                 viewModel = viewModel,

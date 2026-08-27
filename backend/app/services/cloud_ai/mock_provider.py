@@ -1,5 +1,6 @@
 import asyncio
 from typing import Optional
+from app.models.sensor import SensorAnalysisRawResult, SensorAnalysisRequest
 from app.services.cloud_ai.provider import (
     CloudDiagnosisException,
     CloudDiagnosisProvider,
@@ -61,7 +62,6 @@ class MockDiagnosisProvider(CloudDiagnosisProvider):
             )
 
         if self.mode == "crop_mismatch":
-            # Return a wheat disease when requested crop is tomato
             return CloudDiagnosisRawResult(
                 crop_id="wheat",
                 disease_id=64,  # Wheat Leaf Rust
@@ -73,7 +73,6 @@ class MockDiagnosisProvider(CloudDiagnosisProvider):
             )
 
         # Default: Success Mode
-        # Determine disease ID based on crop or overrides
         crop_id_norm = (self.crop_id_override or request.crop_id).strip().lower()
         if self.disease_id_override is not None:
             d_id = self.disease_id_override
@@ -90,7 +89,6 @@ class MockDiagnosisProvider(CloudDiagnosisProvider):
         else:
             d_id = request.local_disease_id or 0
 
-        # Mapping for display names
         default_names = {
             54: "Tomato Early Blight",
             53: "Tomato Bacterial Spot",
@@ -125,6 +123,71 @@ class MockDiagnosisProvider(CloudDiagnosisProvider):
             ],
             expert_escalation="If infection spreads to upper canopy, consult your local Krishi Vigyan Kendra (KVK) specialist.",
             safety_note="Always follow integrated pest management (IPM) guidelines. Practice non-destructive cultural methods before applying any agricultural interventions.",
+            provider_name="mock",
+            model_name="mock-v1",
+        )
+
+    async def analyze_sensor(self, request: SensorAnalysisRequest) -> SensorAnalysisRawResult:
+        if not self._is_available:
+            raise CloudProviderUnavailableException("Mock cloud AI provider is configured as unavailable.")
+
+        if self.delay_sec > 0:
+            await asyncio.sleep(self.delay_sec)
+
+        if self.mode == "timeout":
+            raise CloudProviderTimeoutException("Mock sensor analysis request timed out.")
+
+        if self.mode == "server_error":
+            raise CloudDiagnosisException("Mock sensor analysis encountered a server error.", error_code="PROVIDER_ERROR")
+
+        # Synthesize realistic agricultural interpretation
+        risks = []
+        if request.soil_moisture < 35.0:
+            moisture_state = "Critically Dry"
+            irrigation_advice = "Immediate irrigation required. Schedule drip watering for 45-60 minutes."
+            risks.append("Moisture stress and root dehydration risk.")
+        elif request.soil_moisture <= 55.0:
+            moisture_state = "Adequate / Moderate"
+            irrigation_advice = "Maintain normal irrigation schedule. Moisture levels are currently balanced."
+        else:
+            moisture_state = "Moist to Saturated"
+            irrigation_advice = "Delay scheduled irrigation to prevent root hypoxia and waterlogging."
+            risks.append("Saturated soil conditions may promote anaerobic root rot.")
+
+        if request.soil_ph < 5.8:
+            ph_state = f"Acidic (pH {request.soil_ph})"
+            risks.append("Potential reduction in phosphorus and calcium availability.")
+        elif request.soil_ph <= 7.5:
+            ph_state = f"Optimal (pH {request.soil_ph})"
+        else:
+            ph_state = f"Alkaline (pH {request.soil_ph})"
+            risks.append("Alkaline condition may restrict micronutrient uptake (Zinc, Iron).")
+
+        if request.temperature > 32.0:
+            risks.append(f"High temperature ({request.temperature}°C) elevates evapotranspiration and vegetative heat stress.")
+
+        if request.humidity > 80.0:
+            risks.append(f"High relative humidity ({request.humidity}%) increases susceptibility to foliar fungal diseases.")
+
+        crop_str = f" for {request.crop_name}" if request.crop_name else ""
+        soil_interp = f"Soil moisture is measured at {request.soil_moisture}% ({moisture_state}) with a pH of {request.soil_ph} ({ph_state})."
+        crop_imp = f"Thermal conditions ({request.temperature}°C) and soil chemistry provide favorable vegetative conditions{crop_str}."
+        next_action = "Continue regular soil monitoring and ensure mulching to conserve root zone moisture."
+        if request.soil_moisture < 35.0:
+            next_action = "Initiate drip irrigation immediately to restore root zone moisture."
+
+        farmer_summary = (
+            f"Current soil moisture is {request.soil_moisture}% ({moisture_state.lower()}). "
+            f"{irrigation_advice} Soil pH ({request.soil_ph}) is within a manageable range."
+        )
+
+        return SensorAnalysisRawResult(
+            soil_interpretation=soil_interp,
+            crop_implications=crop_imp,
+            irrigation_advice=irrigation_advice,
+            possible_risks=risks if risks else ["No immediate environmental or moisture stress detected."],
+            recommended_next_action=next_action,
+            farmer_summary=farmer_summary,
             provider_name="mock",
             model_name="mock-v1",
         )
