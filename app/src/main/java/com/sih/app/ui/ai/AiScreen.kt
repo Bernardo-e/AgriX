@@ -265,7 +265,7 @@ fun AiScreenContent(
                             )
                             Spacer(modifier = Modifier.width(10.dp))
                             Text(
-                                text = "Smart Recommendation",
+                                text = "AgriX Recommendation",
                                 style = MaterialTheme.typography.titleMedium,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -302,7 +302,7 @@ fun AiScreenContent(
                             verticalAlignment = Alignment.CenterVertically,
                         ) {
                             Text(
-                                text = "Crop: ${rec.cropName}",
+                                text = "Crop: ${rec.cropName} • Soil: ${rec.soilType}",
                                 style = MaterialTheme.typography.titleSmall,
                                 fontWeight = FontWeight.Bold,
                                 color = MaterialTheme.colorScheme.onSecondaryContainer,
@@ -313,7 +313,7 @@ fun AiScreenContent(
 
                         Spacer(modifier = Modifier.height(8.dp))
 
-                        // 🌱 Soil Condition
+                        // 🌱 Soil Condition & Plant-Available Water
                         Text(
                             text = "🌱 Soil: ${rec.soilCondition}",
                             style = MaterialTheme.typography.bodyMedium,
@@ -321,11 +321,20 @@ fun AiScreenContent(
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
 
+                        Spacer(modifier = Modifier.height(4.dp))
+
+                        Text(
+                            text = "💧 Plant-Available Water: ${(rec.availableWaterFraction * 100).toInt()}% • Status: ${rec.waterStatus}",
+                            style = MaterialTheme.typography.bodySmall,
+                            fontWeight = FontWeight.Medium,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.9f),
+                        )
+
                         Spacer(modifier = Modifier.height(6.dp))
 
                         // 💧 Watering Decision
                         Text(
-                            text = "💧 Watering: ${rec.wateringDecision}",
+                            text = "Irrigation: ${rec.wateringDecision}",
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,

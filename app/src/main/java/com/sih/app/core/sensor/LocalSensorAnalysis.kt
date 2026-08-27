@@ -26,6 +26,13 @@ data class UnifiedAgriXRecommendation(
     val cropGrowthGuidance: String,
     val immediateActionSummary: String,
     val isCloudEnhanced: Boolean = false,
+    val waterStatus: String = "Adequate",
+    val availableWaterFraction: Double = 0.65,
+    val fieldCapacity: Double = 28.0,
+    val wiltingPoint: Double = 12.0,
+    val soilType: String = "Loamy",
+    val rawAdc: Int = 1850,
+    val estimatedVwc: Double = 31.5,
 )
 
 data class LocalSensorAnalysis(

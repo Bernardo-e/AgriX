@@ -4,7 +4,7 @@ from pydantic import BaseModel, Field, field_validator
 
 class SensorAnalysisRequest(BaseModel):
     """Payload for soil and environmental sensor telemetry analysis."""
-    source: str = Field(default="SIMULATED_BLE", description="Sensor telemetry source identifier")
+    source: str = Field(default="DEMO_BLE", description="Sensor telemetry source identifier")
     temperature: float = Field(..., description="Ambient / soil temperature in Celsius (10..55°C)")
     humidity: float = Field(..., description="Relative air humidity percentage (10..100%)")
     soil_moisture: float = Field(..., description="Volumetric soil moisture percentage (0..100%)")
@@ -14,6 +14,12 @@ class SensorAnalysisRequest(BaseModel):
     disease_name: Optional[str] = Field(default=None, description="Optional detected crop disease name")
     disease_confidence: Optional[float] = Field(default=None, description="Optional detected crop disease confidence (0..1.0)")
     disease_status: Optional[str] = Field(default=None, description="Optional diagnostic status")
+    raw_adc: Optional[int] = Field(default=None, description="Optional raw ADC response from capacitive sensor")
+    estimated_vwc: Optional[float] = Field(default=None, description="Calibrated volumetric water content percentage")
+    available_water_fraction: Optional[float] = Field(default=None, description="Plant-available water fraction in [0.0, 1.0]")
+    field_capacity: Optional[float] = Field(default=None, description="Field capacity moisture percentage for soil type")
+    wilting_point: Optional[float] = Field(default=None, description="Permanent wilting point moisture percentage")
+    growth_stage: Optional[str] = Field(default=None, description="Crop phenological growth stage")
     language: Optional[str] = Field(default="en", description="Localization language code (en, hi, ta, te, kn, ml)")
 
     @field_validator("temperature")

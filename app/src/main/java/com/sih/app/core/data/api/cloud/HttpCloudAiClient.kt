@@ -160,6 +160,12 @@ class HttpCloudAiClient(
                 if (request.diseaseName != null) put("disease_name", request.diseaseName)
                 if (request.diseaseConfidence != null) put("disease_confidence", request.diseaseConfidence.toDouble())
                 if (request.diseaseStatus != null) put("disease_status", request.diseaseStatus)
+                if (request.rawAdc != null) put("raw_adc", request.rawAdc)
+                if (request.estimatedVwc != null) put("estimated_vwc", request.estimatedVwc)
+                if (request.availableWaterFraction != null) put("available_water_fraction", request.availableWaterFraction)
+                if (request.fieldCapacity != null) put("field_capacity", request.fieldCapacity)
+                if (request.wiltingPoint != null) put("wilting_point", request.wiltingPoint)
+                if (request.growthStage != null) put("growth_stage", request.growthStage)
                 if (request.language != null) put("language", request.language)
             }
 

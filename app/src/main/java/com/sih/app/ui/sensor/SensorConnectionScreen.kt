@@ -1,9 +1,5 @@
 package com.sih.app.ui.sensor
 
-import android.annotation.SuppressLint
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -67,6 +63,7 @@ import java.util.Locale
 fun SensorConnectionScreen(
     viewModel: SensorConnectionViewModel,
     onBack: () -> Unit,
+    onNavigateToCalibration: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val sensorState by viewModel.sensorState.collectAsState()
@@ -93,6 +90,20 @@ fun SensorConnectionScreen(
                     }
                 },
                 actions = {
+                    // Soil Calibration shortcut
+                    Text(
+                        text = "Calibration",
+                        style = MaterialTheme.typography.labelSmall,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                            .clickable { onNavigateToCalibration() }
+                            .padding(horizontal = 8.dp, vertical = 6.dp),
+                    )
+
+                    Spacer(modifier = Modifier.width(4.dp))
+
                     // Quick Demo Reset Button in App Bar
                     Text(
                         text = "Reset Demo",
@@ -102,7 +113,7 @@ fun SensorConnectionScreen(
                         modifier = Modifier
                             .clip(RoundedCornerShape(8.dp))
                             .clickable { viewModel.resetDemo() }
-                            .padding(horizontal = 12.dp, vertical = 6.dp),
+                            .padding(horizontal = 8.dp, vertical = 6.dp),
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -184,6 +195,7 @@ fun SensorConnectionScreen(
                     SensorReportView(
                         report = state.report,
                         onScanSoilAgain = { viewModel.performSoilScan() },
+                        onNavigateToCalibration = onNavigateToCalibration,
                         onDone = onBack,
                         onResetDemo = { viewModel.resetDemo() },
                     )
@@ -738,11 +750,11 @@ private fun ScanningSoilProgressView(
             verticalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             StepItemRow("Preparing sensor...", progress >= 0.15f)
-            StepItemRow("Reading soil moisture...", progress >= 0.35f)
-            StepItemRow("Reading temperature...", progress >= 0.55f)
-            StepItemRow("Reading humidity...", progress >= 0.75f)
-            StepItemRow("Estimating soil pH...", progress >= 0.90f)
-            StepItemRow("Analyzing soil...", progress >= 1.00f)
+            StepItemRow("Reading raw soil ADC...", progress >= 0.35f)
+            StepItemRow("Reading temperature & humidity...", progress >= 0.55f)
+            StepItemRow("Estimating soil pH...", progress >= 0.75f)
+            StepItemRow("Applying soil context calibration...", progress >= 0.90f)
+            StepItemRow("Synthesizing plant-available water...", progress >= 1.00f)
         }
     }
 }
@@ -790,13 +802,13 @@ private fun AnalyzingProgressView(
         )
         Spacer(modifier = Modifier.height(18.dp))
         Text(
-            text = "Synthesizing Smart Recommendation...",
+            text = "Synthesizing AgriX Recommendation...",
             style = MaterialTheme.typography.titleMedium,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground,
         )
         Text(
-            text = "Analyzing sensor readings, crop profile & environment...",
+            text = "Analyzing sensor readings, crop profile & soil context...",
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 4.dp),
@@ -812,6 +824,7 @@ private fun AnalyzingProgressView(
 private fun SensorReportView(
     report: CombinedSensorReport,
     onScanSoilAgain: () -> Unit,
+    onNavigateToCalibration: () -> Unit,
     onDone: () -> Unit,
     onResetDemo: () -> Unit,
     modifier: Modifier = Modifier,
@@ -841,7 +854,7 @@ private fun SensorReportView(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "AGRI X SENSOR DATA",
+                        text = "AGRI X SENSOR ANALYSIS",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -865,9 +878,9 @@ private fun SensorReportView(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Data source: Demo BLE Sensor • $formattedTime",
+                    text = "Sensor: AgriX Probe • Soil: ${reading.soilType} • $formattedTime",
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.8f),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.85f),
                 )
             }
         }
@@ -876,11 +889,43 @@ private fun SensorReportView(
 
         // 2. Telemetry Parameter Tiles (2x2 Grid)
         Text(
-            text = "LIVE SENSOR TELEMETRY",
+            text = "CALIBRATED SENSOR TELEMETRY",
             style = MaterialTheme.typography.labelLarge,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.primary,
         )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+        ) {
+            TelemetryTile(
+                title = "Estimated VWC",
+                value = "${reading.estimatedVwc} %",
+                badge = when {
+                    reading.availableWaterFraction < 0.25 -> "Very Dry"
+                    reading.availableWaterFraction <= 0.50 -> "Mod. Dry"
+                    reading.availableWaterFraction <= 0.75 -> "Optimal"
+                    else -> "High"
+                },
+                badgeColor = when {
+                    reading.availableWaterFraction < 0.25 -> MaterialTheme.colorScheme.error
+                    reading.availableWaterFraction <= 0.50 -> Color(0xFFE65100)
+                    reading.availableWaterFraction <= 0.75 -> Color(0xFF2E7D32)
+                    else -> MaterialTheme.colorScheme.primary
+                },
+                modifier = Modifier.weight(1f),
+            )
+            TelemetryTile(
+                title = "Raw ADC",
+                value = "${reading.rawAdc}",
+                badge = "Raw Sensor",
+                badgeColor = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.weight(1f),
+            )
+        }
 
         Spacer(modifier = Modifier.height(8.dp))
 
@@ -911,18 +956,10 @@ private fun SensorReportView(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             TelemetryTile(
-                title = "Soil Moisture",
-                value = "${reading.soilMoisture} %",
-                badge = when {
-                    reading.soilMoisture < 35.0 -> "Low"
-                    reading.soilMoisture <= 55.0 -> "Optimal"
-                    else -> "High"
-                },
-                badgeColor = when {
-                    reading.soilMoisture < 35.0 -> MaterialTheme.colorScheme.error
-                    reading.soilMoisture <= 55.0 -> Color(0xFF2E7D32)
-                    else -> Color(0xFFE65100)
-                },
+                title = "Plant-Available Water",
+                value = "${(reading.availableWaterFraction * 100).toInt()} %",
+                badge = "FC ${reading.fieldCapacity}%",
+                badgeColor = Color(0xFF2E7D32),
                 modifier = Modifier.weight(1f),
             )
             TelemetryTile(
@@ -939,6 +976,37 @@ private fun SensorReportView(
                 },
                 modifier = Modifier.weight(1f),
             )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        // Calibration Shortcut Pill
+        Surface(
+            shape = RoundedCornerShape(10.dp),
+            color = MaterialTheme.colorScheme.surfaceVariant,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable { onNavigateToCalibration() },
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 14.dp, vertical = 10.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "⚙ Soil Context ML Calibration",
+                    style = MaterialTheme.typography.labelMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+                Text(
+                    text = "View Model Accuracy →",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(18.dp))
@@ -959,7 +1027,7 @@ private fun SensorReportView(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = "SMART AGRIX RECOMMENDATION",
+                        text = "AGRIX RECOMMENDATION",
                         style = MaterialTheme.typography.titleMedium,
                         fontWeight = FontWeight.Bold,
                         color = MaterialTheme.colorScheme.primary,
@@ -976,7 +1044,7 @@ private fun SensorReportView(
                 Spacer(modifier = Modifier.height(4.dp))
 
                 Text(
-                    text = "Crop: ${rec.cropName} • Condition: ${rec.overallCondition}",
+                    text = "Crop: ${rec.cropName} • Soil: ${rec.soilType} • Condition: ${rec.overallCondition}",
                     style = MaterialTheme.typography.bodyMedium,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -984,11 +1052,11 @@ private fun SensorReportView(
 
                 Spacer(modifier = Modifier.height(14.dp))
 
-                // Section 1: 🌱 Soil Condition
+                // Section 1: 🌱 Soil Condition & Water Status
                 RecommendationSection(
                     icon = "🌱",
-                    title = "Soil Condition",
-                    content = rec.soilCondition,
+                    title = "Soil & Water Status",
+                    content = "${rec.waterStatus} (Available Water: ${(rec.availableWaterFraction * 100).toInt()}%, VWC: ${rec.estimatedVwc}% in ${rec.soilType} soil). ${rec.soilCondition}",
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -996,7 +1064,7 @@ private fun SensorReportView(
                 // Section 2: 💧 Watering
                 RecommendationSection(
                     icon = "💧",
-                    title = "Watering",
+                    title = "Irrigation Guidance",
                     content = buildString {
                         append(rec.wateringDecision)
                         append("\n• Why: ")
@@ -1028,10 +1096,10 @@ private fun SensorReportView(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                // Section 5: 📈 Crop Growth
+                // Section 5: 📈 Crop Growth & Yield Guidance
                 RecommendationSection(
                     icon = "📈",
-                    title = "Crop Growth",
+                    title = "Yield Support",
                     content = rec.cropGrowthGuidance,
                 )
 

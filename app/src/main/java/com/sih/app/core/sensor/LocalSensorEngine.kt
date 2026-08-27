@@ -3,10 +3,10 @@ package com.sih.app.core.sensor
 import java.util.Locale
 
 /**
- * 100% Offline Crop-Aware Agricultural Rule Engine.
- * Evaluates real-time sensor readings (moisture, pH, temp, humidity) alongside
- * target crop profiles and any previously diagnosed disease context to synthesize
- * an actionable, farmer-friendly recommendation.
+ * 100% Offline Crop-Aware & Soil-Context Agricultural Rule Engine.
+ * Evaluates real-time sensor readings (Raw ADC, Calibrated Estimated VWC, pH, temp, humidity),
+ * soil context (Sandy, Loamy, Clay with Field Capacity and Wilting Point),
+ * target crop profiles, growth stages, and any previously diagnosed disease context.
  */
 class LocalSensorEngine {
 
@@ -170,42 +170,70 @@ class LocalSensorEngine {
         val profile = cropProfiles[normalizedCropKey] ?: defaultProfile
         val displayCropName = if (!cropName.isNullOrBlank()) cropName else profile.standardName
 
-        val moisture = reading.soilMoisture
+        val soilProfile = SoilContextRegistry.getProfile(reading.soilType)
+        val vwc = reading.estimatedVwc
+        val awf = soilProfile.calculateAvailableWaterFraction(vwc)
         val ph = reading.soilPH
         val temp = reading.temperature
         val humidity = reading.humidity
 
-        // 1. Evaluate Moisture & Determine Priority
-        val (wateringDecision, wateringWhy, wateringWhen, wateringAction, moisturePriority, overallMoistureStatus) = when {
-            moisture < profile.minMoisture -> {
-                val deficit = profile.minMoisture - moisture
+        // 1. Evaluate Plant-Available Water (AWF) & Determine Water Status
+        val isWetlandCrop = normalizedCropKey == "rice" || normalizedCropKey == "paddy"
+
+        val (waterStatus, wateringDecision, wateringWhy, wateringWhen, wateringAction, moisturePriority) = when {
+            // For Rice (wetland crop): requires saturated / standing water (AWF > 0.70)
+            isWetlandCrop && awf < 0.70 -> {
                 Hexuple(
-                    "Irrigate now to restore root zone moisture",
-                    "Soil moisture (${String.format(Locale.US, "%.0f", moisture)}%) is below the recommended threshold of ${profile.minMoisture.toInt()}% for $displayCropName, risking moisture stress.",
-                    "Initiate watering within 2–4 hours (prefer morning or late evening).",
-                    "Apply drip/furrow irrigation until soil reaches ~${((profile.minMoisture + profile.maxMoisture) / 2).toInt()}% moisture. Avoid sudden heavy flooding.",
+                    "Moisture Deficit for Wetland Rice (AWF ${(awf * 100).toInt()}%)",
+                    "Irrigate now to maintain standing water",
+                    "Paddy rice requires saturated soil conditions (AWF > 70%). Current estimated VWC is ${String.format(Locale.US, "%.1f", vwc)}% in ${soilProfile.soilType} soil (AWF ${(awf * 100).toInt()}%).",
+                    "Initiate field flooding / irrigation within 2–4 hours.",
+                    "Apply continuous flooding or flush irrigation to reach optimal saturation.",
                     RecommendationPriority.HIGH,
-                    "Moisture Deficit (Dry)",
                 )
             }
-            moisture > profile.maxMoisture -> {
+            // Critically dry (AWF < 0.25)
+            awf < 0.25 -> {
                 Hexuple(
-                    "Pause irrigation and monitor field drainage",
-                    "Soil moisture (${String.format(Locale.US, "%.0f", moisture)}%) exceeds the upper threshold of ${profile.maxMoisture.toInt()}% for $displayCropName. Saturated soil limits root oxygen.",
-                    "Withhold watering for the next 24–48 hours until moisture recedes below ${profile.maxMoisture.toInt()}%.",
-                    "Ensure drainage channels are clear to prevent water stagnation and root suffocation.",
-                    if (humidity > profile.maxSafeHumidity) RecommendationPriority.HIGH else RecommendationPriority.MEDIUM,
-                    "Excess Soil Moisture (Saturated)",
+                    "Very Dry (Plant-Available Water < 25%)",
+                    "Irrigate now to restore root zone moisture",
+                    "Estimated VWC (${String.format(Locale.US, "%.1f", vwc)}%) is approaching Permanent Wilting Point (${soilProfile.wiltingPoint}%) in ${soilProfile.soilType} soil (FC = ${soilProfile.fieldCapacity}%). Available water fraction is critically low at ${(awf * 100).toInt()}%.",
+                    "Initiate watering within 2–6 hours (prefer early morning or evening).",
+                    "Apply controlled irrigation until soil moisture nears Field Capacity (${soilProfile.fieldCapacity}%). Avoid sudden excess flooding.",
+                    RecommendationPriority.HIGH,
                 )
             }
+            // Moderately dry (AWF 0.25..0.50)
+            awf in 0.25..0.50 -> {
+                Hexuple(
+                    "Moderately Dry / Approaching Stress (AWF ${(awf * 100).toInt()}%)",
+                    "Plan irrigation within 6–12 hours",
+                    "Soil moisture (${String.format(Locale.US, "%.1f", vwc)}%) is depleting towards the management allowable limit for $displayCropName in ${soilProfile.soilType} soil.",
+                    "Irrigate within the next 6–12 hours before crop shows visible wilting signs.",
+                    "Apply light to moderate irrigation to bring root-zone moisture to adequate level.",
+                    RecommendationPriority.MEDIUM,
+                )
+            }
+            // Adequate / Optimal (AWF 0.50..0.75)
+            awf in 0.50..0.75 -> {
+                Hexuple(
+                    "Adequate Moisture (AWF ${(awf * 100).toInt()}%)",
+                    "No immediate irrigation required",
+                    "Current estimated VWC (${String.format(Locale.US, "%.1f", vwc)}%) is in the optimal plant-available range (AWF ${(awf * 100).toInt()}%) for $displayCropName in ${soilProfile.soilType} soil.",
+                    "Recheck soil moisture within 12–24 hours.",
+                    "Maintain current watering schedule and avoid over-irrigation.",
+                    RecommendationPriority.LOW,
+                )
+            }
+            // High moisture / Saturated (AWF > 0.75)
             else -> {
                 Hexuple(
-                    "No immediate irrigation required",
-                    "Current soil moisture (${String.format(Locale.US, "%.0f", moisture)}%) is within the optimal range (${profile.minMoisture.toInt()}–${profile.maxMoisture.toInt()}%) for $displayCropName.",
-                    "Recheck soil moisture within 12–24 hours.",
-                    "Maintain the current watering schedule. Irrigate only when moisture approaches ${profile.minMoisture.toInt()}%.",
-                    RecommendationPriority.LOW,
-                    "Optimal Soil Moisture",
+                    "High Moisture / Saturated (AWF ${(awf * 100).toInt()}%)",
+                    "Pause irrigation and inspect field drainage",
+                    "Soil moisture (${String.format(Locale.US, "%.1f", vwc)}%) is at or above Field Capacity (${soilProfile.fieldCapacity}%), which may limit root zone oxygenation.",
+                    "Withhold watering for 24–48 hours until moisture recedes.",
+                    "Inspect drainage channels to prevent waterlogging and root suffocation.",
+                    if (humidity > profile.maxSafeHumidity) RecommendationPriority.HIGH else RecommendationPriority.LOW,
                 )
             }
         }
@@ -217,7 +245,7 @@ class LocalSensorEngine {
             else -> "Optimal (pH ${String.format(Locale.US, "%.1f", ph)} — ideal for nutrient assimilation)"
         }
 
-        val soilConditionSummary = "$overallMoistureStatus (${String.format(Locale.US, "%.0f", moisture)}%) • $phCondition"
+        val soilConditionSummary = "$waterStatus (${String.format(Locale.US, "%.1f", vwc)}% VWC in ${soilProfile.soilType}) • $phCondition"
 
         // 3. Evaluate Environment (Temperature & Humidity)
         val tempAssessment = when {
@@ -237,8 +265,8 @@ class LocalSensorEngine {
         // 4. Disease Prevention & Contextual Risk
         val hasActiveDisease = !diseaseName.isNullOrBlank() && !diseaseName.equals("Healthy", ignoreCase = true)
         val diseasePreventionSummary = when {
-            hasActiveDisease && (humidity > 70.0 || moisture > profile.maxMoisture) -> {
-                "Recent scan flagged '$diseaseName'. Current humidity (${String.format(Locale.US, "%.0f", humidity)}%) and moisture (${String.format(Locale.US, "%.0f", moisture)}%) create conditions that favor disease progression. Avoid overhead watering, inspect lower canopy leaves, and apply recommended bio-protective treatments."
+            hasActiveDisease && (humidity > 70.0 || vwc > profile.maxMoisture) -> {
+                "Recent scan flagged '$diseaseName'. Current humidity (${String.format(Locale.US, "%.0f", humidity)}%) and moisture (${String.format(Locale.US, "%.1f", vwc)}%) create conditions that favor disease progression. Avoid overhead watering, inspect lower canopy leaves, and apply recommended bio-protective treatments."
             }
             hasActiveDisease -> {
                 "Previous diagnosis detected '$diseaseName'. Soil moisture is currently manageable. Continue regular crop scouting and avoid wetting foliage during irrigation."
@@ -254,7 +282,7 @@ class LocalSensorEngine {
         // 5. Crop Growth & Yield Guidance
         val cropGrowthGuidance = buildString {
             append(profile.growthAdvice)
-            append(" Maintaining balanced moisture prevents root stress and supports optimal nutrient absorption.")
+            append(" Maintaining balanced moisture near Field Capacity (${soilProfile.fieldCapacity}%) prevents root stress and supports optimal nutrient absorption.")
         }
 
         // 6. Overall Priority Calculation
@@ -265,7 +293,7 @@ class LocalSensorEngine {
         }
 
         val overallCondition = when (finalPriority) {
-            RecommendationPriority.HIGH -> if (moisture < profile.minMoisture) "Needs Attention: Moisture Deficit" else "Needs Attention: High Disease/Moisture Risk"
+            RecommendationPriority.HIGH -> if (awf < 0.35) "Needs Attention: Moisture Deficit" else "Needs Attention: High Disease/Moisture Risk"
             RecommendationPriority.MEDIUM -> "Moderate Attention Required"
             RecommendationPriority.LOW -> "Suitable & Stable Conditions"
         }
@@ -294,6 +322,13 @@ class LocalSensorEngine {
             cropGrowthGuidance = cropGrowthGuidance,
             immediateActionSummary = actionNow,
             isCloudEnhanced = false,
+            waterStatus = waterStatus,
+            availableWaterFraction = (awf * 100).toInt() / 100.0,
+            fieldCapacity = soilProfile.fieldCapacity,
+            wiltingPoint = soilProfile.wiltingPoint,
+            soilType = soilProfile.soilType,
+            rawAdc = reading.rawAdc,
+            estimatedVwc = vwc,
         )
     }
 
@@ -303,8 +338,8 @@ class LocalSensorEngine {
     fun analyze(reading: SensorReading, cropName: String? = null): LocalSensorAnalysis {
         val unified = synthesizeUnifiedRecommendation(reading, cropName)
         val risks = mutableListOf<String>()
-        if (reading.soilMoisture < 35.0) risks.add("Critical moisture deficit in root zone.")
-        if (reading.soilMoisture > 65.0) risks.add("Excess soil moisture may limit aeration.")
+        if (unified.availableWaterFraction < 0.25) risks.add("Critical moisture deficit in root zone (AWF < 25%).")
+        if (unified.availableWaterFraction > 0.85) risks.add("Excess soil moisture may limit root aeration.")
         if (reading.soilPH < 5.8) risks.add("Acidic soil (pH ${String.format(Locale.US, "%.1f", reading.soilPH)}).")
         if (reading.soilPH > 7.5) risks.add("Alkaline soil (pH ${String.format(Locale.US, "%.1f", reading.soilPH)}).")
         if (reading.temperature > 32.0) risks.add("Thermal stress at ${String.format(Locale.US, "%.1f", reading.temperature)}°C.")

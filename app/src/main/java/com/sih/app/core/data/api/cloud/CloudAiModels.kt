@@ -59,15 +59,21 @@ data class CloudDiagnosisResponseData(
 )
 
 data class CloudSensorRequestData(
-    val source: String = "SIMULATED_BLE",
+    val source: String = "DEMO_BLE",
     val temperature: Double,
     val humidity: Double,
-    val soilMoisture: Double,
+    val soilMoisture: Double, // Calibrated Estimated VWC (%)
     val soilPH: Double,
     val cropName: String? = null,
     val soilType: String? = null,
     val diseaseName: String? = null,
     val diseaseConfidence: Float? = null,
     val diseaseStatus: String? = null,
+    val rawAdc: Int? = null,
+    val estimatedVwc: Double? = null,
+    val availableWaterFraction: Double? = null,
+    val fieldCapacity: Double? = null,
+    val wiltingPoint: Double? = null,
+    val growthStage: String? = null,
     val language: String? = "en",
 )

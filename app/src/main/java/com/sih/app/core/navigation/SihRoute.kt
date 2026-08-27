@@ -12,4 +12,5 @@ object SihRoute {
     const val DiseaseScan = "disease_scan"
     const val DiseaseResult = "disease_result"
     const val DiagnosisHistory = "diagnosis_history"
+    const val SoilCalibration = "soil_calibration"
 }

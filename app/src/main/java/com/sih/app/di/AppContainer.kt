@@ -61,8 +61,15 @@ class AppContainer(context: Context) {
         LocationRepository(context.applicationContext)
     }
 
+    val soilCalibrationEngine: com.sih.app.core.sensor.SoilCalibrationEngine by lazy {
+        com.sih.app.core.sensor.SoilCalibrationEngine()
+    }
+
     val bleSensorRepository: BleSensorRepository by lazy {
-        BleSensorRepository(context.applicationContext)
+        BleSensorRepository(
+            context = context.applicationContext,
+            soilCalibrationEngine = soilCalibrationEngine,
+        )
     }
 
     val localSensorEngine: LocalSensorEngine by lazy {

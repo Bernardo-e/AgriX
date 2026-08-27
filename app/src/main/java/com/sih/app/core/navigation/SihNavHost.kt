@@ -174,6 +174,24 @@ fun SihNavHost(
                 onBack = {
                     navController.popBackStack()
                 },
+                onNavigateToCalibration = {
+                    navController.navigate(SihRoute.SoilCalibration)
+                },
+            )
+        }
+        composable(route = SihRoute.SoilCalibration) {
+            val viewModel: com.sih.app.ui.calibration.SoilCalibrationViewModel = viewModel(
+                factory = com.sih.app.ui.calibration.SoilCalibrationViewModel.provideFactory(
+                    soilCalibrationEngine = appContainer.soilCalibrationEngine,
+                    bleSensorRepository = appContainer.bleSensorRepository,
+                    farmRepository = appContainer.farmRepository,
+                ),
+            )
+            com.sih.app.ui.calibration.SoilCalibrationScreen(
+                viewModel = viewModel,
+                onBack = {
+                    navController.popBackStack()
+                },
             )
         }
         composable(route = SihRoute.Ai) {

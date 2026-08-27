@@ -47,9 +47,10 @@ class SensorWorkflowIntegrationTest {
         val reading = SensorReading(
             temperature = 28.5,
             humidity = 62.0,
-            soilMoisture = 47.0,
+            soilMoisture = 23.0,
             soilPH = 6.7,
             source = "SIMULATED_BLE",
+            soilType = "Loamy",
         )
 
         val localAnalysis = localEngine.analyze(reading, "Tomato")
@@ -100,9 +101,10 @@ class SensorWorkflowIntegrationTest {
         val reading = SensorReading(
             temperature = 33.0,
             humidity = 75.0,
-            soilMoisture = 28.0, // Low for Tomato (< 40%)
+            soilMoisture = 13.0, // Low for Loamy (< 16% AWF < 0.25)
             soilPH = 5.5,        // Acidic
             source = "SIMULATED_BLE",
+            soilType = "Loamy",
         )
 
         val localAnalysis = localEngine.analyze(reading, "Tomato")

@@ -78,12 +78,7 @@ class SensorConnectionViewModel(
             }
 
             try {
-                // 1. Multi-stage simulated BLE telemetry acquisition (2-4 seconds)
-                val reading = bleSensorRepository.acquireSoilTelemetry(device) { stepName, progress ->
-                    // Progress emitted directly into sensorState by repository
-                }
-
-                // 2. Fetch farm profile and latest disease diagnosis for unified context
+                // 1. Fetch farm profile and latest diagnosis context
                 val farm = farmRepository.getFarm()
                 val latestDiag = diagnosisRepository.getLatestDiagnosis()
                 val cropName = farm?.currentCrop ?: latestDiag?.cropName ?: "Tomato"
@@ -92,6 +87,14 @@ class SensorConnectionViewModel(
                 val diseaseConfidence = latestDiag?.confidence
                 val diseaseStatus = latestDiag?.diagnosticStatus
                 val languageTag = languageStore.getLanguageTag().ifBlank { "en" }
+
+                // 2. Multi-stage simulated BLE telemetry acquisition with Soil-Context ML Calibration
+                val reading = bleSensorRepository.acquireSoilTelemetry(
+                    device = device,
+                    targetSoilType = soilType,
+                ) { stepName, progress ->
+                    // Progress emitted into sensorState by repository
+                }
 
                 // 3. Instant Local Agricultural Rule Engine Evaluation (100% Offline)
                 bleSensorRepository.updateSensorState(SensorState.AnalyzingLocal(device, reading))
@@ -114,13 +117,19 @@ class SensorConnectionViewModel(
                         source = reading.source,
                         temperature = reading.temperature,
                         humidity = reading.humidity,
-                        soilMoisture = reading.soilMoisture,
+                        soilMoisture = reading.estimatedVwc,
                         soilPH = reading.soilPH,
                         cropName = cropName,
                         soilType = soilType,
                         diseaseName = diseaseName,
                         diseaseConfidence = diseaseConfidence,
                         diseaseStatus = diseaseStatus,
+                        rawAdc = reading.rawAdc,
+                        estimatedVwc = reading.estimatedVwc,
+                        availableWaterFraction = reading.availableWaterFraction,
+                        fieldCapacity = reading.fieldCapacity,
+                        wiltingPoint = reading.wiltingPoint,
+                        growthStage = null,
                         language = languageTag,
                     )
                     val cloudResult = cloudAiClient.performCloudSensorAnalysis(cloudReq)
@@ -159,6 +168,13 @@ class SensorConnectionViewModel(
                         cropGrowthGuidance = cloudAnalysis!!.cropGrowthGuidance ?: localUnified.cropGrowthGuidance,
                         immediateActionSummary = cloudAnalysis!!.actionNowSummary ?: localUnified.immediateActionSummary,
                         isCloudEnhanced = true,
+                        waterStatus = localUnified.waterStatus,
+                        availableWaterFraction = reading.availableWaterFraction,
+                        fieldCapacity = reading.fieldCapacity,
+                        wiltingPoint = reading.wiltingPoint,
+                        soilType = reading.soilType,
+                        rawAdc = reading.rawAdc,
+                        estimatedVwc = reading.estimatedVwc,
                     )
                 } else {
                     localUnified.copy(isCloudEnhanced = false)

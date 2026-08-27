@@ -33,6 +33,7 @@ private const val SCAN_TIMEOUT_MS = 10_000L
 
 class BleSensorRepository(
     private val context: Context,
+    private val soilCalibrationEngine: SoilCalibrationEngine = SoilCalibrationEngine(),
 ) {
     private val scope = CoroutineScope(Dispatchers.Main + Job())
 
@@ -320,9 +321,11 @@ class BleSensorRepository(
     /**
      * Executes multi-stage simulated sensor telemetry acquisition over 2.5-3.5 seconds.
      * Emits realistic progress across the 6 specified agronomic measurement steps.
+     * Accurately distinguishes Raw ADC from Soil-Context Calibrated VWC.
      */
     suspend fun acquireSoilTelemetry(
         device: BleDevice,
+        targetSoilType: String = "Loamy",
         onProgress: (stepName: String, progress: Float) -> Unit,
     ): SensorReading {
         // Step 1: Preparing
@@ -356,19 +359,40 @@ class BleSensorRepository(
         delay(400)
 
         // Generate coherent agricultural sensor values with slight natural variance
-        // Centered around: Temp 28.5 °C, Humidity 62 %, Moisture 47 %, pH 6.7
+        // Centered around: Raw ADC 1850 ± 120, Temp 28.5 °C, Humidity 62 %, pH 6.7
+        val rawAdc = 1750 + Random.nextInt(200) // 1750 - 1950 ADC
         val temp = 27.5 + (Random.nextDouble() * 2.0)   // 27.5 - 29.5 °C
         val humidity = 58.0 + (Random.nextDouble() * 8.0) // 58.0 - 66.0 %
-        val moisture = 43.0 + (Random.nextDouble() * 8.0) // 43.0 - 51.0 %
         val ph = 6.5 + (Random.nextDouble() * 0.4)       // 6.5 - 6.9
 
+        val roundedTemp = Math.round(temp * 10.0) / 10.0
+        val roundedHumidity = Math.round(humidity * 10.0) / 10.0
+        val roundedPh = Math.round(ph * 10.0) / 10.0
+
+        // Use ML / Agronomic Calibration Engine to compute soil-context-aware Estimated VWC (%)
+        val estimatedVwc = soilCalibrationEngine.estimateVwc(
+            soilAdc = rawAdc,
+            temperature = roundedTemp,
+            humidity = roundedHumidity,
+            soilType = targetSoilType,
+        )
+
+        val soilProfile = SoilContextRegistry.getProfile(targetSoilType)
+        val awf = soilProfile.calculateAvailableWaterFraction(estimatedVwc)
+
         val reading = SensorReading(
-            temperature = Math.round(temp * 10.0) / 10.0,
-            humidity = Math.round(humidity * 10.0) / 10.0,
-            soilMoisture = Math.round(moisture * 10.0) / 10.0,
-            soilPH = Math.round(ph * 10.0) / 10.0,
+            temperature = roundedTemp,
+            humidity = roundedHumidity,
+            soilMoisture = estimatedVwc,
+            soilPH = roundedPh,
             timestamp = System.currentTimeMillis(),
-            source = "SIMULATED_BLE",
+            source = "DEMO_BLE",
+            rawAdc = rawAdc,
+            soilType = soilProfile.soilType,
+            estimatedVwc = estimatedVwc,
+            availableWaterFraction = (awf * 100).toInt() / 100.0,
+            fieldCapacity = soilProfile.fieldCapacity,
+            wiltingPoint = soilProfile.wiltingPoint,
         )
 
         _latestReading.value = reading
